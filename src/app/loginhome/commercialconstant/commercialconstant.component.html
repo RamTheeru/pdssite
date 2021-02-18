@@ -1,0 +1,45 @@
+<div class="container-fluid">
+	<h1 class="text-primary"><u>Salary Form</u></h1>
+	<form [formGroup]="ccForm" class="cf" (ngSubmit)="onSubmit()">
+
+		<div class="row">
+			<mat-form-field>
+				<mat-select formControlName="station" aria-placeholder="Station">
+					<mat-option value="">Select Station</mat-option>
+					<mat-option *ngFor="let s of stations" [value]="s">
+						{{s.stationName}}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
+		<div class="row">
+			<mat-form-field>
+				<mat-label>Delivery Rate</mat-label>
+				<input type="text" name="delv" matInput  formControlName="delv" placeholder="Delivery Rate*" class="form-control">
+				<mat-error>This field is mandatory</mat-error>
+			</mat-form-field>
+		</div>
+		<div class="row">
+			<mat-form-field>
+				<mat-label>Petrol Allowances</mat-label>
+				<input type="text" name="petr" matInput  formControlName="petr" placeholder="Petrol Allowances*" class="form-control">
+				<mat-error>This field is mandatory</mat-error>
+			</mat-form-field>
+		</div>
+		<div class="row">
+			<mat-form-field>
+				<mat-label>Incentives</mat-label>
+				<input type="text" name="inc" matInput  formControlName="inc" placeholder="Incentives*" class="form-control">
+				<mat-error>This field is mandatory</mat-error>
+			</mat-form-field>
+		</div>
+
+
+		<div class="row" id="btnset">
+
+			<button mat-raised-button (click)="oncancel()" color="warn" mat-dialog-close>Cancel</button>
+			<button mat-raised-button type="submit"  color="primary">Save</button>
+
+		</div>
+	</form>
+</div>

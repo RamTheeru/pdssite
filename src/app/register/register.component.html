@@ -1,0 +1,187 @@
+<div class="container">
+	<app-loading [deliver]="loaded"></app-loading>
+	<button type="submit" style="float:right;background-color:blue;" ><a routerLink="/home"><b class="text-light" >Go to Home >></b></a></button>
+
+	<h1 class="text-primary"><u>Employee Registration Form:</u></h1>
+	<!-- 
+	<div class="row">
+		<app-loading [deliver]="loaded"></app-loading>
+	</div> -->
+
+
+	<!-- <a role="button" routerLink="/home" style="float:right;" ><span class="badge badge-primary"><b>Go to Home</b></span></a> -->
+	<form class="form-horizontal" [formGroup]="empForm" (ngSubmit)="onSubmit()">
+
+		<mat-grid-list cols="2" rowHeight="1255px">
+
+
+
+			<mat-grid-tile>
+
+				<div class="contrl-cont">
+					<legend>Personal Information Details</legend>
+					<!-- <input type="hidden" formControlName="$key" > -->
+					<mat-form-field>
+						<input type="text" formControlName="firstName" (focusout)="focusOutFunction('fname',$event)" class="form-control" matInput placeholder="FirstName*">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+					<mat-form-field>
+						<input type="text" name="middleName" formControlName="middleName" matInput placeholder="Middle Name" class="form-control">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+					<mat-form-field>
+						<input type="text" name="lastName" formControlName="lastName" matInput placeholder="Last Name" class="form-control">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+
+					<mat-form-field>
+						<mat-select formControlName="gender" aria-placeholder="Gender">
+							<mat-option value="">Select Gender</mat-option>
+							<mat-option value="male">male</mat-option>
+							<mat-option value="female">female</mat-option>
+						</mat-select>
+					</mat-form-field>
+					<mat-form-field>
+						<input  formControlName="birthdate" matInput [matDatepicker]="picker" class="form-control" placeholder="Date Of Birth">
+						<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+						<mat-datepicker #picker></mat-datepicker>
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+					<mat-form-field>
+						<input type="text" formControlName="age" (focusout)="focusOutFunction('age',$event)" class="form-control" matInput placeholder="Age*">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+					<mat-form-field>
+						<input type="text" formControlName="bg" class="form-control" matInput placeholder="Blood Group">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+					<legend>Marital Status</legend>
+					<div class="add-bottom-padding" *ngFor="let c of maritals; let i = index;">
+						<mat-checkbox (change)="checkValue($event,'m')" name="{{c}}" value="{{c}}"
+							[formControlName]="c">{{c}}</mat-checkbox>
+					</div>
+					<mat-form-field>
+						<mat-label>Contact:+91-</mat-label>
+						<input type="text" name="phone" matInput (focusout)="focusOutFunction('phone',$event)" formControlName="phone" placeholder="Phone*" class="form-control">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+					<legend>Parent/Guadian Information</legend>
+					<mat-form-field>
+						<input type="text" name="pFistName" (focusout)="focusOutFunction('g',$event)" formControlName="gfirstName" matInput placeholder="First Name" class="form-control">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+					<mat-form-field>
+						<input type="text" name="pMiddleName" (focusout)="focusOutFunction('g',$event)" formControlName="gmiddleName" matInput placeholder="Middle Name" class="form-control">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+					<mat-form-field>
+						<input type="text" name="pLastName" (focusout)="focusOutFunction('g',$event)" formControlName="glastName" matInput placeholder="Last Name" class="form-control">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+					<mat-form-field>
+						<mat-label>Alternate Contact:+91-</mat-label>
+						<input type="text" name="gphone" (focusout)="focusOutFunction('g',$event)" formControlName="gphone" matInput placeholder="Phone" class="form-control">
+      </mat-form-field>
+				</div>
+			</mat-grid-tile>
+
+			<mat-grid-tile>
+				<div class="contrl-cont">
+					<legend>Address Details</legend>
+					<mat-form-field>
+						<input type="text" name="addressLine1" formControlName="ad1" (focusout)="focusOutFunction('ad1',$event)" matInput placeholder="Address Line 1" class="form-control">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+					<mat-form-field>
+						<input type="text" name="addressLine2" formControlName="ad2" (focusout)="focusOutFunction('ad1',$event)" matInput placeholder="Address Line 2" class="form-control">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+					<mat-form-field>
+						<input type="text" name="place" formControlName="place" matInput (focusout)="focusOutFunction('place',$event)" placeholder="Town/Mandal/Taluka/Village" class="form-control">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+					<mat-form-field>
+						<input type="text" name="state" formControlName="state" matInput (focusout)="focusOutFunction('state',$event)"  placeholder="State" class="form-control">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+					<mat-form-field>
+						<input type="text" name="postal" formControlName="postal" matInput (focusout)="focusOutFunction('post',$event)"     placeholder="Postal Code" class="form-control">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+					<mat-form-field>
+						<input type="text" name="aad" formControlName="aad" (focusout)="focusOutFunction('aad',$event)" matInput placeholder="Aadhar number" class="form-control">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+					<mat-form-field>
+						<input type="text" name="pan" formControlName="pan" matInput (focusout)="focusOutFunction('pan',$event)" placeholder="PAN number" class="form-control">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+					<legend>Employee Type</legend>
+					<div class="add-bottom-padding" *ngFor="let c of empTypes; let i = index;">
+						<mat-checkbox (change)="checkValue($event,'e')" name="{{c}}" value="{{c}}"
+							[formControlName]="c">{{c}}</mat-checkbox>
+					</div>
+
+					<mat-form-field>
+						<input  formControlName="joindate" matInput [matDatepicker]="picker2" class="form-control" placeholder="Date Of Join">
+						<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+						<mat-datepicker #picker2></mat-datepicker>
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+
+					<mat-form-field>
+						<!-- <mat-select formControlName="desg" aria-placeholder="Designation">
+							<mat-option value="">Select Designation</mat-option>
+							<mat-option *ngFor="let d of designatons" [value]="d.desginationName">{{d.desginationName}}
+							</mat-option> -->
+						<!-- </mat-select> -->
+						<input type="text" name="usrname" formControlName="usr" matInput (focusout)="focusOutFunction('usr',$event)"  placeholder="User Name" class="form-control">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+					<mat-form-field>
+						<mat-select formControlName="ut" aria-placeholder="User Type">
+							<mat-option value="">Select Login Type</mat-option>
+							<mat-option *ngFor="let u of userTypes" [value]="u">{{u.user}}
+							</mat-option>
+							<!-- <mat-option value="hrle">HR (HE)</mat-option>
+							<mat-option value="female">HR (LE)</mat-option>fhgdhgd
+							<mat-option value="hrle">Executive (HE)</mat-option>
+							<mat-option value="female">Executive (LE)</mat-option>
+							<mat-option value="hrle">Finance (HE)</mat-option>
+							<mat-option value="female">Finance (LE)</mat-option> -->
+						</mat-select>
+					</mat-form-field>
+					<legend>Location Details</legend>
+					<mat-form-field>
+						<mat-select formControlName="station" aria-placeholder="Station">
+							<mat-option value="">Select Station</mat-option>
+							<mat-option *ngFor="let s of stations" [value]="s">
+								{{s.stationName}}
+							</mat-option>
+							<!-- <mat-option value="hrle">HR (HE)</mat-option>
+							<mat-option value="female">HR (LE)</mat-option>
+							<mat-option value="hrle">Executive (HE)</mat-option>
+							<mat-option value="female">Executive (LE)</mat-option>
+							<mat-option value="hrle">Finance (HE)</mat-option>
+							<mat-option value="female">Finance (LE)</mat-option> -->
+						</mat-select>
+						<!-- <input type="text" name="StationCode" formControlName="station" matInput placeholder="Station Code" class="form-control">
+						<mat-error>This field is mandatory</mat-error> -->
+					</mat-form-field>
+					<mat-form-field>
+						<input type="text" name="location" formControlName="location" (focusout)="focusOutFunction('loc',$event)" matInput placeholder="Location Name" class="form-control">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+				</div>
+			</mat-grid-tile>
+
+		</mat-grid-list>
+		<section>
+			<div class="example-button-row">
+				<button type="submit" (click)="onCancel()" mat-raised-button color="warn">Cancel</button>
+				<button type="submit" [disabled]="!fvalid" mat-raised-button color="primary">Submit</button>
+			</div>
+		</section>
+	</form>
+
+</div>

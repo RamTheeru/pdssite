@@ -1,0 +1,88 @@
+<div class="container-fluid">
+	<h1 class="text-primary"><u>Salary Form</u></h1>
+	<form [formGroup]="salForm" (ngSubmit)="onSubmit()">
+		<div class="row">
+			<div class="col">
+				<mat-form-field>
+					<mat-label>CTC</mat-label>
+					<input type="text" name="ctc" matInput (focusout)="focusOutFunction('ctc',$event)" formControlName="ctc" placeholder="CTC*" class="form-control">
+					<mat-error>This field is mandatory</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="col">
+				<mat-form-field>
+					<mat-label>Basic</mat-label>
+					<input type="text" name="basic" matInput  formControlName="basic" placeholder="Basic*" class="form-control">
+					<mat-error>This field is mandatory</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="col">
+				<mat-form-field>
+					<mat-label>HRA</mat-label>
+					<input type="text" name="hra" matInput  formControlName="hra" placeholder="HRA*" class="form-control">
+					<mat-error>This field is mandatory</mat-error>
+				</mat-form-field>
+			</div>
+
+		</div>
+		<div class="row">
+			<div class="col">
+				<mat-form-field>
+					<mat-label>Conveyance</mat-label>
+					<input type="text" name="conv" matInput (focusout)="focusOutFunction('ctc',$event)" formControlName="conv" placeholder="Coveyance*" class="form-control">
+					<mat-error>This field is mandatory</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="col">
+				<mat-form-field>
+					<mat-label>Uniform Reimbursement</mat-label>
+					<input type="text" name="unre" matInput  formControlName="unre" placeholder="Uniform Reimbursement*" class="form-control">
+					<mat-error>This field is mandatory</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="col">
+				<mat-form-field>
+					<mat-label>Special Allowance</mat-label>
+					<input type="text" name="spaw" matInput  formControlName="spaw" placeholder="Special Allowance*" class="form-control">
+					<mat-error>This field is mandatory</mat-error>
+				</mat-form-field>
+			</div>
+			<!-- <label>Select Employee:</label>
+		<mat-form-field class="inpt">
+			<mat-select [(ngModel)]="emp" name="emp" aria-placeholder="Select Employee" class="form-control">
+				<mat-option value="atp">Ram</mat-option>
+				<mat-option value="gtk">Ravi</mat-option>
+			</mat-select>
+		</mat-form-field> -->
+		</div>
+		<div class="row">
+			<div class="col">
+				<mat-form-field>
+					<mat-label>Net Salary</mat-label>
+					<input type="text" name="netsal" matInput (focusout)="focusOutFunction('ctc',$event)" formControlName="netsal" placeholder="Net Salary*" class="form-control">
+					<mat-error>This field is mandatory</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="col">
+				<mat-form-field>
+					<mat-label>Monthly CTC</mat-label>
+					<input type="text" name="mctc" matInput  formControlName="mctc" placeholder="Monthly CTC*" class="form-control">
+					<mat-error>This field is mandatory</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="col">
+				<mat-form-field>
+					<mat-label>Gratuity Monthly</mat-label>
+					<input type="text" name="grat" matInput  formControlName="grat" placeholder="Gratuity Monthly*" class="form-control">
+					<mat-error>This field is mandatory</mat-error>
+				</mat-form-field>
+			</div>
+		</div>
+		<div class="row">
+			<mat-dialog-actions align="end">
+				<button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+				<button mat-raised-button [mat-dialog-close]="true" color="primary" cdkFocusInitial>Save</button>
+			</mat-dialog-actions>
+		</div>
+	</form>
+</div>

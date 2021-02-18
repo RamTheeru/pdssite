@@ -1,0 +1,111 @@
+<div class="container-fluid">
+	<button type="submit" style="float:right;background-color:blue;" ><a routerLink="/loginhome"><b class="text-light" >Go to Home >></b></a></button>
+	<form class="form-inline">
+		<!-- <input class="form-control mr-sm-2"     type="text"  placeholder="StationCode">  -->
+
+
+		<select     [(ngModel)]="selectedStation" name="station" id="stat">
+							<option value="" selected>Select Station</option>
+              	<option *ngFor="let s of stations" [ngValue]="s.stationId">
+								{{s.stationName}}
+							</option>
+    </select>
+		<button class="btn btn-success" (click)="getemployeesbyStation($event)"  type="submit">Search</button>
+	</form>
+	<!-- <p>gsdhhdxzg    dggdf    </p> -->
+
+	<table *ngIf="isreguser; else logins" class="table table-striped">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Phone</th>
+				<th>LoginType</th>
+				<th>StateCode</th>
+				<th>LocationName</th>
+				<div *ngIf="!isHE">
+					<!-- <th>EmployeeCode</th> -->
+				</div>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let emp of employees">
+				<div *ngIf="isHE; else reg1">
+					<td [hidden]="isHide">{{emp.EmployeeId}}</td>
+				</div>
+				<ng-template #reg1>
+					<td [hidden]="isHide">{{emp.registerId}}</td>
+				</ng-template>
+				<td> {{emp.firstName}}</td>
+				<td>{{emp.phone}}</td>
+				<td>{{emp.loginType}}</td>
+				<td>{{emp.stationCode}}</td>
+				<td>{{emp.locationName}}</td>
+				<div *ngIf="!isHE">
+					<!-- <td><input #empCode  id="{{emp.registerId}}"  type="text" value=""/></td> -->
+				</div>
+				<td>
+					<div *ngIf="isHE; else reg">
+						<button type="button"
+            (click)="onSalCreate($event)" id="{{emp.EmployeeId}}" >Generate Salary</button>
+					</div>
+					<ng-template #reg>
+						<button type="button"   (click)="approveUser($event,'a')" class="btn btn-primary" ><b  id="{{emp.registerId}}"  class="text-light" >Approve</b>
+          </button>| <button type="button"   (click)="approveUser($event,'r')" class="btn btn-primary" ><b  id="{{emp.registerId}}"  class="text-light" >Reject</b>
+          </button>
+					</ng-template>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<ng-template #logins>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Employee Code</th>
+					<th>Employee Name</th>
+					<th>LoginType</th>
+					<th>Login Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let emp of employees">
+					<td [hidden]="isHide">{{emp.EmployeeId}}</td>
+					<td> {{emp.empCode}}</td>
+					<td> {{emp.firstName}}</td>
+					<td>{{emp.loginType}}</td>
+					<td>{{emp.isActive==true?'Active':'Inactive'}}</td>
+					<!-- <td>
+						<div *ngIf="isHE; else reg">
+							<button type="button"
+            (click)="onSalCreate($event)" id="{{emp.EmployeeId}}" >Generate Salary</button>
+						</div>
+						<ng-template #reg>
+							<button type="button"   (click)="approveUser($event,'a')" class="btn btn-primary" ><b  id="{{emp.registerId}}"  class="text-light" >Approve</b>
+          </button>| <button type="button"   (click)="approveUser($event,'r')" class="btn btn-primary" ><b  id="{{emp.registerId}}"  class="text-light" >Reject</b>
+          </button>
+						</ng-template>
+					</td> -->
+				</tr>
+			</tbody>
+		</table>
+	</ng-template>
+</div>
+<div class="container-fluid" *ngIf="pageCount>1">
+	<div class="row" id="r">
+		<nav style="margin-left:420px;" aria-label="Page navigation example">
+			<ul class="pagination justify-content-center">
+				<!-- <li class="page-item disabled">
+					<a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+				</li> -->
+				<li *ngFor="let p of pages" class="page-item"><a class="page-link" (click)="getdata(p)">{{p}}</a></li>
+				<!-- <li class="page-item"><a class="page-link" href="#">1</a></li>
+				<li class="page-item"><a class="page-link" href="#">2</a></li>
+				<li class="page-item"><a class="page-link" href="#">3</a></li> -->
+				<!-- <li class="page-item">
+					<a class="page-link" href="#">Next</a>
+				</li> -->
+			</ul>
+		</nav>
+	</div>
+</div>

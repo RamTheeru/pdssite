@@ -1,0 +1,156 @@
+<div class="container-fluid">
+
+	<!-- <form> -->
+	<div class="row">
+		<label>Select Location:</label>
+
+		<!-- <mat-form-field class="inpt">
+
+					<input type="text" formControlName="lmcredit" class="form-control" matInput placeholder="Last Month's Credit*">
+					<mat-error>This field is mandatory</mat-error>
+				</mat-form-field> -->
+
+		<mat-form-field class="inpt">
+			<mat-select [(ngModel)]="location" name="location" aria-placeholder="Select Location" class="form-control">
+				<mat-option value="">Select Location</mat-option>
+				<mat-option value="atp">Anantapur</mat-option>
+				<mat-option value="gtk">Guntakal</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
+	<div class="row">
+
+		<div class="col-sm-4">
+			<label>From Date: </label>
+
+			<!-- <mat-form-field class="inpt" style="margin-left:25px;">
+                  <input type="text" name="lmtdebit" formControlName="lmtdebit" matInput placeholder="Last Month's Total Debit" class="form-control">
+                  <mat-error>This field is mandatory</mat-error>
+                </mat-form-field> -->
+			<mat-form-field class="inpt" style="margin-left:100px;margin-top:-40px;">
+				<input [(ngModel)]="fromDate" name="fromDate" matInput [matDatepicker]="picker" class="form-control" placeholder="From Date">
+				<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+				<mat-datepicker #picker></mat-datepicker>
+				<mat-error>This field is mandatory</mat-error>
+			</mat-form-field>
+		</div>
+		<div class="col-sm-4">
+			<label>To Date: </label>
+
+			<!-- <mat-form-field class="inpt" style="margin-left:25px;">
+                  <input type="text" name="lmtdebit" formControlName="lmtdebit" matInput placeholder="Last Month's Total Debit" class="form-control">
+                  <mat-error>This field is mandatory</mat-error>
+                </mat-form-field> -->
+			<mat-form-field class="inpt" style="margin-left:100px;margin-top:-40px;">
+				<input [(ngModel)]="toDate" name="toDate"  matInput [matDatepicker]="picker2" class="form-control" placeholder="To Date">
+				<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+				<mat-datepicker #picker2></mat-datepicker>
+				<mat-error>This field is mandatory</mat-error>
+			</mat-form-field>
+		</div>
+
+	</div>
+	<div class="row">
+		<button class="btn btn-success" style="margin-left:315px;" (click)="getlist($event)"  type="submit">Search</button>
+	</div>
+	<!-- </form> -->
+	<div class="row">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>S.No</th>
+					<th>Date</th>
+					<div *ngIf="isHe">
+						<th>Action</th>
+					</div>
+					<th>Voucher Number</th>
+					<th>Particulars</th>
+					<th>Credit</th>
+					<th>Debit</th>
+					<th>Balance</th>
+					<div *ngIf="isLe">
+						<th>
+
+							<ng-container>Status</ng-container>
+
+						</th>
+					</div>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor=" let l of list;let i = index;">
+					<td id="id-{{i}}">{{l.Id}}</td>
+					<td>{{l.VoucherDate}}</td>
+					<div *ngIf="isHe">
+						<td><input  #tablist id="{{l.Id}}" (click)="toggleEditable($event)" type="checkbox" value=""/>
+				</div>
+						<td>
+							<div *ngIf="isLe; else fhe">
+								<ng-container>
+
+									<a [ngClass]="l.VStatus?'disabled':''"
+										routerLink="/loginhome/editvoucher/1">{{l.VoucherNumber}}</a>
+
+								</ng-container>
+							</div>
+							<ng-template #fhe>
+								{{l.VoucherNumber}}
+							</ng-template>
+						</td>
+						<td>{{l.Particulars}}</td>
+						<td>{{l.Credit}}</td>
+						<td>{{l.Debit}}</td>
+						<td>{{l.Balance}}</td>
+						<div *ngIf="isLe">
+							<td>
+
+								<ng-container>{{l.Status}}</ng-container>
+
+							</td>
+						</div>
+						<!-- <td> <button type="button" (click)="approveUser(l)" class="btn btn-primary" ><b class="text-light" >Edit</b></button>
+				</td> -->
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="row">
+		<nav style="margin-left:420px;" aria-label="Page navigation example">
+			<ul class="pagination justify-content-center">
+				<!-- <li class="page-item disabled">
+					<a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+				</li> -->
+				<li class="page-item"><a class="page-link" href="#">1</a></li>
+				<li class="page-item"><a class="page-link" href="#">2</a></li>
+				<li class="page-item"><a class="page-link" href="#">3</a></li>
+				<!-- <li class="page-item">
+					<a class="page-link" href="#">Next</a>
+				</li> -->
+			</ul>
+		</nav>
+	</div>
+	<div class="container">
+		<div class="row" *ngIf="isHe">
+			<div class="row" *ngIf="isVerify; else fhe">
+				<div class="col" id="btns">
+					<button  type="button" (click)="onAccept()" mat-raised-button color="primary" style="margin-right:10px;" >Accept Voucher</button>
+				</div>
+				<div class="col" id="btns">
+					<button  type="button" mat-raised-button color="warn" (click)="onReject()" >Reject Voucher</button>
+				</div>
+				<div class="col" id="btns">
+					<button  type="button" mat-raised-button color="warn" style="margin-right:10px;" >Cancel</button>
+				</div>
+			</div>
+		</div>
+		<ng-template #fhe>
+			<div class="col">
+				<button (click)="onDownload()"  type="button" mat-raised-button color="warn" >Download</button></div>
+			<div class="col">
+				<button  type="button" mat-raised-button color="warn" style="margin-right:10px;" >Cancel</button></div>
+		</ng-template>
+
+	</div>
+
+
+</div>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+
+
+	<div class="container-fluid" style="margin-top:30px">
+		<div class="row">
+			<app-loading [deliver]="load"></app-loading>
+		</div>
+		<div class="row">
+			<div class="col-sm-8">
+
+				<!-- <h2>About Me</h2>
+      <h5>Photo of me:</h5>
+      <div class="fakeimg">Fake Image</div>
+      <p>Some text about me in culpa qui officia deserunt mollit anim..</p> -->
+				<div>
+					<img  class="images" src={{img}}/>
+
+          </div>
+
+					<hr class="d-sm-none">
+				</div>
+				<div class="col-sm-4">
+					<!-- <div class="fakeimg"></div> -->
+
+					<form>
+
+
+						<div class="container" style="margin-left:0px;">
+
+							<div class="row">
+
+
+								<label for="uname"> <b>Username</b></label>
+								<input type="text" placeholder="Enter Username" name="uname" [(ngModel)]="userName" class="form-control">
+
+								<label for="psw"><b>Password</b></label>
+								<input type="password" placeholder="Enter Password" name="psw" [(ngModel)]="password" class="form-control">
+                               </div>
+								<div class="row">
+
+									<button type="button"  (click)="onLogin()" >Login</button>
+								</div>
+								<div class="row">
+									<div class="col"><a routerLink="/register">Register</a></div>
+									<div class="col"><a href="">Forgot Password?</a></div>
+								</div>
+							</div>
+
+							<!-- <div class="container" style="background-color:#f1f1f1">
+                        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+                        <span class="psw">Forgot <a href="#">password?</a></span>
+                      </div> -->
+					</form>
+
+
+
+
+				</div>
+			</div>
+		</div>
+
+
+</body>
+
+</html>

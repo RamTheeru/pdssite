@@ -1,0 +1,74 @@
+<div class="container-fluid">
+	<div class="row">
+		<app-loading [deliver]="load"></app-loading>
+	</div>
+	<div class="row">
+
+		<select     [(ngModel)]="currentmonth" name="month" id="stat">
+							<option value="0" selected>Select Month</option>
+              	<option *ngFor="let s of months" [ngValue]="s.id">
+								{{s.name}}
+							</option>
+    </select>
+		<button class="btn btn-success" (click)="getemployeesbyMonth($event)"  type="submit">Search</button>
+	</div>
+	<div class="row">
+		<h3><u>Delivery Details Associate List:</u></h3><br>
+		Total Records in Server : {{totalCount}}
+	</div>
+		<div class="row">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<!-- <th>S.No</th> -->
+						<th>Employee Code</th>
+						<th>Employee Name</th>
+						<th>Delivery Count</th>
+						<th>Standard Rate/Delivery</th>
+						<th>Petrol Allowance</th>
+						<th>Incentive</th>
+						<th>Total Amount</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let emp of employees;">
+						<td [hidden]="isHide"> {{emp.employeeId}}</td>
+						<td>{{emp.empCode}}</td>
+						<td>{{emp.firstName}}</td>
+						<td><input type="text" #fil id="{{emp.employeeId}}" name="dvc" (focusout)="focusOutFunction('dvc',$event)" value="{{emp.delivery.deliveryCount}}"/></td>
+						<td>{{standardRate}}</td>
+						<td>{{petrolallowance}}</td>
+						<td><input type="text" #fil id="{{emp.employeeId}}" name="inc" (focusout)="focusOutFunction('inc',$event)" value="{{emp.delivery.incentive}}"/></td>
+						<td>{{emp.delivery.totalAmount}} </td>
+
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="row">
+			<div class="row" id="btnset">
+				<button  type="button" mat-raised-button color="warn" (click)="OnCancel()" style="margin-right:10px;" >Cancel</button>
+				<button  type="button" mat-raised-button [disabled]="!btnallow" color="primary" (click)="Onsub()" >Submit</button>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid" *ngIf="pageCount>1">
+		<div class="row" id="r">
+			<nav style="margin-left:420px;" aria-label="Page navigation example">
+				<ul class="pagination justify-content-center">
+					<!-- <li class="page-item disabled">
+					<a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+				</li> -->
+					<li *ngFor="let p of pages" class="page-item"><a class="page-link" (click)="getdata(p)">{{p}}</a>
+					</li>
+					<!-- <li class="page-item"><a class="page-link" href="#">1</a></li>
+				<li class="page-item"><a class="page-link" href="#">2</a></li>
+				<li class="page-item"><a class="page-link" href="#">3</a></li> -->
+					<!-- <li class="page-item">
+					<a class="page-link" href="#">Next</a>
+				</li> -->
+				</ul>
+			</nav>
+		</div>
+	</div>

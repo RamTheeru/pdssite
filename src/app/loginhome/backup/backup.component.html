@@ -1,0 +1,30 @@
+<div class="container-fluid">
+	<h1 class="text-primary"><u>Databse Backup List</u></h1>
+	<div class="row">
+		<app-loading [deliver]="load"></app-loading>
+	</div>
+	<div class="row" style="overflow-y:auto;max-height:350px;">
+
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>File Name</th>
+					<th>File Path</th>
+					<th>Created Date</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let b of backups">
+
+					<td> {{b.fileName}}</td>
+					<td> {{b.filePath}}</td>
+					<td>{{b.createdDate}}</td>
+					<td><button type="button"   (click)="restore($event,b)" class="btn btn-primary" id="{{b.filePath}}" ><b  class="text-light" >Restore</b>
+          </button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

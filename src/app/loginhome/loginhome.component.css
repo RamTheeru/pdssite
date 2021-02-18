@@ -1,0 +1,82 @@
+.col-sm-2{
+  background-color: bisque;
+}
+.col-sm-8{
+  background-color: floralwhite;
+  padding-top: 10px;
+}
+.col-sm-10{
+  background-color: floralwhite;
+  padding-top: 10px;
+}
+.row{
+
+  height:100vh;
+}
+
+#v-pills-sub-tab[data-toggle].collapsed:before {
+    content: " ▾";
+}
+#v-pills-sub-tab[data-toggle]:not(.collapsed):before {
+    content: " ▴";
+}
+/* .dropdown-menu{
+margin-top: 8px;margin-left: -93px;background-color: bisque;
+
+} */
+#drop{
+margin-left: 10px;background-color: bisque;
+margin-top: 8px;
+
+}
+.limenu{
+   margin: 4px 0;
+}
+a{
+  color:black;
+}
+
+/* .example-spacer {
+  flex: 1 1 auto;
+}
+.p{
+  width:100%;
+}
+.router-outlet {
+  flex: 1 1 auto;
+}
+.example-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+::ngdeep .mat-sidenav-transition .mat-sidenav-backdrop.mat-sidenav-shown {
+  background-color: bisque;
+}
+mat-sidenav-container{
+
+height:100vh;
+   background-color: bisque;
+   margin-top: -16px;
+}
+mat-sidenav-content{
+  width:100%;
+  background-color: bisque;
+
+}
+#content{
+  height: 100vh;margin-left: -15px;margin-right: 167px;background-color: chocolate;margin-top: -15px;
+}
+.mat-drawer-content, mat-sidenav-content{
+  background-color: aliceblue;
+}
+mat-sidenav,mat-sidenav-content{
+  padding:16px;
+   background-color: bisque;
+}
+mat-sidenav{
+
+  width:200px;
+} */

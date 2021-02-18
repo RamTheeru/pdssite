@@ -1,0 +1,117 @@
+<div class="container-fluid">
+	<h1 class="text-primary"><u>{{formText}}</u></h1>
+	<form class="form-horizontal" [formGroup]="voucherForm" (ngSubmit)="onSubmit()">
+		<div class="frm">
+			<div class="row">
+				<label>Select Location:</label>
+
+				<!-- <mat-form-field class="inpt">
+
+					<input type="text" formControlName="lmcredit" class="form-control" matInput placeholder="Last Month's Credit*">
+					<mat-error>This field is mandatory</mat-error>
+				</mat-form-field> -->
+
+				<mat-form-field class="inpt" style="margin-left:92px;">
+					<mat-select formControlName="location" aria-placeholder="Select Location" class="form-control">
+						<mat-option value="">Select Location</mat-option>
+						<mat-option value="atp">Anantapur</mat-option>
+						<mat-option value="gtk">Guntakal</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+
+			<div class="row">
+				<label>Voucher Date: </label>
+
+				<!-- <mat-form-field class="inpt" style="margin-left:25px;">
+					<input type="text" name="lmtdebit" formControlName="lmtdebit" matInput placeholder="Last Month's Total Debit" class="form-control">
+					<mat-error>This field is mandatory</mat-error>
+				</mat-form-field> -->
+				<mat-form-field class="inpt" style="margin-left:100px;">
+					<input  formControlName="voucherdate" matInput [matDatepicker]="picker" class="form-control" placeholder="Date Of Voucher">
+					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+					<mat-datepicker #picker></mat-datepicker>
+					<mat-error>This field is mandatory</mat-error>
+				</mat-form-field>
+
+			</div>
+			<div class="row">
+				<label>Voucher Number:</label>
+
+				<mat-form-field class="inpt" style="margin-left:88px;">
+
+					<input type="text" name="vno" formControlName="vno" matInput placeholder="Voucher Number" class="form-control">
+					<mat-error>This field is mandatory</mat-error>
+				</mat-form-field>
+
+			</div>
+			<div class="row">
+				<label>Voucher Paid To:</label>
+
+				<mat-form-field class="inpt" style="margin-left:88px;">
+
+					<input type="text" name="paidto" formControlName="paidto" matInput placeholder="Paid To" class="form-control">
+					<mat-error>This field is mandatory</mat-error>
+				</mat-form-field>
+
+			</div>
+			<div class="row">
+				<label>Purpose Of Payment:</label>
+
+				<mat-form-field class="inpt" style="margin-left:58px;">
+
+					<input type="text" name="purpose" formControlName="purpose" matInput placeholder="Purpose" class="form-control">
+					<mat-error>This field is mandatory</mat-error>
+				</mat-form-field>
+
+			</div>
+			<div class="row">
+				<label>Net Amount:</label>
+
+				<mat-form-field class="inpt" style="margin-left:117px;">
+
+					<input type="text" name="netamnt" formControlName="netamnt" matInput placeholder="Net Amount" class="form-control">
+					<mat-error>This field is mandatory</mat-error>
+				</mat-form-field>
+
+			</div>
+			<div class="row">
+				<div class="col">
+					<label>Tax Amount:</label>
+
+					<mat-form-field class="inpt" style="margin-left:117px;">
+
+						<input type="text" name="taxamnt" formControlName="taxamnt" matInput placeholder="Tax Amount" class="form-control">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+				</div>
+				<div class="col">
+					<label>Taxes If Any:</label>
+
+					<mat-form-field class="inpt" style="margin-left:117px;">
+
+						<mat-select formControlName="tax" (selectionChange)="onSelectStation($event)"
+							aria-placeholder="Select Tax" class="form-control">
+							<mat-option value="">Select Tax</mat-option>
+							<mat-option value="gst">GST</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+			</div>
+			<div class="row">
+				<label>Total Amount:</label>
+
+				<mat-form-field class="inpt" style="margin-left:117px;">
+
+					<input type="text" name="totalamnt" formControlName="totalamnt" matInput placeholder="Total Amount" class="form-control">
+					<mat-error>This field is mandatory</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="row" id="btnset">
+				<button  type="button" mat-raised-button color="warn" style="margin-right:10px;" >Cancel</button>
+				<button  type="button" mat-raised-button color="primary" >Submit</button>
+			</div>
+		</div>
+	</form>
+
+</div>

@@ -1,0 +1,296 @@
+<div class="container-fluid">
+	<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+		<a class="navbar-brand"></a>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="#">{{loginInfo}}</a>
+				</li>
+				<li></li>
+			</ul>
+			<ul class="navbar-nav">
+				<!-- <li class="nav-item">
+					<a class="nav-link" routerLink="/login">Logout</a>
+				</li> -->
+				<div class="dropdown">
+					<button
+            type="button"
+            class="btn btn-dark dropdown-toggle"
+            data-toggle="dropdown"
+          >
+            {{loginUsername}}
+          </button>
+					<div class="dropdown-menu">
+						<a class="dropdown-item active" (click)="onLogout()">Logout</a>
+						<!-- <a class="dropdown-item" href="#">Link 2</a>
+            <a class="dropdown-item" href="#">Link 3</a> -->
+					</div>
+				</div>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="row">
+		<div class="col-sm-2">
+			<ng-container *ngIf="userType === 1; else elseif1">
+				<!-- <p>AdminMenu</p> -->
+
+				<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+					<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
+						aria-controls="v-pills-home" aria-selected="true" (click)="onloghomeclk('ah')">Home</a>
+					<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+						aria-controls="v-pills-profile" aria-selected="false" (click)="onloghomeclk('ar')">Approvals</a>
+					<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+						aria-controls="v-pills-profile" aria-selected="false" (click)="onloghomeclk('lg')">Logins</a>
+					<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+						aria-controls="v-pills-profile" aria-selected="false" (click)="oncreateclk('')"
+						routerLink="/loginhome/createcommercialrates">Constants</a>
+					<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+						aria-controls="v-pills-profile" aria-selected="false" (click)="oncreateclk('')"
+						routerLink="/loginhome/backups">Backups</a>
+
+					<!-- <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+						aria-controls="v-pills-profile" aria-selected="false" (click)="oncreateclk()"
+						routerLink="/loginhome/createemployee">Create Employee</a>
+					<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+						aria-controls="v-pills-profile" aria-selected="false">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+								aria-haspopup="true" aria-expanded="true"> <span class="nav-label">Bulk View</span>
+								<span class="caret"></span></a>
+							<ul class="dropdown-menu" id="drop">
+								<li> <a [ngClass]="act1SubMenu?'nav-link active':'nav-link'" id="v-pills-sub1-tab"
+										data-toggle="pill" href="#v-pills-sub1" role="tab" aria-controls="v-pills-sub1"
+										aria-selected="false" (click)="oncreateclk('si')"
+										routerLink="/loginhome/individualview/1"> Individual View</a></li>
+								<li> <a [ngClass]="act2SubMenu?'nav-link active':'nav-link'" id="v-pills-sub2-tab"
+										data-toggle="pill" href="#v-pills-sub2" role="tab" aria-controls="v-pills-sub2"
+										aria-selected="false" (click)="oncreateclk('sl')"
+										routerLink="/loginhome/employeelist"> Location based List</a></li>
+							</ul>
+						</li>
+
+					</a> -->
+				</div>
+			</ng-container>
+			<ng-template #elseif1>
+				<ng-container *ngIf="userType === 2; else elseif2">
+					<!-- <p>HRLE menu</p> -->
+					<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+						<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home"
+							role="tab" aria-controls="v-pills-home" aria-selected="true" (click)="onloghomeclk('ehe')"
+							routerLink="/loginhome">Home</a>
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							(click)="onloghomeclk('hrle')">Enroll Employee</a>
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							routerLink="/loginhome/submitattendance">Submit Attendence</a>
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							(click)="onloghomeclk('hrle')">View Employees</a>
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" routerLink="/loginhome/salaryslips"
+							aria-selected="false">Salary Slips</a>
+					</div>
+				</ng-container>
+			</ng-template>
+			<ng-template #elseif2>
+				<ng-container *ngIf="userType === 3; else elseif3">
+					<!-- <p>HRHE menu</p> -->
+					<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+						<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home"
+							role="tab" aria-controls="v-pills-home" aria-selected="true" (click)="onloghomeclk('ehe')"
+							routerLink="/loginhome">Home</a>
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							routerLink="/loginhome/uploadattendance" (click)="onloghomeclk('hruahe')">Upload Attendance
+						</a>
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							(click)="onloghomeclk('hrhe')">Confirm Employment
+						</a>
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							(click)="onloghomeclk('hrvhe')">View Employees</a>
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							(click)="onloghomeclk('hrgshe')">Generate Salary Slips</a>
+					</div>
+				</ng-container>
+			</ng-template>
+			<ng-template #elseif3>
+				<ng-container *ngIf="userType === 4; else elseif4">
+					<!-- <p>FLE menu</p> -->
+					<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+						<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home"
+							role="tab" aria-controls="v-pills-home" aria-selected="true" (click)="onloghomeclk('fh')"
+							routerLink="/loginhome">Home</a>
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							(click)="onloghomeclk('fle')" routerLink="/loginhome/entercreditdetails">Enter Credit
+							Details</a>
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							(click)="onloghomeclk('fle')" routerLink="/loginhome/entervoucher">Enter Voucher Details</a>
+						<!-- <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false" (click)="oncreateclk()"
+							routerLink="/loginhome/editvoucher/1">Edit Voucher Detais</a> -->
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							(click)="onloghomeclk('fle')" routerLink="/loginhome/viewledger">View Ledger</a>
+						<!-- <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+									aria-haspopup="true" aria-expanded="true"> <span class="nav-label">Bulk View</span>
+									<span class="caret"></span></a>
+								<ul class="dropdown-menu" id="drop">
+									<li> <a [ngClass]="act1SubMenu?'nav-link active':'nav-link'" id="v-pills-sub1-tab"
+											data-toggle="pill" href="#v-pills-sub1" role="tab"
+											aria-controls="v-pills-sub1" aria-selected="false"
+											(click)="oncreateclk('si')" routerLink="/loginhome/individualview/1">
+											Individual View</a></li>
+									<li> <a [ngClass]="act2SubMenu?'nav-link active':'nav-link'" id="v-pills-sub2-tab"
+											data-toggle="pill" href="#v-pills-sub2" role="tab"
+											aria-controls="v-pills-sub2" aria-selected="false"
+											(click)="oncreateclk('sl')" routerLink="/loginhome/employeelist"> Location
+											based List</a></li>
+								</ul>
+							</li>
+
+						</a> -->
+					</div>
+				</ng-container>
+			</ng-template>
+			<ng-template #elseif4>
+				<ng-container *ngIf="userType === 5; else elseif5">
+					<!-- <p>FHE menu</p> -->
+					<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+						<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home"
+							role="tab" aria-controls="v-pills-home" aria-selected="true" (click)="onloghomeclk('fh')"
+							routerLink="/loginhome">Home</a>
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							(click)="onloghomeclk('fhe')">Verify Vouchers</a>
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							(click)="onloghomeclk('fihe')">View Ledger</a>
+					</div>
+				</ng-container>
+			</ng-template>
+			<ng-template #elseif5>
+				<ng-container *ngIf="userType === 6; else elseif6">
+					<!-- <p>ELE menu</p> -->
+					<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+						<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home"
+							role="tab" aria-controls="v-pills-home" aria-selected="true"
+							routerLink="/loginhome">Home</a>
+						<!-- <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							(click)="onloghomeclk('eele')">Create Employee</a> -->
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							(click)="onloghomeclk('edle')">Enroll Delivery Associate</a>
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							(click)="onloghomeclk('ele')">View Das
+						</a>
+						<!-- <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							(click)="onloghomeclk('ele')" routerLink="/loginhome/employees">ViewStaff Details
+						</a> -->
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							routerLink="/loginhome/updatedeliverydetails">Update Delivery Details
+						</a>
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							(click)="oncreateclk('edle')">Download Invoice</a>
+
+						<!-- <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							(click)="onloghomeclk('ele')" routerLink="/loginhome/employeesinsufficientdata">Staff With
+							Insufficient Data
+						</a> -->
+					</div>
+				</ng-container>
+			</ng-template>
+			<ng-template #elseif6>
+				<ng-container *ngIf="userType === 7; else else1">
+					<!-- <p>EHE menu</p> -->
+					<p>NO MENU</p>
+					<!-- <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+						<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home"
+							role="tab" aria-controls="v-pills-home" aria-selected="true" (click)="onloghomeclk('ehe')"
+							routerLink="/loginhome">Home</a>
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							(click)="onloghomeclk('evhe')">Verify Staff</a>
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+							role="tab" aria-controls="v-pills-profile" aria-selected="false"
+							(click)="onloghomeclk('eehe')">View Das</a> 
+		</div>-->
+				</ng-container>
+			</ng-template>
+			<ng-template #else1>
+				<p>NO MENU</p>
+			</ng-template>
+		</div>
+		<!--col1-->
+		<div [ngClass]="shownotify ? 'col-sm-8' : 'col-sm-10'">
+			<div class="tab-content" id="v-pills-tabContent">
+				<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+					aria-labelledby="v-pills-home-tab">
+					<router-outlet></router-outlet>
+				</div>
+				<!-- <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
+  <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
+  <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div> -->
+			</div>
+		</div>
+		<!--col2-->
+		<div class="col-sm-2" *ngIf="shownotify">
+			<ul>
+				<li>Notification1</li>
+				<li>Notification2</li>
+			</ul>
+		</div>
+	</div>
+	<!--row-->
+</div>
+<!--container-->
+<!-- <p>
+  <mat-toolbar color="primary">
+
+    <span>Login Name of User</span>
+    <span class="example-spacer"></span>
+
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+      <mat-icon>Logout</mat-icon>
+    </button>
+  </mat-toolbar>
+</p>
+
+<mat-sidenav-container>
+  <mat-sidenav [opened]="shoesidenav">
+    <mat-nav-list>
+
+      <a mat-list-item routerLink="/loginhome"> User Stats </a>
+      <a mat-list-item routerLink="/loginhome"> Info </a>
+      <a mat-list-item routerLink="/loginhome"> Contacts </a>
+
+
+    </mat-nav-list>
+  </mat-sidenav>
+      <mat-sidenav opened position="end">
+         <button type="submit" class="bg-primary" (click)="Onbtnclick()" ><b class="text-light" >>>Side Menu </b></button> 
+      Notifications 
+    </mat-sidenav>
+  <mat-sidenav-content>
+    <div id="content">
+
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container> -->

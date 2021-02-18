@@ -1,0 +1,11 @@
+/* .images {
+  width: 100%;
+  height: 100%;
+} */
+.container-fluid {
+  float: center;
+  margin-left: 290px;
+}
+.images {
+  margin-left: 176px;
+}

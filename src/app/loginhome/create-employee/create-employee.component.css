@@ -1,0 +1,16 @@
+.container-fluid{
+  background-color: floralwhite;
+}
+
+.tab-content{
+  height: 100%;
+  margin-left: -10px;
+}
+
+.fm{
+  margin-left: 20px;
+   background-color: floralwhite;
+}
+#btnset{
+  margin:0 10px 0 300px;
+}

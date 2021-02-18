@@ -1,0 +1,11 @@
+      #spinner
+{
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url(https://github.com/RamTheeru/pds-demo/blob/master/src/app/images/deliver.gif?raw=true) 50% 50% no-repeat #ede9df;
+    background-color:white;
+}

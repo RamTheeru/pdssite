@@ -1,0 +1,12 @@
+.inpt {
+  margin-top: -24px;
+}
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+  background-color: grey;
+  color: black;
+}
+#btns {
+  margin: 95px;
+}

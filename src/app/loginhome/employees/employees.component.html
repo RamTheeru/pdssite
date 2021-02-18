@@ -1,0 +1,337 @@
+<div class="container-fluid">
+	<div class="row">
+		<app-loading [deliver]="load"></app-loading>
+	</div>
+	<!-- <form class="form-inline" *ngIf="isHe">
+    <input class="form-control mr-sm-2" type="text" placeholder="StationCode" />
+    <button
+      class="btn btn-success"
+      (click)="getemployeesbyStation($event)"
+      type="submit"
+    >
+      Search
+    </button>
+  </form> -->
+	<div class="row" *ngIf="isEdle">
+
+		<select     [(ngModel)]="currentmonth" name="month" id="stat">
+							<option value="0" selected>Select Month</option>
+              	<option *ngFor="let s of months" [ngValue]="s.id">
+								{{s.name}}
+							</option>
+    </select>
+		<button class="btn btn-success" (click)="getemployeesbyMonth($event)"  type="submit">Search</button>
+	</div>
+	<form class="form-inline" *ngIf="isHe">
+		<!-- <input class="form-control mr-sm-2"     type="text"  placeholder="StationCode">  -->
+		<!-- <p>dgsd         
+      giutiugikgkgkv dgsfhdfhdfhfdhnfgjfgkgfk  gsbgdfg 
+      vjhjgk.jb,b,kb 
+      fdgsgsdgshfd</p> -->
+
+		<select [(ngModel)]="selectedStation" name="station" id="stat">
+      <option value="" selected>Select Station</option>
+      <option *ngFor="let s of stations" [ngValue]="s.stationId">
+        {{s.stationName}}
+      </option>
+    </select>
+		<button
+      class="btn btn-success"
+      (click)="getemployeesbyStation($event)"
+      type="submit"
+    >
+      Search
+    </button>
+	</form>
+	<h3><u>Contract Delivery Associate List:</u></h3>
+	<br />
+	<div class="row">
+		Total Records in Server : {{totalCount}}
+	</div>
+	<div class="row" *ngIf="isEdle; else rg">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<!-- <th>S.No</th> -->
+					<th>Employee Code</th>
+					<th>Employee Name</th>
+					<div *ngIf="isEdle">
+						<th>Action</th>
+					</div>
+					<th>Delivery Count</th>
+					<th>Standard Rate/Delivery</th>
+					<th>Petrol Allowance</th>
+					<th>Incentive</th>
+					<th>Total Amount</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let emp of employees;">
+					<td [hidden]="isHide"> {{emp.employeeId}}</td>
+					<td>{{emp.empCode}}</td>
+					<td>{{emp.firstName}}</td>
+					<div *ngIf="isEdle">
+						<td>
+							<input
+                #tablist
+                id="{{emp.employeeId}}"
+                (click)="toggleEditable($event)"
+                type="checkbox"
+                value=""
+              />
+            </td>
+					</div>
+					<td>{{emp.delivery.deliveryCount}}</td>
+					<td>{{emp.delivery.deliveryRate}}</td>
+					<td>{{emp.delivery.petrolAllowance}}</td>
+					<td>{{emp.delivery.incentive}}</td>
+					<td>{{emp.delivery.totalAmount}} </td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- <div></div> -->
+	<ng-template #rg>
+		<div class="row">
+
+			<div style="overflow-x:auto;">
+				<table id="t" class="table table-striped">
+					<thead>
+						<tr>
+							<th>FirstName</th>
+							<th>LastName</th>
+							<th>CDA Code</th>
+							<div *ngIf="isHe">
+								<th>Action</th>
+							</div>
+							<div *ngIf="isEdle">
+								<th>Action</th>
+							</div>
+							<th>Gaurdian Name</th>
+							<th>DOB</th>
+							<th>StateCode</th>
+							<th>LocationName</th>
+							<th>DOJ</th>
+							<th>AccountNumber</th>
+							<th>IFSC Code</th>
+							<th>Bank Name</th>
+							<th>Branch Name</th>
+							<th>Aadhar Number</th>
+							<!-- <th>PAN Status</th> -->
+							<th>PAN Number</th>
+							<th>DL/LR Status</th>
+							<th>DL/LLR Number</th>
+							<th>Vehicle Number</th>
+							<th>Address ( D.No )</th>
+							<th>Place</th>
+							<th>Employee Type</th>
+							<th>Mobile</th>
+							<th>Alternate number</th>
+							<th>Marital Status</th>
+							<th>Blood Group</th>
+							<th>Age</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let emp of employees;">
+							<td [hidden]="isHide">{{emp.employeeId}}</td>
+							<td>{{emp.firstName}}</td>
+							<td>{{emp.lastName}}</td>
+							<td>{{emp.empCode}}</td>
+							<div *ngIf="isHe">
+								<td>
+									<input
+                #tablist
+                id="{{emp.employeeId}}"
+                (click)="toggleEditable($event)"
+                type="checkbox"
+                value=""
+              />
+            </td>
+							</div>
+							<div *ngIf="isEdle">
+								<td>
+									<input
+                #tablist
+                id="{{emp.employeeId}}"
+                (click)="toggleEditable($event)"
+                type="checkbox"
+                value=""
+              />
+            </td>
+							</div>
+							<td>{{emp.guard_FullName}}</td>
+							<td>{{emp.dob}}</td>
+							<td>{{emp.stationCode}}</td>
+							<td>{{emp.locationName}}</td>
+
+							<td>{{emp.doj}}</td>
+							<td>{{emp.bankAccountNumber}}</td>
+							<td>{{emp.ifscCode}}</td>
+							<td>{{emp.bankName}}</td>
+							<td>{{emp.branchName}}</td>
+							<td>{{emp.aadharNumber}}</td>
+							<!-- <td>{{emp.PAN==true?'Active':'Inactive'}}</td> -->
+							<td>{{emp.panNumber}}</td>
+							<td>{{emp.dllrStatus}}</td>
+							<td>{{emp.dllrNumber}}</td>
+							<td>{{emp.vehicleNumber}}</td>
+							<td>{{emp.address1}}</td>
+							<td>{{emp.place}}</td>
+							<td>{{emp.employeeType}}</td>
+							<td>{{emp.phone}}</td>
+							<td>{{emp.guard_Phone}}</td>
+							<td>{{emp.maritalStatus==true?'Married':'UnMarried'}}</td>
+							<td>{{emp.bloodGroup}}</td>
+							<td>{{emp.empAge}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+	</ng-template>
+	<div class="container" *ngIf="isEdle">
+		<div class="row">
+			<div class="col">
+				<button
+          (click)="onDownload()"
+          type="button"
+          mat-raised-button
+          color="warn"
+        >
+          Download
+        </button>
+			</div>
+			<div class="col">
+				<button
+          type="button"
+          mat-raised-button
+          color="warn"
+          style="margin-right:10px;"
+        >
+          Cancel
+        </button>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row" *ngIf="isHe">
+			<div class="row" *ngIf="isEvhe; else ehe">
+				<div class="col" id="btns">
+					<button
+            type="button"
+            (click)="onAccept()"
+            mat-raised-button
+            color="primary"
+            style="margin-right:10px;"
+          >
+            Confirm Employee
+          </button>
+				</div>
+				<div class="col" id="btns">
+					<button
+            type="button"
+            mat-raised-button
+            color="warn"
+            (click)="onReject()"
+          >
+            Reject Employee
+          </button>
+				</div>
+				<div class="col" id="btns">
+					<button
+            type="button"
+            mat-raised-button
+            color="warn"
+            style="margin-right:10px;"
+          >
+            Cancel
+          </button>
+				</div>
+			</div>
+		</div>
+		<ng-template #ehe>
+			<div class="row" *ngIf="!ishrvhe; else hrhhe">
+				<div class="col">
+					<button
+            (click)="onDownload()"
+            type="button"
+            mat-raised-button
+            color="warn"
+          >
+            Download
+          </button>
+				</div>
+				<div class="col">
+					<button
+            type="button"
+            mat-raised-button
+            color="warn"
+            style="margin-right:10px;"
+          >
+            Cancel
+          </button>
+				</div>
+			</div>
+		</ng-template>
+		<ng-template #hrhhe>
+			<div class="row">
+				<div class="col">
+					<button type="button" mat-raised-button color="warn">Submit</button>
+				</div>
+				<div class="col">
+					<button
+            type="button"
+            mat-raised-button
+            color="warn"
+            style="margin-right:10px;"
+          >
+            Cancel
+          </button>
+				</div>
+			</div>
+		</ng-template>
+	</div>
+</div>
+<div class="container-fluid" *ngIf="pageCount>1">
+	<div class="row" id="r" *ngIf="isEdle; else reg">
+		<nav style="margin-left:420px;" aria-label="Page navigation example">
+			<ul class="pagination justify-content-center">
+				<!-- <li class="page-item disabled">
+					<a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+				</li> -->
+				<li *ngFor="let p of pages" class="page-item">
+					<a class="page-link" (click)="getdata(p,'d')">{{p}}</a>
+				</li>
+				<!-- <li class="page-item"><a class="page-link" href="#">1</a></li>
+				<li class="page-item"><a class="page-link" href="#">2</a></li>
+				<li class="page-item"><a class="page-link" href="#">3</a></li> -->
+				<!-- <li class="page-item">
+					<a class="page-link" href="#">Next</a>
+				</li> -->
+			</ul>
+		</nav>
+	</div>
+	<ng-template #reg>
+		<div class="row" id="r">
+			<nav style="margin-left:420px;" aria-label="Page navigation example">
+				<ul class="pagination justify-content-center">
+					<!-- <li class="page-item disabled">
+					<a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+				</li> -->
+					<li *ngFor="let p of pages" class="page-item">
+						<a class="page-link" (click)="getdata(p,'')">{{p}}</a>
+					</li>
+					<!-- <li class="page-item"><a class="page-link" href="#">1</a></li>
+				<li class="page-item"><a class="page-link" href="#">2</a></li>
+				<li class="page-item"><a class="page-link" href="#">3</a></li> -->
+					<!-- <li class="page-item">
+					<a class="page-link" href="#">Next</a>
+				</li> -->
+				</ul>
+			</nav>
+		</div>
+	</ng-template>
+</div>

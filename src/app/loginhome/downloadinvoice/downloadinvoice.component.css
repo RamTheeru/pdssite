@@ -1,0 +1,13 @@
+span {
+  color: white;
+  background-color: blue;
+  display: inline-block;
+  width: 200px;
+  height: 150px;
+  margin: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+p {
+  padding-top: 55px;
+}

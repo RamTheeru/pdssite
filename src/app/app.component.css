@@ -1,0 +1,78 @@
+p {
+  font-family: Lato;
+}
+#myTab{
+
+  padding-right: 1px;
+}
+.nav.nav-tabs {
+    float: left;
+    display: block;
+    margin-right: 15px;
+    border-bottom:0;
+    border-right: 1px solid lightgray;
+    padding-right: 1px;
+    background-color: lightgray;
+    padding-bottom: 336px;
+    margin-left:6px;
+}
+.nav-tabs .nav-link {
+    border: 1px solid transparent;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    background: #ccc;
+}
+
+.nav-tabs .nav-link.active {
+
+    background-color:white !important;
+    border-color: transparent !important;
+    padding-right: 45px;
+    color:green;
+  
+}
+.nav-tabs .nav-link {
+    border: 1px solid transparent;
+    border-top-left-radius: 0rem!important;
+    border-top-right-radius: 0rem!important;
+}
+.tab-content>.active {
+    display: block;
+    background:white;
+    min-height: 165px;
+     margin-left: -98px;
+    
+}
+.nav.nav-tabs {
+    float: left;
+    display: block;
+    margin-right: 20px;
+    border-bottom: 0;
+    border-right: 1px solid transparent;
+    padding-right: 15px;
+    background-color: lightgray;
+   
+}
+.totaltab{
+  margin-top:-6px;
+}
+
+
+
+.vl {
+  border-left: 6px solid lightgray;
+  height: 100%;
+  background-color: white;
+  margin-left: -30px;
+  position: relative;
+}
+
+#jumb{
+  padding-top: 3%;
+      padding-bottom: 3%;
+}
+.lghm{
+  margin-left: -14px;
+  margin-right: -352px;
+  margin-top: -15px;
+}

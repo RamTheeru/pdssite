@@ -1,0 +1,65 @@
+<div class="container-fluid">
+	<h1 class="text-primary"><u><b >Attendence:</b></u></h1>
+	<div class="row" *ngIf="isLe">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-4">
+					<h3 class="text-primary"><u><b>Download available file:</b></u></h3>
+				</div>
+				<div class="col-sm-2">
+
+					<p>{{filename}}</p>
+				</div>
+				<div class="col-sm-2">
+
+					<input type="button" class="btn btn-primary" value="Download"/>
+        </div>
+					<div class="col"></div>
+				</div>
+				<div class="row">
+					<hr class="hline">
+				</div>
+				<div class="row">
+					<file-input></file-input>
+				</div>
+			</div>
+		</div>
+		<div class="row" *ngIf="isHe">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-8">
+						<h3 class="text-primary"><u><b>Select a file to Upload:</b></u></h3>
+					</div>
+					<div class="col-sm-4">
+						<file-input></file-input>
+
+					</div>
+					<!-- <div class="col-sm-2">
+
+						<input type="button" class="btn btn-primary" value="Upload"/>
+        </div> -->
+					<!-- <div class="col"></div> -->
+				</div>
+				<div class="row">
+					<hr class="hline">
+				</div>
+				<div class="row">
+					<!-- <p>{{filename}}</p> -->
+					<div class="col-sm-8">
+						<h3 class="text-primary"><u><b>Download Previous Month's Attendence:</b></u></h3>
+					</div>
+					<div class="col-sm-8">
+						<label>Select Previous Month:</label>
+						<mat-form-field class="inpt">
+							<mat-select formControlName="gender" aria-placeholder="Select Previous Month">
+								<!-- <mat-option value="">Select Month</mat-option> -->
+								<mat-option value="feb">Febrauary</mat-option>
+								<mat-option value="mar">March</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<div class="col-sm-2"> <input type="button" class="btn btn-primary" value="Download"/></div>
+					</div>
+				</div>
+			</div>
+		</div>

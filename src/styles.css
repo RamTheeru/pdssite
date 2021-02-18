@@ -1,0 +1,36 @@
+/* Add application styles & imports to this file! */
+@import '../node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css';
+
+div.container{
+  margin : 0px 40px;
+}
+.norm{
+  margin:10px;
+}
+.fill-remaining-space{
+  flex:1 1 auto;
+}
+.contrl-cont{
+  padding:5%;
+  width: 100%;
+}
+.contrl-cont>*{
+  width: 100%;
+}
+.add-bottom-padding{
+  padding-bottom: 10px;
+}
+mat-radio-group mat-radio-button{
+  margin-left: 5px;
+}
+.button-row button{
+  margin: 5px;
+}
+snack-bar-container.success{
+background-color: green;
+color:white;
+}
+snack-bar-container.notification{
+  font-weight: bold;
+  font-size: 18px !important;
+}

@@ -96,6 +96,6 @@ import { AuthGuard } from "./auth-guard.service";
   providers: [{
     provide: MATERIAL_SANITY_CHECKS,
     useValue: false
- },{provide: APP_BASE_HREF, useValue: '/my/app'},ViewService, PdsApiService, SweetService, AuthService, AuthGuard]
+ },{provide: APP_BASE_HREF, useValue: ''},ViewService, PdsApiService, SweetService, AuthService, AuthGuard]
 })
 export class AppModule {}

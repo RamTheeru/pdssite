@@ -26,6 +26,7 @@ import { BackupComponent } from "./loginhome/backup/backup.component";
 import { AuthGuard } from "./auth-guard.service";
 const appRoutes: Routes = [
   { path: "", redirectTo: "/home", pathMatch: "full" },
+  { path: "ClientApp", redirectTo: "/home", pathMatch: "full" },
   { path: "home", component: HomeComponent },
   { path: "login", component: PdsMainComponent },
   { path: "vision", component: AboutusComponent },

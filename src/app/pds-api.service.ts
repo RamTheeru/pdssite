@@ -38,6 +38,7 @@ export const CurrentUrls = {
   updateCDADeliverylist: "CDAUpdateDeiveryDetails",
   PDFFileDownload: "DownloadCDADeiveryDetails",
   backuplist: "Backups",
+  updatesession: "SessionUpdate",
   restore: "RestoreDb",
   logout: "DeleteSession"
 };
@@ -136,6 +137,28 @@ export class PdsApiService {
         })
       );
   }
+    //Employee login update session
+    updateSession(userTypeId: Number, employeeId: Number) {
+      let input: string =
+        "?usertypeId=" + userTypeId + "&employeeId=" + employeeId;
+      console.log(
+        this.baseurl + this.employeesUrl + CurrentUrls.updatesession + input
+      );
+      return this.http
+        .get(
+          this.baseurl + this.employeesUrl + CurrentUrls.updatesession + input,
+          this.httpOptions
+        )
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            let obj: never;
+          obj= this.handlehttpError(error) as never;
+            return new Observable(function(x) {
+              x.next(obj);
+            });
+          })
+        );
+    }
   //get list of Delivery Associates
   getdeliveryassociates(input: any, tkn: string): R.Observable<any> {
     var body = JSON.stringify(input);

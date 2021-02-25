@@ -10,13 +10,13 @@ import { Router } from "@angular/router";
 import * as _moment from "moment";
 //import { default as _rollupMoment } from "moment";
 //const moment = _rollupMoment || _moment;
-//import { MY_FORMATS } from "../models/dateformats";
-//import { MomentDateAdapter } from "@angular/material-moment-adapter";
-// import {
-//   DateAdapter,
-//   MAT_DATE_FORMATS,
-//   MAT_DATE_LOCALE
-// } from "@angular/material/core";
+import { MY_FORMATS } from "../models/dateformats";
+import { MomentDateAdapter } from "@angular/material-moment-adapter";
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE
+} from "@angular/material/core";
 import { PdsApiService } from "../pds-api.service";
 import { SweetService } from "../sweet.service";
 import { UserType } from "../models/usertype";
@@ -121,6 +121,7 @@ export class RegisterComponent implements OnInit {
       firstName: new FormControl(),
       lastName: new FormControl(),
       middleName: new FormControl(),
+      email: new FormControl(),
       birthdate: new FormControl(),
       joindate: new FormControl(),
       //  day: new FormControl(),
@@ -206,6 +207,7 @@ export class RegisterComponent implements OnInit {
     emp.FirstName = this.empForm.value["firstName"];
     emp.LastName = this.empForm.value["lastName"];
     emp.MiddleName = this.empForm.value["middleName"];
+    emp.Email = this.empForm.value["email"];
     emp.Phone = this.empForm.value["phone"];
     emp.DOB = db;
     emp.DOJ = dj;
@@ -392,6 +394,9 @@ export class RegisterComponent implements OnInit {
     ) {
       this.fvalid = false;
       this.showrequiredMessage("Employee Gender", "", errorTitle);
+    } else if (emp.Email == "" || emp.Email == null || emp.Email == undefined) {
+      this.fvalid = false;
+      this.showrequiredMessage("Employee Email Address", "", errorTitle);
     } else if (
       emp.FirstName == "" ||
       emp.FirstName == null ||
@@ -455,6 +460,9 @@ export class RegisterComponent implements OnInit {
     if (field == "fname") {
       var f = "First Name";
       this.showrequiredMessage(f, txt, errorTitle);
+    } else if (field == "email") {
+      var f = "Employee Email Address";
+      this.showrequiredMessage(f, txt, errorTitle);
     } else if (field == "phone") {
       var f = "Employee Contact Number";
       this.showrequiredMessage(f, txt, errorTitle);
@@ -505,6 +513,15 @@ export class RegisterComponent implements OnInit {
       } else {
         this.fvalid = true;
       }
+    } else if (field == "Employee Email Address") {
+      var msg = field + " " + " is not in proper Email Address format!!";
+      test = this.ValidateEmail(txt);
+      if (!test) {
+        this.fvalid = false;
+        this._swServ.showErrorMessage(title, msg);
+      } else {
+        this.fvalid = true;
+      }
     } else if (
       field == "Employee Type Status" ||
       field == "Employee Marital Status"
@@ -533,6 +550,23 @@ export class RegisterComponent implements OnInit {
     } else {
       this.fvalid = true;
     }
+  }
+  ValidateEmail(inputText): boolean {
+    var val = false;
+    var reg = new RegExp(
+      "/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/"
+    );
+    val = reg.test(inputText);
+    return val;
+    // if (inputText.value.match(mailformat)) {
+    //   alert("Valid email address!");
+    //   document.form1.text1.focus();
+    //   return true;
+    // } else {
+    //   alert("You have entered an invalid email address!");
+    //   document.form1.text1.focus();
+    //   return false;
+    // }
   }
 
   ValidateNumbers(txt: string): boolean {

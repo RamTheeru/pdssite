@@ -43,6 +43,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   userInfo: UserType;
   pageCount: number = 1;
   pages = [];
+  activePage: number = 1;
   btnallow: boolean = false;
   totalCount: number = 0;
   list: DeliveryDetails[] = [];
@@ -250,6 +251,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     console.log(val);
     this.apiInput = new ApiInput();
     this.apiInput.page = val;
+    this.activePage = val;
     this.apiInput.stationId = Number(this.stationId);
     this.apiInput.currentmonth = this.currentmonth;
     this.getemployees(this.apiInput);
@@ -444,6 +446,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         if (status) {
           this.swServ.showSuccessMessage("Success!!!", message);
           this.ngOnInit();
+          this.apiInput = new ApiInput();
+          this.apiInput.page = this.activePage;
+          this.apiInput.stationId = Number(this.stationId);
+          this.apiInput.currentmonth = this.currentmonth;
+          this.getemployees(this.apiInput);
         } else {
           this.swServ.showErrorMessage("Failure!!!", message);
         }

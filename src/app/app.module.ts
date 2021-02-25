@@ -15,6 +15,7 @@ import { CommonModule } from "@angular/common";
 
 import { PdsMainComponent } from "./pds-main/pds-main.component";
 import { HomeComponent } from "./home/home.component";
+import { ResetpasswordComponent } from "./resetpassword/resetpassword.component";
 import { LoadingComponent } from "./loading/loading.component";
 import { AboutusComponent } from "./aboutus/aboutus.component";
 import { LogintabComponent } from "./logintab/logintab.component";
@@ -63,6 +64,7 @@ import { AuthGuard } from "./auth-guard.service";
     AppComponent,
     PdsMainComponent,
     HomeComponent,
+    ResetpasswordComponent,
     LoadingComponent,
     AboutusComponent,
     LogintabComponent,

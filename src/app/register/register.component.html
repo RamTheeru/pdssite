@@ -33,7 +33,10 @@
 						<input type="text" name="lastName" formControlName="lastName" matInput placeholder="Last Name" class="form-control">
 						<mat-error>This field is mandatory</mat-error>
 					</mat-form-field>
-
+					<mat-form-field>
+						<input type="text" name="email" formControlName="email" (focusout)="focusOutFunction('email',$event)" matInput placeholder="Email Address*" class="form-control">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
 					<mat-form-field>
 						<mat-select formControlName="gender" aria-placeholder="Gender">
 							<mat-option value="">Select Gender</mat-option>

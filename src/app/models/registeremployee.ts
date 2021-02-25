@@ -3,6 +3,7 @@ export class RegisterEmployee {
   EmployeeId: number;
   EmpId: string;
   PId: number;
+  Email: string;
   ProfessionName: string;
   EmpCode: string;
   UserTypeId: number;

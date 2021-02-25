@@ -25,6 +25,7 @@ export class ResetpasswordComponent implements OnInit {
       this.regId = Number(params.get("rid"));
       if (
         this.regId > 0 &&
+        this.regId !== 1 &&
         this.regId !== null &&
         this.regId !== undefined &&
         this.regId !== NaN
@@ -40,6 +41,13 @@ export class ResetpasswordComponent implements OnInit {
     });
   }
   onCon() {
+    if (
+      this.regId > 0 &&
+      this.regId !== 1 &&
+      this.regId !== null &&
+      this.regId !== undefined &&
+      this.regId !== NaN
+    ) {
     if (
       this.password !== "" &&
       this.password !== null &&
@@ -75,5 +83,12 @@ export class ResetpasswordComponent implements OnInit {
         "Please give proper input."
       );
     }
+  }
+  else {
+    this.sweet.showErrorMessage(
+      "Invalid data to process further!!",
+      "Please check the link and  refresh the page."
+    );
+  }
   }
 }

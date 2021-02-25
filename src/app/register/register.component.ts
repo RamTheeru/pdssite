@@ -554,7 +554,7 @@ export class RegisterComponent implements OnInit {
   ValidateEmail(inputText): boolean {
     var val = false;
     var reg = new RegExp(
-      "/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/"
+      "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
     );
     val = reg.test(inputText);
     return val;

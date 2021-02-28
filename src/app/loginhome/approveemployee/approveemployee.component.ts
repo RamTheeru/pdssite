@@ -132,6 +132,7 @@ export class ApproveemployeeComponent implements OnInit, OnDestroy {
           let m: string = data.message;
           if (status) {
             this.fValid = true;
+            this._swServ.showSuccessMessage("Success!!", m);
           }
           else{
             this.fValid = false;
@@ -157,8 +158,10 @@ export class ApproveemployeeComponent implements OnInit, OnDestroy {
       this.usrToken == "" ||
       this.stationId == 0
     ) {
+      this.fValid = false;
       this._swServ.showErrorMessage("Error!!", "Invalid Input!!!");
     } else if (this.tkn == null || this.tkn == undefined || this.tkn == "") {
+      this.fValid = false;
       this.handleUnauthorizedrequest();
     } else {
       if (this.empCode != null && this.empCode && undefined && this.empCode == "") {

@@ -165,80 +165,61 @@ export class ApproveemployeeComponent implements OnInit, OnDestroy {
       this.handleUnauthorizedrequest();
     } else {
       if (this.empCode != null && this.empCode && undefined && this.empCode == "") {
-        this.api.checkEmpCode(this.empCode).subscribe(
-          (data: APIResult) => {
-            //
-            //     console.log(data)     ;
-            let status: Boolean = data.status;
-            let m: string = data.message;
-            if (status) {
-              let pid = Number(p);
-              this.api
-                .approveUser(this.registerId, "a", pid, this.empCode, this.tkn)
-                .subscribe(
-                  (data: APIResult) => {
-                    //
-                    //     console.log(data)     ;
-                    let status: Boolean = data.status;
-                    let m: string = data.message;
-                    if (status) {
-                      this._swServ.showSuccessMessage("Success!!", m);
-                      //   this.professions = data.professions;
-                      // this.apiInput = new ApiInput();
-                      // this.apiInput.stationId = Number(this.stationId);
-                      // this.api
-                      //   .getRegisteredEmployees(this.apiInput, this.usrToken)
-                      //   .subscribe((data: APIResult) => {
-                      //     // console.log(data)     ;
-                      //     let status = data.status;
-                      //     let message = data.message;
-                      //     if (status) {
-                      //       this.employees = data.registerEmployees;
-                      //     } else {
-                      //       this._swServ.showErrorMessage("Failure!!!", message);
-                      //     }
-                      //   });
-                    } else {
-                      this._swServ.showErrorMessage("Error!!", m);
-                    }
-                    this.dialogRef.close({ status: status, message: m });
-                    // let dialogRef = this.matDialog.open(ApproveemployeeComponent);
-                    //dialogRef.close();
-                  },
-                  err => {
-                    //console.log(err.message);
-                    this._swServ.showErrorMessage("Network Error!!!", err.message);
-                  }
-                );
-              this.initForm();
-            //  this._swServ.showSuccessMessage("Success!!", m);
-              //   this.professions = data.professions;
-              // this.apiInput = new ApiInput();
-              // this.apiInput.stationId = Number(this.stationId);
-              // this.api
-              //   .getRegisteredEmployees(this.apiInput, this.usrToken)
-              //   .subscribe((data: APIResult) => {
-              //     // console.log(data)     ;
-              //     let status = data.status;
-              //     let message = data.message;
-              //     if (status) {
-              //       this.employees = data.registerEmployees;
-              //     } else {
-              //       this._swServ.showErrorMessage("Failure!!!", message);
-              //     }
-              //   });
-            } else {
-              this._swServ.showErrorMessage("Invalid Input!!", m);
+        let pid = Number(p);
+        this.api
+          .approveUser(this.registerId, "a", pid, this.empCode, this.tkn)
+          .subscribe(
+            (data: APIResult) => {
+              //
+              //     console.log(data)     ;
+              let status: Boolean = data.status;
+              let m: string = data.message;
+              if (status) {
+                this._swServ.showSuccessMessage("Success!!", m);
+                //   this.professions = data.professions;
+                // this.apiInput = new ApiInput();
+                // this.apiInput.stationId = Number(this.stationId);
+                // this.api
+                //   .getRegisteredEmployees(this.apiInput, this.usrToken)
+                //   .subscribe((data: APIResult) => {
+                //     // console.log(data)     ;
+                //     let status = data.status;
+                //     let message = data.message;
+                //     if (status) {
+                //       this.employees = data.registerEmployees;
+                //     } else {
+                //       this._swServ.showErrorMessage("Failure!!!", message);
+                //     }
+                //   });
+              } else {
+                this._swServ.showErrorMessage("Error!!", m);
+              }
+              this.dialogRef.close({ status: status, message: m });
+              // let dialogRef = this.matDialog.open(ApproveemployeeComponent);
+              //dialogRef.close();
+            },
+            err => {
+              //console.log(err.message);
+              this._swServ.showErrorMessage("Network Error!!!", err.message);
             }
-            this.dialogRef.close({ status: status, message: m });
-            // let dialogRef = this.matDialog.open(ApproveemployeeComponent);
-            //dialogRef.close();
-          },
-          err => {
-            //console.log(err.message);
-            this._swServ.showErrorMessage("Network Error!!!", err.message);
-          }
-        );
+          );
+        this.initForm();
+      //  this._swServ.showSuccessMessage("Success!!", m);
+        //   this.professions = data.professions;
+        // this.apiInput = new ApiInput();
+        // this.apiInput.stationId = Number(this.stationId);
+        // this.api
+        //   .getRegisteredEmployees(this.apiInput, this.usrToken)
+        //   .subscribe((data: APIResult) => {
+        //     // console.log(data)     ;
+        //     let status = data.status;
+        //     let message = data.message;
+        //     if (status) {
+        //       this.employees = data.registerEmployees;
+        //     } else {
+        //       this._swServ.showErrorMessage("Failure!!!", message);
+        //     }
+        //   });
       }
     
     }

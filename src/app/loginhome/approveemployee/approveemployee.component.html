@@ -25,7 +25,7 @@
     </select>
 			</div>
 			<div class="col">
-				<input type="text" name="empc" [(ngModel)]="empCode"    placeholder="Employee Code*" class="form-control">
+				<input type="text" name="empc" [(ngModel)]="empCode" (focusout)="focusOutFunction('empCode',$event)"    placeholder="Employee Code*" class="form-control">
 			</div>
 
 
@@ -33,7 +33,7 @@
 			<div class="row">
 				<mat-dialog-actions align="end">
 					<button type="submit" mat-dialog-close (click)="onCancel()" mat-raised-button color="warn">Cancel</button>
-					<button type="submit" mat-dialog-close (click)="onSubmit()" mat-raised-button color="primary">Submit</button>
+					<button type="submit" [disabled]="!fValid" mat-dialog-close (click)="onSubmit()" mat-raised-button color="primary">Submit</button>
 				</mat-dialog-actions>
 			</div>
 	</form>

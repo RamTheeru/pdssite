@@ -63,11 +63,6 @@
 						<mat-checkbox (change)="checkValue($event,'m')" name="{{c}}" value="{{c}}"
 							[formControlName]="c">{{c}}</mat-checkbox>
 					</div>
-					<mat-form-field>
-						<mat-label>Contact:+91-</mat-label>
-						<input type="text" name="phone" matInput (focusout)="focusOutFunction('phone',$event)" formControlName="phone" placeholder="Phone*" class="form-control">
-						<mat-error>This field is mandatory</mat-error>
-					</mat-form-field>
 					<legend>Parent/Guadian Information</legend>
 					<mat-form-field>
 						<input type="text" name="pFistName" (focusout)="focusOutFunction('g',$event)" formControlName="gfirstName" matInput placeholder="First Name" class="form-control">
@@ -90,6 +85,7 @@
 
 			<mat-grid-tile>
 				<div class="contrl-cont">
+				
 					<legend>Address Details</legend>
 					<mat-form-field>
 						<input type="text" name="addressLine1" formControlName="ad1" (focusout)="focusOutFunction('ad1',$event)" matInput placeholder="Address Line 1" class="form-control">
@@ -97,6 +93,11 @@
 					</mat-form-field>
 					<mat-form-field>
 						<input type="text" name="addressLine2" formControlName="ad2" (focusout)="focusOutFunction('ad1',$event)" matInput placeholder="Address Line 2" class="form-control">
+						<mat-error>This field is mandatory</mat-error>
+					</mat-form-field>
+					<mat-form-field>
+						<mat-label>Contact:+91-</mat-label>
+						<input type="text" name="phone" matInput (focusout)="focusOutFunction('phone',$event)" formControlName="phone" placeholder="Phone*" class="form-control">
 						<mat-error>This field is mandatory</mat-error>
 					</mat-form-field>
 					<mat-form-field>

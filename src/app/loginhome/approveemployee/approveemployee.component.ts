@@ -24,6 +24,7 @@ import { Subscription } from "rxjs";
 export class ApproveemployeeComponent implements OnInit, OnDestroy {
   registerId: number = 0;
   stationId: number = 0;
+  fValid : boolean=false;
   employees: RegisterEmployee[] = [];
   apiInput: ApiInput;
   aprvForm: FormGroup;
@@ -115,6 +116,32 @@ export class ApproveemployeeComponent implements OnInit, OnDestroy {
       "Unable to process request with invalid token, Please login again!!!"
     );
   }
+  focusOutFunction(field, event: any): void {
+    const errorTitle: string = "INVALID INPUT!!!";
+    var txt = event.target.value;
+    if(txt == "" || txt == null || txt == undefined){
+      this.fValid = false;
+      this._swServ.showErrorMessage("Invalid Input!!", 'Employee Code is required!!!');
+    }
+    else{
+      this.api.checkEmpCode(this.empCode).subscribe(
+        (data: APIResult) => {
+          //
+          //     console.log(data)     ;
+          let status: Boolean = data.status;
+          let m: string = data.message;
+          if (status) {
+
+          }
+          else{
+            this.fValid = false;
+            this._swServ.showErrorMessage("Invalid Input!!", m);
+          }
+        }
+      );
+
+    }
+  }
   onSubmit() {
     // var p = this.aprvForm.value["prof"];
     // let empCode = this.aprvForm.value["empc"];
@@ -134,17 +161,54 @@ export class ApproveemployeeComponent implements OnInit, OnDestroy {
     } else if (this.tkn == null || this.tkn == undefined || this.tkn == "") {
       this.handleUnauthorizedrequest();
     } else {
-      let pid = Number(p);
-      this.api
-        .approveUser(this.registerId, "a", pid, this.empCode, this.tkn)
-        .subscribe(
+      if (this.empCode != null && this.empCode && undefined && this.empCode == "") {
+        this.api.checkEmpCode(this.empCode).subscribe(
           (data: APIResult) => {
             //
             //     console.log(data)     ;
             let status: Boolean = data.status;
             let m: string = data.message;
             if (status) {
-              this._swServ.showSuccessMessage("Success!!", m);
+              let pid = Number(p);
+              this.api
+                .approveUser(this.registerId, "a", pid, this.empCode, this.tkn)
+                .subscribe(
+                  (data: APIResult) => {
+                    //
+                    //     console.log(data)     ;
+                    let status: Boolean = data.status;
+                    let m: string = data.message;
+                    if (status) {
+                      this._swServ.showSuccessMessage("Success!!", m);
+                      //   this.professions = data.professions;
+                      // this.apiInput = new ApiInput();
+                      // this.apiInput.stationId = Number(this.stationId);
+                      // this.api
+                      //   .getRegisteredEmployees(this.apiInput, this.usrToken)
+                      //   .subscribe((data: APIResult) => {
+                      //     // console.log(data)     ;
+                      //     let status = data.status;
+                      //     let message = data.message;
+                      //     if (status) {
+                      //       this.employees = data.registerEmployees;
+                      //     } else {
+                      //       this._swServ.showErrorMessage("Failure!!!", message);
+                      //     }
+                      //   });
+                    } else {
+                      this._swServ.showErrorMessage("Error!!", m);
+                    }
+                    this.dialogRef.close({ status: status, message: m });
+                    // let dialogRef = this.matDialog.open(ApproveemployeeComponent);
+                    //dialogRef.close();
+                  },
+                  err => {
+                    //console.log(err.message);
+                    this._swServ.showErrorMessage("Network Error!!!", err.message);
+                  }
+                );
+              this.initForm();
+            //  this._swServ.showSuccessMessage("Success!!", m);
               //   this.professions = data.professions;
               // this.apiInput = new ApiInput();
               // this.apiInput.stationId = Number(this.stationId);
@@ -161,7 +225,7 @@ export class ApproveemployeeComponent implements OnInit, OnDestroy {
               //     }
               //   });
             } else {
-              this._swServ.showErrorMessage("Error!!", m);
+              this._swServ.showErrorMessage("Invalid Input!!", m);
             }
             this.dialogRef.close({ status: status, message: m });
             // let dialogRef = this.matDialog.open(ApproveemployeeComponent);
@@ -172,7 +236,8 @@ export class ApproveemployeeComponent implements OnInit, OnDestroy {
             this._swServ.showErrorMessage("Network Error!!!", err.message);
           }
         );
-      this.initForm();
+      }
+    
     }
   }
 }

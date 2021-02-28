@@ -263,6 +263,7 @@ export class EmployeelistComponent implements OnInit, OnDestroy {
                     this.swServ.showErrorMessage("Error!!", m);
                   }
                   this.isreguser = true;
+                 // this.employees.length=0;
                   this.apiInput = new ApiInput();
                   this.apiInput.stationId = Number(this.selectedStation);
                   this.registeredUsers(this.apiInput);
@@ -322,6 +323,8 @@ export class EmployeelistComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(ApproveemployeeComponent, config2);
     dialogRef.afterClosed().subscribe(result => {
       console.log("dialog result....");
+     // this.employees.length=0;
+     
       // this.ngOnInit();
       //  this.selectedStation="";
       //  this.employees.length =0;

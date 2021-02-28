@@ -28,6 +28,8 @@ export const CurrentUrls = {
   registeremployees: "RegisteredUsers",
   createemployee: "CreateEmployee",
   createDAemployee: "CreateDAEmployee",
+  checkempCode:"CheckEmpCode",
+  checkcdaCode :"CheckCDACode",
   login: "Login",
   employeelogins: "Logins",
   checkUsername: "CheckUserName",
@@ -435,6 +437,46 @@ export class PdsApiService {
     return this.http
       .get(
         this.baseurl + this.employeesUrl + CurrentUrls.checkUsername + input,
+        this.httpOptions
+      )
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          let obj : never = this.handlehttpError(error) as never;
+          return new Observable(function(x) {
+            x.next(obj);
+          });
+        })
+      );
+  }
+  //check Employee Code for approve employee
+  checkEmpCode(empCode: string): R.Observable<any> {
+    let input = "?empCode=" + empCode;
+    console.log(
+      this.baseurl + this.employeesUrl + CurrentUrls.checkempCode + input
+    );
+    return this.http
+      .get(
+        this.baseurl + this.employeesUrl + CurrentUrls.checkempCode + input,
+        this.httpOptions
+      )
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          let obj : never = this.handlehttpError(error) as never;
+          return new Observable(function(x) {
+            x.next(obj);
+          });
+        })
+      );
+  }
+  //check CDA Code for cda enroll
+  checkCDACode(cdaCode: string): R.Observable<any> {
+    let input = "?cdaCode=" + cdaCode;
+    console.log(
+      this.baseurl + this.employeesUrl + CurrentUrls.checkcdaCode + input
+    );
+    return this.http
+      .get(
+        this.baseurl + this.employeesUrl + CurrentUrls.checkcdaCode + input,
         this.httpOptions
       )
       .pipe(

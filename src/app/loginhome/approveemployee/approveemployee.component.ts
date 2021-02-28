@@ -131,7 +131,7 @@ export class ApproveemployeeComponent implements OnInit, OnDestroy {
           let status: Boolean = data.status;
           let m: string = data.message;
           if (status) {
-
+            this.fValid = true;
           }
           else{
             this.fValid = false;

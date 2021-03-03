@@ -90,7 +90,7 @@ export class CommercialconstantComponent implements OnInit, OnDestroy {
           cc = data.commercialConstant;
           // console.log(data);
           this.ccForm = this._fb.group({
-            station: new FormControl({ value: statId, disabled: false }),
+            station: new FormControl({ value: sta, disabled: false }),
             delv: new FormControl({ value: cc.deliveryRate, disabled: false }),
             petr: new FormControl({ value: cc.petrolAllowance, disabled: false }),
             inc: new FormControl({ value: "0", disabled: true })
@@ -107,6 +107,8 @@ export class CommercialconstantComponent implements OnInit, OnDestroy {
       this._swServ.showErrorMessage("Something went wrong!!", 
       "Unable to get previous values for this station.But you can update now.");
      }
+   }else{
+     this.initForm();
    }
 
   }

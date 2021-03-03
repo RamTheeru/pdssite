@@ -4,7 +4,7 @@
 
 		<div class="row">
 			<mat-form-field>
-				<mat-select formControlName="station" aria-placeholder="Station">
+				<mat-select (selectionChange)="getdetails($event)" formControlName="station" aria-placeholder="Station">
 					<mat-option value="">Select Station</mat-option>
 					<mat-option *ngFor="let s of stations" [value]="s">
 						{{s.stationName}}

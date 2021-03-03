@@ -68,11 +68,47 @@ export class CommercialconstantComponent implements OnInit, OnDestroy {
       station: new FormControl(""),
       delv: new FormControl(""),
       petr: new FormControl(""),
-      inc: new FormControl("")
+      inc: new FormControl({ value: "0", disabled: true })
     });
   }
   ngOnDestroy() {
     this.subsc.unsubscribe();
+  }
+  getdetails(evt){
+   console.log(evt.value);
+   let sta = evt.value;
+   if(sta != ""){
+     let statId = sta.stationId;
+     if(statId > 0)
+     {
+      this.api
+      .getCDADeliverybyStation(statId, this.tkn)
+      .subscribe((data: APIResult) => {
+        let status = data.status;
+        let message = data.message;
+        if (status) {
+          cc = data.commercialConstant;
+          // console.log(data);
+          this.ccForm = this._fb.group({
+            station: new FormControl({ value: statId, disabled: false }),
+            delv: new FormControl({ value: cc.deliveryRate, disabled: false }),
+            petr: new FormControl({ value: cc.petrolAllowance, disabled: false }),
+            inc: new FormControl({ value: "0", disabled: true })
+          });
+          //this.standardRate = cc.deliveryRate;
+         // this.petrolallowance = cc.petrolAllowance;
+        } else {
+          this._swServ.showErrorMessage("Failure!!!", message);
+        }
+      });
+
+     }
+     else{
+      this._swServ.showErrorMessage("Something went wrong!!", 
+      "Unable to get previous values for this station.But you can update now.");
+     }
+   }
+
   }
   onSubmit() {
     let st = this.ccForm.value["station"];

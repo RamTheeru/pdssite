@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, OnDestroy } from "@angular/core";
+import { Component, Inject,EventEmitter, OnInit, OnDestroy } from "@angular/core";
 import { MatDialog, MatDialogRef, MatDialogConfig } from "@angular/material";
 import {
   FormGroup,
@@ -33,6 +33,7 @@ export class ApproveemployeeComponent implements OnInit, OnDestroy {
   empCode: string;
   profid: number = 0;
   tkn: string = "";
+  onget = new EventEmitter();
   private subsc: Subscription;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
@@ -87,7 +88,9 @@ export class ApproveemployeeComponent implements OnInit, OnDestroy {
   }
   onClose() {
     this.initForm();
-    this.dialogRef.close();
+    //this.dialogRef.close();
+    this.dialogRef.close({data:{ status: false, message: 'Cancelled!!!'} });
+    this.onget.emit({ status: false, message:  'Cancelled!!!' });
   }
   initForm() {
     // this.aprvForm = this._fb.group({
@@ -164,8 +167,9 @@ export class ApproveemployeeComponent implements OnInit, OnDestroy {
       this.fValid = false;
       this.handleUnauthorizedrequest();
     } else {
-      if (this.empCode != null && this.empCode && undefined && this.empCode == "") {
+     // if (this.empCode != null && this.empCode != undefined && this.empCode != "") {
         let pid = Number(p);
+        let result = new APIResult();
         this.api
           .approveUser(this.registerId, "a", pid, this.empCode, this.tkn)
           .subscribe(
@@ -174,8 +178,8 @@ export class ApproveemployeeComponent implements OnInit, OnDestroy {
               //     console.log(data)     ;
               let status: Boolean = data.status;
               let m: string = data.message;
-              if (status) {
-                this._swServ.showSuccessMessage("Success!!", m);
+           //   if (status) {
+             //   this._swServ.showSuccessMessage("Success!!", m);
                 //   this.professions = data.professions;
                 // this.apiInput = new ApiInput();
                 // this.apiInput.stationId = Number(this.stationId);
@@ -191,16 +195,24 @@ export class ApproveemployeeComponent implements OnInit, OnDestroy {
                 //       this._swServ.showErrorMessage("Failure!!!", message);
                 //     }
                 //   });
-              } else {
-                this._swServ.showErrorMessage("Error!!", m);
-              }
-              this.dialogRef.close({ status: status, message: m });
+            //  } else {
+             //   this._swServ.showErrorMessage("Error!!", m);
+            //  }
+            //  this.dialogRef.close({data:{ status: status, message: m }});
+           // this.dialogRef.close(data);
+           this.dialogRef.close({ data: m });
+              this.onget.emit({ status: status, message: m });
               // let dialogRef = this.matDialog.open(ApproveemployeeComponent);
               //dialogRef.close();
             },
             err => {
+              //this.dialogRef.close({data:{ status: false, message: 'Network Error!!!'} });
+              result.status = false;
+              result.message = 'Netwrok Error!!';
+              this.dialogRef.close({ data: 'Nework Error!!!' });
+              this.onget.emit({ status: false, message:  'Network Error!!!' });
               //console.log(err.message);
-              this._swServ.showErrorMessage("Network Error!!!", err.message);
+              //this._swServ.showErrorMessage("Network Error!!!", err.message);
             }
           );
         this.initForm();
@@ -220,7 +232,7 @@ export class ApproveemployeeComponent implements OnInit, OnDestroy {
         //       this._swServ.showErrorMessage("Failure!!!", message);
         //     }
         //   });
-      }
+     // }
     
     }
   }

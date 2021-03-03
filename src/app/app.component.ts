@@ -80,11 +80,12 @@ export class AppComponent {
         //console.log(event);
         this.url = event.urlAfterRedirects;
         var index = this.url.indexOf("loginhome");
+        var reset = this.url.indexOf("ResetPassword");
         var updatesession = setInterval(() => {
           this.updateSession();
         }, 1200000);
         if (index !== -1) {
-          //this.sess = 1;
+          this.sess = 1;
           var ind = this.url.indexOf("loginhome");
           if (ind !== -1) {
             this.subsc = this.vServ.userInfo.subscribe((res: UserType) => {
@@ -96,13 +97,13 @@ export class AppComponent {
             }
           }
         } else {
-          //  this.sess = 0;
+            this.sess = 0;
           clearInterval(updatesession);
         }
         if (this.url == "/404") {
           this.tabView = false;
           this.isLogin = false;
-        } else if (this.url == "/register") {
+        } else if (this.url == "/register" || reset != -1) {
           this.tabView = false;
           this.isLogin = false;
         } else if (index !== -1) {
@@ -170,7 +171,8 @@ export class AppComponent {
       this.userInfo != null &&
       this.userInfo != undefined &&
       this.userInfo.employeeId != 0 &&
-      this.userInfo.userTypeId > 0
+      this.userInfo.userTypeId > 0 &&
+      this.sess === 1
     ) {
       swal({
         title: "Are you sure?",
@@ -223,14 +225,14 @@ export class AppComponent {
         } else {
           this.swServ.showErrorMessage(
             "Canelled",
-            "Plaase dont forget to signout or you will be signout automatically."
+            "Please dont forget to signout or you will be signout automatically."
           );
         }
       });
     } else {
       this.swServ.showErrorMessage(
         "Something went wrong!!",
-        "Unable to get details to continue session, Please signout or you will be signout automatically."
+        "Unable to get details to continue session, Please Sign-in again."
       );
     }
   }

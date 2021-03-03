@@ -6,7 +6,7 @@ import {
   OnDestroy
 } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { MatDialog, MatDialogConfig } from "@angular/material";
+import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material";
 import { SalaryslipComponent } from "../salaryslip/salaryslip.component";
 import { ApproveemployeeComponent } from "../approveemployee/approveemployee.component";
 import { RegisterEmployee } from "../../models/registeremployee";
@@ -48,11 +48,12 @@ export class EmployeelistComponent implements OnInit, OnDestroy {
   e: Employee;
   //t
   constructor(
-    private dialog: MatDialog,
+    public dialog: MatDialog,
     private api: PdsApiService,
     private swServ: SweetService,
     private vServ: ViewService,
     private route: ActivatedRoute
+//public apdialogref:MatDialogRef<ApproveemployeeComponent>
   ) {}
 
   ngOnInit() {
@@ -321,17 +322,69 @@ export class EmployeelistComponent implements OnInit, OnDestroy {
       token: this.usrToken
     };
     const dialogRef = this.dialog.open(ApproveemployeeComponent, config2);
+    // this.apdialogref.componentInstance.onget.subscribe(result => {
+    //   console.log("Event emittet dialog result....");
+    //   console.log(result);
+    // });
+    dialogRef.componentInstance.onget.subscribe(result => {
+        console.log("Event emittet dialog result....");
+        console.log(result);
+        if(result != undefined)
+        {
+          let status = result.status;
+          let message = result.message;
+          if(status != undefined && status != null && message != undefined && message != null && message != '')
+          {
+            if(status)
+            {
+              this.swServ.showSuccessMessage("Success!!", message);
+              this.isreguser = true;
+              this.apiInput = new ApiInput();
+              this.apiInput.stationId = Number(this.selectedStation);
+              this.registeredUsers(this.apiInput);
+            }
+            else{
+              this.swServ.showErrorMessage("Error!!", message);
+            }
+          }
+          else{
+            this.swServ.showMessage("Warning!!", 'No Action happend');
+          }
+        }        else{
+          this.swServ.showMessage("Warning!!", 'No Action happend');
+        }
+      });
     dialogRef.afterClosed().subscribe(result => {
       console.log("dialog result....");
-     // this.employees.length=0;
-     
+      console.log(result);
+      // if(result != undefined)
+      // {
+      //   let status = result.status;
+      //   let message = result.message;
+      //   if(status != undefined && status != null && message != undefined && message != null && message != '')
+      //   {
+      //     if(status)
+      //     {
+      //       this.swServ.showSuccessMessage("Success!!", message);
+      //       this.isreguser = true;
+      //       this.apiInput = new ApiInput();
+      //       this.apiInput.stationId = Number(this.selectedStation);
+      //       this.registeredUsers(this.apiInput);
+      //     }
+      //     else{
+      //       this.swServ.showSuccessMessage("Error!!", message);
+      //     }
+      //   }
+      //   else{
+      //     this.swServ.showMessage("Warning!!", 'No Action happend');
+      //   }
+      // }        else{
+      //   this.swServ.showMessage("Warning!!", 'No Action happend');
+      // }
       // this.ngOnInit();
       //  this.selectedStation="";
       //  this.employees.length =0;
-      this.isreguser = true;
-      this.apiInput = new ApiInput();
-      this.apiInput.stationId = Number(this.selectedStation);
-      this.registeredUsers(this.apiInput);
+
 
       // if (result.status) {
       // } else {

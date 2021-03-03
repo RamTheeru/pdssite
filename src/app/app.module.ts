@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { appRoutingModule } from "./app-routing.module";
 import { CommonModule } from "@angular/common";
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 //import {HttpClientModule} from "@angular/common/http";
 
 import { PdsMainComponent } from "./pds-main/pds-main.component";
@@ -95,7 +96,7 @@ import { AuthGuard } from "./auth-guard.service";
   ],
   entryComponents: [SalaryslipComponent, ApproveemployeeComponent],
   bootstrap: [AppComponent],
-  providers: [{
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy},{
     provide: MATERIAL_SANITY_CHECKS,
     useValue: false
  },{provide: APP_BASE_HREF, useValue: ''},ViewService, PdsApiService, SweetService, AuthService, AuthGuard]

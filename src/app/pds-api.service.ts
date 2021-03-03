@@ -48,7 +48,7 @@ export const CurrentUrls = {
 @Injectable()
 export class PdsApiService {
   // Base url
-  baseurl = "https://www.kleenandshine.com/api/";
+  baseurl = "https://www.kleenandshine.com/v1/api/";
   //baseurl = "https://localhost:9900/api/";
   usrToken: string = "";
   apiResult: APIResult;

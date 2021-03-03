@@ -359,7 +359,7 @@ export class LoginhomeComponent implements OnInit, OnDestroy {
             let status: Boolean = data.status;
             let m: string = data.message;
             if (status) {
-              this.swServ.showSuccessMessage("Success!!", m);
+            //  this.swServ.showSuccessMessage("Success!!", m);
               this.vServ.removeValue("usrtoken");
               this.vServ.removeValue("userProp");
               this.vServ.removeValue("storedProp");
@@ -367,14 +367,18 @@ export class LoginhomeComponent implements OnInit, OnDestroy {
               this.vServ.removeValue("edleverify");
               this.vServ.removeValue("evheverify");
               this.vServ.removeValue("hrvheverify");
+              this.vServ.userInfo.next(new UserType());
               this.auth.setToken("");
-              this.router.navigate(["/login"]);
+              this.swServ.showSuccessMessage("Success!!", m);
+              this.router.navigate(["/forcelogin"]);
             } else {
               this.swServ.showErrorMessage("Error!!", m);
+              this.router.navigate(["/login"]);
             }
           },
           err => {
             this.swServ.showErrorMessage("Network Error!!!", err.message);
+            this.router.navigate(["/login"]);
           }
         );
     } else {
@@ -382,8 +386,9 @@ export class LoginhomeComponent implements OnInit, OnDestroy {
         "Error!!",
         "Unable to logout,Something Went Wrong!!!"
       );
+      this.router.navigate(["/login"]);
     }
     //bkgk jhk   ugk
-    this.router.navigate(["/login"]);
+   
   }
 }

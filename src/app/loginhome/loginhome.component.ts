@@ -9,6 +9,7 @@ import { SweetService } from "../sweet.service";
 import { UserType } from "../models/usertype";
 import { AuthService } from "../auth.service";
 import { APIResult } from "../models/apiresult";
+import swal from "sweetalert2";
 // const navigationExtras: NavigationExtras = {
 //   state: {
 //     transd: 'TRANS001',
@@ -31,6 +32,7 @@ export class LoginhomeComponent implements OnInit, OnDestroy {
   loginUsername: string = "";
   userType: number = 0;
   isFle: Boolean = false;
+   updatesession:any;
   shoesidenav: Boolean = false;
   shownotify: Boolean = false;
   actTab: Boolean = false;
@@ -62,6 +64,9 @@ export class LoginhomeComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+ this.updatesession = setInterval(() => {
+      this.updateSession();
+    }, 1200000);
     this.subsc = this.vServ.data.subscribe((val: string) => {
       this.user = val;
     });
@@ -114,6 +119,76 @@ export class LoginhomeComponent implements OnInit, OnDestroy {
   }
   Onbtnclick() {
     this.shoesidenav = !this.shoesidenav;
+  }
+  updateSession() {
+    if (
+      this.userInfo != null &&
+      this.userInfo != undefined &&
+      this.userInfo.employeeId != 0 &&
+      this.userInfo.userTypeId > 0
+    ) {
+      swal({
+        title: "Are you sure?",
+        text: "Do you want to continue the session?",
+        type: "warning",
+        showConfirmButton: true,
+        showCancelButton: true
+      }).then(willDelete => {
+        if (willDelete.value) {
+          this.api
+            .updateSession(this.userInfo.userTypeId, this.userInfo.employeeId)
+            .subscribe(
+              (data: APIResult) => {
+                let status: Boolean = data.status;
+                let m: string = data.message;
+                if (status) {
+                  let tkn = data.userInfo.token;
+                  this.vServ.setValue(data.userInfo.user);
+                  this.vServ.setUser(data.userInfo);
+                  this.auth.setToken(tkn);
+                  this.vServ.setToken(tkn);
+                  this.swServ.showSuccessMessage("Success!!", m);
+                } else {
+                  this.swServ.showErrorMessage("Failed!!", m);
+                  this.vServ.removeValue("usrtoken");
+                  this.vServ.removeValue("userProp");
+                  this.vServ.removeValue("storedProp");
+                  this.vServ.removeValue("fheverify");
+                  this.vServ.removeValue("edleverify");
+                  this.vServ.removeValue("evheverify");
+                  this.vServ.removeValue("hrvheverify");
+                  this.auth.setToken("");
+                  this.vServ.setToken("");
+                  this.router.navigate(["/login"]);
+                }
+                // console.log(data);
+                // this.swServ.showSuccessMessage("Sucess!!", "we didit");
+                // this.swServ.showMessage("SomethingWent", "wrong");
+                // this.swServ.showWarning("Delete it");
+              },
+              err => {
+                //console.log(err.message);
+                this.swServ.showErrorMessage("Network Error!!", err.message);
+              },
+              () => {
+                console.log("completed");
+              }
+            );
+          // this.openApproveForm(e.RegisterId, Number(this.selectedStation));
+          // this.api.approveUser(e.RegisterId, status);
+        } else {
+          this.swServ.showErrorMessage(
+            "Canelled",
+            "Please dont forget to signout or you will be signout automatically."
+          );
+        }
+      });
+    } else {
+      this.swServ.showErrorMessage(
+        "Something went wrong!!",
+        "Unable to get details to continue session, Please Sign-in again."
+      );
+    }
   }
   oncreateclk(tab = "") {
     //fdhfgjf  routerLink="/loginhome/downloadinvoice"
@@ -334,6 +409,7 @@ export class LoginhomeComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subsc.unsubscribe();
     this.subsc2.unsubscribe();
+    clearInterval(this.updatesession);
   }
   onLogout() {
     this.subsc2 = this.vServ.userInfo.subscribe((res: UserType) => {
@@ -369,6 +445,7 @@ export class LoginhomeComponent implements OnInit, OnDestroy {
               this.vServ.removeValue("hrvheverify");
               this.vServ.userInfo.next(new UserType());
               this.auth.setToken("");
+              this.vServ.setToken("");
               this.swServ.showSuccessMessage("Success!!", m);
               this.router.navigate(["/forcelogin"]);
             } else {

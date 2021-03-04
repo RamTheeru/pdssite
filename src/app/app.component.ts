@@ -16,7 +16,7 @@ import {
   NavigationError
 } from "@angular/router";
 import { Environment } from "./environment";
-import swal from "sweetalert2";
+
 @Component({
   selector: "my-app",
   templateUrl: "./app.component.html",
@@ -81,9 +81,6 @@ export class AppComponent {
         this.url = event.urlAfterRedirects;
         var index = this.url.indexOf("loginhome");
         var reset = this.url.indexOf("ResetPassword");
-        var updatesession = setInterval(() => {
-          this.updateSession();
-        }, 1200000);
         if (index !== -1) {
           this.sess = 1;
           var ind = this.url.indexOf("loginhome");
@@ -98,7 +95,7 @@ export class AppComponent {
           }
         } else {
             this.sess = 0;
-          clearInterval(updatesession);
+
         }
         if (this.url == "/404") {
           this.tabView = false;
@@ -114,10 +111,6 @@ export class AppComponent {
           this.isLogin = false;
           // clearInterval(updatesession);
         }
-        // if (this.url == "/login") {
-        //  // this.sess = 0;
-        //   //clearInterval(updatesession);
-        // }
         setTimeout(() => {
           // here
           this.load = false;
@@ -166,76 +159,7 @@ export class AppComponent {
   hideload(): void {
     this.load = false;
   }
-  updateSession() {
-    if (
-      this.userInfo != null &&
-      this.userInfo != undefined &&
-      this.userInfo.employeeId != 0 &&
-      this.userInfo.userTypeId > 0 &&
-      this.sess === 1
-    ) {
-      swal({
-        title: "Are you sure?",
-        text: "Do you want to continue the session?",
-        type: "warning",
-        showConfirmButton: true,
-        showCancelButton: true
-      }).then(willDelete => {
-        if (willDelete.value) {
-          this.api
-            .updateSession(this.userInfo.userTypeId, this.userInfo.employeeId)
-            .subscribe(
-              (data: APIResult) => {
-                let status: Boolean = data.status;
-                let m: string = data.message;
-                if (status) {
-                  let tkn = data.userInfo.token;
-                  this.vServ.setValue(data.userInfo.user);
-                  this.vServ.setUser(data.userInfo);
-                  this.auth.setToken(tkn);
-                  this.vServ.setToken(tkn);
-                  this.swServ.showSuccessMessage("Success!!", m);
-                } else {
-                  this.swServ.showErrorMessage("Failed!!", m);
-                  this.vServ.removeValue("usrtoken");
-                  this.vServ.removeValue("userProp");
-                  this.vServ.removeValue("storedProp");
-                  this.vServ.removeValue("fheverify");
-                  this.vServ.removeValue("edleverify");
-                  this.vServ.removeValue("evheverify");
-                  this.vServ.removeValue("hrvheverify");
-                  this.auth.setToken("");
-                  this.router.navigate(["/login"]);
-                }
-                // console.log(data);
-                // this.swServ.showSuccessMessage("Sucess!!", "we didit");
-                // this.swServ.showMessage("SomethingWent", "wrong");
-                // this.swServ.showWarning("Delete it");
-              },
-              err => {
-                //console.log(err.message);
-                this.swServ.showErrorMessage("Network Error!!", err.message);
-              },
-              () => {
-                console.log("completed");
-              }
-            );
-          // this.openApproveForm(e.RegisterId, Number(this.selectedStation));
-          // this.api.approveUser(e.RegisterId, status);
-        } else {
-          this.swServ.showErrorMessage(
-            "Canelled",
-            "Please dont forget to signout or you will be signout automatically."
-          );
-        }
-      });
-    } else {
-      this.swServ.showErrorMessage(
-        "Something went wrong!!",
-        "Unable to get details to continue session, Please Sign-in again."
-      );
-    }
-  }
+ 
   ngOnDestroy() {
     //
     this.subsc.unsubscribe();

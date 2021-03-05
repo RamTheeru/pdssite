@@ -11,12 +11,15 @@
 					<mat-error>This field is mandatory</mat-error>
 				</mat-form-field> -->
 
-				<mat-form-field class="inpt" style="margin-left:92px;">
-					<mat-select formControlName="location" aria-placeholder="Select Location" class="form-control">
-						<mat-option value="">Select Location</mat-option>
-						<mat-option value="atp">Anantapur</mat-option>
-						<mat-option value="gtk">Guntakal</mat-option>
+				<mat-form-field>
+					<mat-select formControlName="station" aria-placeholder="Station">
+						<mat-option value="">Select Station</mat-option>
+						<mat-option *ngFor="let s of stations" [value]="s.stationId">
+							{{s.stationName}}
+						</mat-option>
 					</mat-select>
+					<!-- <input type="text" name="StationCode" formControlName="station" matInput placeholder="Station Code" class="form-control">
+					<mat-error>This field is mandatory</mat-error> -->
 				</mat-form-field>
 			</div>
 
@@ -40,7 +43,7 @@
 
 				<mat-form-field class="inpt" style="margin-left:88px;">
 
-					<input type="text" name="vno" formControlName="vno" matInput placeholder="Voucher Number" class="form-control">
+					<input type="text" name="vno" formControlName="vno" (focusout)="focusOutFunction('vno',$event)" matInput placeholder="Voucher Number" class="form-control">
 					<mat-error>This field is mandatory</mat-error>
 				</mat-form-field>
 
@@ -50,7 +53,7 @@
 
 				<mat-form-field class="inpt" style="margin-left:88px;">
 
-					<input type="text" name="paidto" formControlName="paidto" matInput placeholder="Paid To" class="form-control">
+					<input type="text" name="paidto" formControlName="paidto" (focusout)="focusOutFunction('vpto',$event)" matInput placeholder="Paid To" class="form-control">
 					<mat-error>This field is mandatory</mat-error>
 				</mat-form-field>
 
@@ -60,7 +63,7 @@
 
 				<mat-form-field class="inpt" style="margin-left:58px;">
 
-					<input type="text" name="purpose" formControlName="purpose" matInput placeholder="Purpose" class="form-control">
+					<input type="text" name="purpose" formControlName="purpose" (focusout)="focusOutFunction('vpu',$event)" matInput placeholder="Purpose" class="form-control">
 					<mat-error>This field is mandatory</mat-error>
 				</mat-form-field>
 
@@ -70,7 +73,7 @@
 
 				<mat-form-field class="inpt" style="margin-left:117px;">
 
-					<input type="text" name="netamnt" formControlName="netamnt" matInput placeholder="Net Amount" class="form-control">
+					<input type="text" name="netamnt" formControlName="netamnt" matInput (focusout)="focusOutFunction('vna',$event)" placeholder="Net Amount" class="form-control">
 					<mat-error>This field is mandatory</mat-error>
 				</mat-form-field>
 
@@ -90,7 +93,7 @@
 
 					<mat-form-field class="inpt" style="margin-left:117px;">
 
-						<mat-select formControlName="tax" (selectionChange)="onSelectStation($event)"
+						<mat-select formControlName="tax" (selectionChange)="onSelectTax($event)"
 							aria-placeholder="Select Tax" class="form-control">
 							<mat-option value="">Select Tax</mat-option>
 							<mat-option value="gst">GST</mat-option>
@@ -109,7 +112,7 @@
 			</div>
 			<div class="row" id="btnset">
 				<button  type="button" mat-raised-button color="warn" style="margin-right:10px;" >Cancel</button>
-				<button  type="button" mat-raised-button color="primary" >Submit</button>
+				<button  type="button" [disabled]="!fValid" mat-raised-button color="primary" >Submit</button>
 			</div>
 		</div>
 	</form>

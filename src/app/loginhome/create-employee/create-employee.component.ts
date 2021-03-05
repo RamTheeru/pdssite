@@ -790,7 +790,7 @@ export class CreateEmployeeComponent
       this.showrequiredMessage(f, txt, errorTitle);
     } else if (field == "g") {
       var f = "Employee Location Name";
-      this.fvalid = true;
+     // this.fvalid = true;
     }
   }
   checkValue(event: any, field) {

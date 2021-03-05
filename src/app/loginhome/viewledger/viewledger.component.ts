@@ -30,44 +30,44 @@ export class ViewledgerComponent implements OnInit, OnChanges, OnDestroy {
   fromDate: string = "";
   toDate: string = "";
   location: string = "";
-  list: Ledger[] = [
-    {
-      Id: 101,
-      VoucherDate: "09-04-2021",
-      VoucherNumber: "PDS/2021/GTKl/10/001",
-      Particulars: "Petty Cash to Station-ops",
-      Credit: "XXX",
-      Debit: "XXX",
-      Balance: "10000",
-      Status: "A",
-      VStatus: false,
-      CheckVal: false
-    },
-    {
-      Id: 102,
-      VoucherDate: "09-09-2021",
-      VoucherNumber: "PDS/2021/GTKl/10/002",
-      Particulars: "Petty Cash to Station-ops",
-      Credit: "XXX",
-      Debit: "XXX",
-      Balance: "9000",
-      Status: "A",
-      VStatus: false,
-      CheckVal: false
-    },
-    {
-      Id: 103,
-      VoucherDate: "09-18-2021",
-      VoucherNumber: "PDS/2021/GTKl/10/003",
-      Particulars: "Petty Cash to Station-ops",
-      Credit: "XXX",
-      Debit: "XXX",
-      Balance: "12000",
-      Status: "R",
-      VStatus: false,
-      CheckVal: false
-    }
-  ];
+  list: Ledger[] = [];
+  //   {
+  //     Id: 101,
+  //     VoucherDate: "09-04-2021",
+  //     VoucherNumber: "PDS/2021/GTKl/10/001",
+  //     Particulars: "Petty Cash to Station-ops",
+  //     Credit: "XXX",
+  //     Debit: "XXX",
+  //     Balance: "10000",
+  //     Status: "A",
+  //     VStatus: false,
+  //     CheckVal: false
+  //   },
+  //   {
+  //     Id: 102,
+  //     VoucherDate: "09-09-2021",
+  //     VoucherNumber: "PDS/2021/GTKl/10/002",
+  //     Particulars: "Petty Cash to Station-ops",
+  //     Credit: "XXX",
+  //     Debit: "XXX",
+  //     Balance: "9000",
+  //     Status: "A",
+  //     VStatus: false,
+  //     CheckVal: false
+  //   },
+  //   {
+  //     Id: 103,
+  //     VoucherDate: "09-18-2021",
+  //     VoucherNumber: "PDS/2021/GTKl/10/003",
+  //     Particulars: "Petty Cash to Station-ops",
+  //     Credit: "XXX",
+  //     Debit: "XXX",
+  //     Balance: "12000",
+  //     Status: "R",
+  //     VStatus: false,
+  //     CheckVal: false
+  //   }
+  // ];
   constructor(
     private vServ: ViewService,
     private route: ActivatedRoute,

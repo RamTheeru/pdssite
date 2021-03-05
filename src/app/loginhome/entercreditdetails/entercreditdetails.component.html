@@ -10,14 +10,15 @@
 					<input type="text" formControlName="lmcredit" class="form-control" matInput placeholder="Last Month's Credit*">
 					<mat-error>This field is mandatory</mat-error>
 				</mat-form-field> -->
-
-				<mat-form-field class="inpt" style="margin-left:85px;">
-					<mat-select formControlName="location" (selectionChange)="onSelectStation($event)"
-						aria-placeholder="Select Location" class="form-control">
-						<mat-option value="">Select Location</mat-option>
-						<mat-option value="atp">Anantapur</mat-option>
-						<mat-option value="gtk">Guntakal</mat-option>
+				<mat-form-field class="inpt"  style="margin-left:85px;">
+					<mat-select formControlName="station" aria-placeholder="Station" (selectionChange)="onSelectStation($event)">
+						<mat-option value="">Select Station</mat-option>
+						<mat-option *ngFor="let s of stations" [value]="s.stationId">
+							{{s.stationName}}
+						</mat-option>
 					</mat-select>
+					<!-- <input type="text" name="StationCode" formControlName="station" matInput placeholder="Station Code" class="form-control">
+					<mat-error>This field is mandatory</mat-error> -->
 				</mat-form-field>
 			</div>
 			<div class="row">

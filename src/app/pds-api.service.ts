@@ -42,6 +42,11 @@ export const CurrentUrls = {
   backuplist: "Backups",
   updatesession: "SessionUpdate",
   restore: "RestoreDb",
+  voucherCreate:"InsertVoucher",
+  voucherUpdate:"UpdateVoucher",
+  voucherDetails:"VoucherDetails",
+  previousmonthCredit:"PreviousMonthCredit",
+  creditInsert:"InsertCredit",
   resetPassword: "ResetPassword",
   logout: "DeleteSession"
 };
@@ -776,4 +781,142 @@ export class PdsApiService {
       })
     );
   }
+
+  //Voucher Create for station
+
+ createVoucher(input,tkn): R.Observable<any> {
+  console.log(JSON.stringify(input));
+  const phttpOptions = {
+    headers: new HttpHeaders({
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: "Bearer " + tkn
+    })
+  };
+  console.log(this.baseurl + this.financeUrl + CurrentUrls.voucherCreate);
+  return this.http
+    .post<any>(
+      this.baseurl + this.financeUrl + CurrentUrls.voucherCreate,
+      JSON.stringify(input),
+      phttpOptions
+    )
+    .pipe(
+      catchError((error: HttpErrorResponse) => {
+        let obj : never = this.handlehttpError(error) as never;
+        console.log(obj);
+        return new Observable(function(x) {
+          x.next(obj);
+        });
+      })
+    );
+  
 }
+// get voucher details
+getvoucherdetails(voucherId,tkn): R.Observable<any> {
+  const phttpOptions = {
+    headers: new HttpHeaders({
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: "Bearer " + tkn
+    })
+  };
+  let input = "?voucherId=" + voucherId;
+  console.log(this.baseurl + this.financeUrl + CurrentUrls.voucherDetails+ input);
+  return this.http.get(
+    this.baseurl + this.financeUrl + CurrentUrls.voucherDetails + input,
+    phttpOptions
+  ).pipe(
+    catchError((error: HttpErrorResponse) => {
+      let obj : never = this.handlehttpError(error) as never;
+      console.log(obj);
+      return new Observable(function(x) {
+        x.next(obj);
+      });
+    })
+  );
+}
+//Voucher Update for station
+
+updateVoucher(input,tkn): R.Observable<any> {
+  console.log(JSON.stringify(input));
+  const phttpOptions = {
+    headers: new HttpHeaders({
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: "Bearer " + tkn
+    })
+  };
+  console.log(this.baseurl + this.financeUrl + CurrentUrls.voucherUpdate);
+  return this.http
+    .post<any>(
+      this.baseurl + this.financeUrl + CurrentUrls.voucherUpdate,
+      JSON.stringify(input),
+      phttpOptions
+    )
+    .pipe(
+      catchError((error: HttpErrorResponse) => {
+        let obj : never = this.handlehttpError(error) as never;
+        console.log(obj);
+        return new Observable(function(x) {
+          x.next(obj);
+        });
+      })
+    );
+  
+}
+//previous month credit details balance
+previousmonthCreditDetails(stationId:number,tkn):R.Observable<any>{
+    const phttpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        Authorization: "Bearer " + tkn
+      })
+    };
+    let input = "?stationId=" + stationId;
+    console.log(this.baseurl + this.financeUrl + CurrentUrls.previousmonthCredit+ input);
+    return this.http.get(
+      this.baseurl + this.financeUrl + CurrentUrls.previousmonthCredit + input,
+      phttpOptions
+    ).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let obj : never = this.handlehttpError(error) as never;
+        console.log(obj);
+        return new Observable(function(x) {
+          x.next(obj);
+        });
+      })
+    );
+}
+  //Insert credit details for station
+
+  insertCredit(input,tkn): R.Observable<any> {
+    console.log(JSON.stringify(input));
+    const phttpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        Authorization: "Bearer " + tkn
+      })
+    };
+    console.log(this.baseurl + this.financeUrl + CurrentUrls.creditInsert);
+    return this.http
+      .post<any>(
+        this.baseurl + this.financeUrl + CurrentUrls.creditInsert,
+        JSON.stringify(input),
+        phttpOptions
+      )
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          let obj : never = this.handlehttpError(error) as never;
+          console.log(obj);
+          return new Observable(function(x) {
+            x.next(obj);
+          });
+        })
+      );
+    
+  }
+
+}
+

@@ -64,8 +64,9 @@ export class EntercreditdetailsComponent implements OnInit {
     }
     if(this.tkn == "" || this.tkn == undefined || this.tkn == null) 
     {
-      this.swServ.showErrorMessage("Error!!", 'Unable to get session details, Please try again');
+      this.handleUnauthorizedrequest();
     }
+    this.initForm();
   }
   initForm() {
     if (this.editMode) {
@@ -94,11 +95,31 @@ export class EntercreditdetailsComponent implements OnInit {
       this.stationId = Number(val);
       this.api.previousmonthCreditDetails(this.stationId,this.tkn).subscribe(
         (data:APIResult)=>{
+          console.log(data);
           let status: Boolean = data.status;
           let m: string = data.message;
           if(status){
-          ledge = data.ledger;
-          
+          //ledge = data.ledger;
+          let c = data.ledger.credit;
+          let d = data.ledger.debit;
+          let b = data.ledger.balance;
+         console.log(this.creditForm);
+          this.swServ.showMessage("Success!!", m);
+         // this.voucherForm.controls.taxamnt.setValue(txamnt);
+          // this.creditForm = this._fb.group({
+          //   location: new FormControl(this.stationId),
+          //   lmcredit: new FormControl({ value: "", disabled: true }),
+          //   lmtdebit: new FormControl({ value: "", disabled: true }),
+          //   balance: new FormControl({ value: "", disabled: true }),
+          //   tmcredit: new FormControl()
+          // });
+          console.log(c,d,b);
+          // this.creditForm.value["lmcredit"]=ledge.credit;
+          // this.creditForm.value["lmtdebit"]=ledge.debit;
+          // this.creditForm.value["balance"]=ledge.balance;
+          this.creditForm.controls.lmcredit.setValue(c);
+          this.creditForm.controls.lmtdebit.setValue(d);
+          this.creditForm.controls.balance.setValue(b);
           }
           else{
             this.swServ.showErrorMessage("Error!!", m);
@@ -110,13 +131,7 @@ export class EntercreditdetailsComponent implements OnInit {
         }
       );
       //  this.creditForm.controls.taxamnt.setValue(txamnt);
-      this.creditForm = this._fb.group({
-        location: new FormControl(this.stationId),
-        lmcredit: new FormControl({ value: ledge.Credit, disabled: true }),
-        lmtdebit: new FormControl({ value: ledge.Debit, disabled: true }),
-        balance: new FormControl({ value: ledge.Balance, disabled: true }),
-        tmcredit: new FormControl()
-      });
+
     } else {
       this.swServ.showErrorMessage("Error!!", 'Please select Station');
       // this.creditForm = this._fb.group({
@@ -128,14 +143,21 @@ export class EntercreditdetailsComponent implements OnInit {
       // });
     }
   }
+  handleUnauthorizedrequest() {
+    this.swServ.showErrorMessage(
+      "Invalid Request!!!",
+      "Unable to process request with invalid token, Please login again!!!"
+    );
+  }
   onSubmit() {
-    let camount = this.api.convert(this.creditForm.value["tmcredit"]);
+    ledge.StationId = this.stationId;
+    let camount = this.creditForm.value["tmcredit"];
     ledge.Credit=Number(camount);
   if(ledge.Credit == null || ledge.Credit == 0||ledge.Credit == undefined||ledge.Credit==NaN){
     this.swServ.showErrorMessage("Error!!", 'Please Enter Amount');
   }else if(this.tkn == "" || this.tkn == undefined || this.tkn == null) 
   {
-    this.swServ.showErrorMessage("Error!!", 'Unable to get session details, Please try again');
+    this.handleUnauthorizedrequest();
   }else if (
     ledge.StationId == 0 ||
     ledge.StationId == null ||
@@ -143,17 +165,21 @@ export class EntercreditdetailsComponent implements OnInit {
   ) {
     this.swServ.showErrorMessage("Error!!", 'Unable to get Station details, Please try again');
   }else{
+   // console.log(camount);
     var test = this.api.ValidateNumbers(camount);
     if(!test)
     {
       this.swServ.showErrorMessage("Error!!", 'Please Enter only Numbers');
     }else{
+      ledge.Debit = 0;
+      ledge.Balance = 0;
       this.api.insertCredit(ledge,this.tkn).subscribe((data:APIResult)=>{
         //console.log(data);
          let status: Boolean = data.status;
          let m: string = data.message;
          if (status) {
            this.swServ.showSuccessMessage("Success!!!", m);
+           this.initForm();
            ledge = new Ledger();
          } else {
            this.swServ.showErrorMessage("Error!!", m);

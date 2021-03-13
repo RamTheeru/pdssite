@@ -13,4 +13,17 @@ export class Voucher {
   TaxAmount: number;
   IsApproved:boolean;
   TotalAmount: number;
+  stationId:number;
+  voucherNumber: string;
+  voucherDate: string;
+  v_Date:string;
+  partyName: string;
+  purposeOfPayment: string;
+  netAmount: number;
+  tax: string;
+  voucherStatus:string;
+  taxAmount: number;
+  isApproved:boolean;
+  totalAmount: number;
+
 }

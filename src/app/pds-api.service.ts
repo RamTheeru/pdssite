@@ -48,6 +48,8 @@ export const CurrentUrls = {
   previousmonthCredit:"PreviousMonthCredit",
   creditInsert:"InsertCredit",
   resetPassword: "ResetPassword",
+  legders:"Ledgers",
+  vouchers:"Vouchers",
   logout: "DeleteSession"
 };
 @Injectable()
@@ -300,13 +302,13 @@ export class PdsApiService {
           m = obj.title;
           apierrResult.status = false;
           apierrResult.message = m;
-          obj = apierrResult;
+          //obj = apierrResult;
         }
-        if ("errors" in obj) {
+       if ("errors" in obj) {
           m = m + " Reason : " + JSON.stringify(this.printObject(obj.errors));
           apierrResult.status = false;
           apierrResult.message = m;
-          obj = apierrResult;
+         // obj = apierrResult;
         }
         if ("commandType" in obj || "status" in obj || "message" in obj) {
           m = m + " Reason : " + obj.message;
@@ -317,8 +319,9 @@ export class PdsApiService {
           m = m + " Reason : " + JSON.stringify(obj);
           apierrResult.status = false;
           apierrResult.message = m;
-          obj = apierrResult;
+         
         }
+        obj = apierrResult;
       }
 
       // ...optionally return a default fallback value so app can continue (pick one)
@@ -342,7 +345,7 @@ export class PdsApiService {
     console.log("handled error " + err.status);
     swal(
       "UnAuthorized Request!!!",
-      "Session Expired, please login again!!!",
+      "Session Expired, please refresh the page and login again!!!",
       "error"
     );
     this.router.navigate([`/login`]);
@@ -917,6 +920,66 @@ previousmonthCreditDetails(stationId:number,tkn):R.Observable<any>{
       );
     
   }
+  //get ledgers
+    getLedgersformonth(input: any, tkn: string): R.Observable<any> {
+      var body = JSON.stringify(input);
+      const phttpOptions = {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + tkn
+        })
+      };
+      //this.posthttpOptions.headers=headers;
+      //this.httpOptions.headers.append("Authorization", "Bearer " + tkn);
+      console.log(
+        this.baseurl + this.financeUrl + CurrentUrls.legders
+      );
+      return this.http
+        .post(
+          this.baseurl + this.financeUrl + CurrentUrls.legders,
+          body,
+          phttpOptions
+        )
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            let obj : never = this.handlehttpError(error) as never;
+            return new Observable(function(x) {
+              x.next(obj);
+            });
+          })
+        );
+    }
+      //get ledgers
+      getVouchers(input: any, tkn: string): R.Observable<any> {
+        var body = JSON.stringify(input);
+        const phttpOptions = {
+          headers: new HttpHeaders({
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            Authorization: "Bearer " + tkn
+          })
+        };
+        //this.posthttpOptions.headers=headers;
+        //this.httpOptions.headers.append("Authorization", "Bearer " + tkn);
+        console.log(
+          this.baseurl + this.financeUrl + CurrentUrls.vouchers
+        );
+        return this.http
+          .post(
+            this.baseurl + this.financeUrl + CurrentUrls.vouchers,
+            body,
+            phttpOptions
+          )
+          .pipe(
+            catchError((error: HttpErrorResponse) => {
+              let obj : never = this.handlehttpError(error) as never;
+              return new Observable(function(x) {
+                x.next(obj);
+              });
+            })
+          );
+      }
 
 }
 

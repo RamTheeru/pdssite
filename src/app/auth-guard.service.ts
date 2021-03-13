@@ -13,8 +13,9 @@ export class AuthGuard implements CanActivate {
     if (!this.auth.isAuth()) {
       this.swServ.showErrorMessage(
         "Failed!!",
-        "You are not authorized to see this page!!!"
+        "You are not authorized to see this page,Please refresh the page!!!"
       );
+
     }
     return this.auth.isAuth();
   }

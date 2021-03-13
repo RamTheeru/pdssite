@@ -12,5 +12,8 @@ export class Ledger extends Voucher {
   Remarks:string;
   IsActive:boolean;
   CheckVal: Boolean = false;
+  credit: any;
+  debit: any;
+  balance:any;
 
 }

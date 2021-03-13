@@ -54,6 +54,7 @@ const appRoutes: Routes = [
       { path: "entervoucher", component: VoucherComponent },
       { path: "editvoucher/:id", component: VoucherComponent },
       { path: "viewledger", component: ViewledgerComponent },
+      { path: "viewvouchers", component: ViewledgerComponent },
       { path: "verifyvouchers", component: ViewledgerComponent },
       { path: "employees", component: EmployeesComponent },
       { path: "viewdas", component: EmployeesComponent },

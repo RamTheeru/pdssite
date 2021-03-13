@@ -176,7 +176,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     } else if (this.standardRate == 0 || this.petrolallowance == 0) {
       this.swServ.showErrorMessage(
         "Something Went Wrong!!",
-        "Unable to get Station Delivery Details, Please try again!!"
+        "Unable to get Station Delivery Details,please ask admin to update delivery details to this station and try again!!"
       );
     } else {
       this.apiInput = new ApiInput();

@@ -226,6 +226,7 @@ export class CreateEmployeeComponent
         if (status) {
           this.stations = data.stations;
           this.professions = data.professions;
+          this.initForm();
         } else {
           this.swServ.showErrorMessage("Error!!", m);
         }
@@ -256,12 +257,15 @@ export class CreateEmployeeComponent
       this.userInfo = JSON.parse(u);
     }
     //console.log(this.userInfo);
-    this.stationId = this.userInfo.stationId;
+
     var index = this.userType.indexOf("le");
     if (index !== -1) {
       this.isLe = true;
       this.isHe = false;
       this.isEdle = true;
+      this.stationId = this.userInfo.stationId;
+      console.log(this.userInfo);
+      console.log(this.stationId);
       // console.log("edle : " + this.edleVerify);
       // if (this.edleVerify == "edle") {
       //   this.isEdle = false;
@@ -289,7 +293,7 @@ export class CreateEmployeeComponent
       //   this.showbtns = false;
       // }
       this.editMode = params["id"] != null;
-      this.initForm();
+     
     });
   }
   private initForm() {

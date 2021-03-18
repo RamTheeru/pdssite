@@ -42,7 +42,8 @@ export class VoucherComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private api : PdsApiService,
     private vServ: ViewService,
-    private swServ : SweetService
+    private swServ : SweetService,
+    private router : Router
   ) {}
 
   ngOnInit() {
@@ -115,7 +116,9 @@ export class VoucherComponent implements OnInit, OnDestroy {
           let m: string = data.message;
           if(status){
           vouch = data.voucher;
-          
+          console.log(data);
+          console.log(vouch);
+          this.initForm();
           }
           else{
             this.swServ.showErrorMessage("Error!!", m);
@@ -146,7 +149,10 @@ export class VoucherComponent implements OnInit, OnDestroy {
       this.handleUnauthorizedrequest();
       //this.swServ.showErrorMessage("Error!!", 'Unable to get session details, Please try again');
     }
-    this.initForm();
+
+      this.initForm();
+    
+    
   }
   handleUnauthorizedrequest() {
     this.swServ.showErrorMessage(
@@ -154,19 +160,29 @@ export class VoucherComponent implements OnInit, OnDestroy {
       "Unable to process request with invalid token, Please login again!!!"
     );
   }
+  oncancel(){
+    if(this.editMode)
+    {
+      this.router.navigate(["/loginhome/viewvouchers"]);
+    }
+    else{
+      this.initForm();
+    }
+    
+  }
   initForm() {
     if (this.editMode) {
       if(this.isLe && this.stationId > 0)
       {
         let etax="";
-        if(vouch.TaxAmount > 0 && vouch.TaxAmount != null && vouch.TaxAmount != NaN && vouch.TaxAmount != undefined){
+        if(vouch.taxAmount > 0 && vouch.taxAmount != null && vouch.taxAmount != NaN && vouch.taxAmount != undefined){
           etax = "gst";
         }
-        let eDate = new FormControl(vouch.v_Date);
+        let eDate = new FormControl(new Date(vouch.v_Date));
         this.voucherForm = this._fb.group({
-          stat: new FormControl(vouch.stationId),
+          stat: new FormControl({ value: vouch.stationId, disabled: true }),
           voucherdate: eDate,
-          vno: new FormControl(vouch.voucherNumber),
+          vno: new FormControl({ value: vouch.voucherNumber, disabled: true }),
           paidto: new FormControl(vouch.partyName),
           purpose: new FormControl(vouch.purposeOfPayment),
           netamnt: new FormControl(vouch.netAmount),
@@ -261,18 +277,28 @@ export class VoucherComponent implements OnInit, OnDestroy {
     if(this.editMode)
     {
       vouch.VoucherId =  this.voucherId;
+      
+      
     }
+   if(this.editMode)
+   {
+    vouch.StationId = this.voucherForm.controls.stat.value;
+    vouch.VoucherNumber=this.voucherForm.controls.vno.value;
+   }
+   else{
     vouch.StationId = this.voucherForm.value["stat"];
+    vouch.VoucherNumber=this.voucherForm.value["vno"];
+   }
     let vd = this.api.convert(this.voucherForm.value["voucherdate"]);
     vouch.V_Date = vd;
-    vouch.VoucherNumber=this.voucherForm.value["vno"];
+   
     vouch.PartyName = this.voucherForm.value["paidto"];
     vouch.PurposeOfPayment = this.voucherForm.value["purpose"];
     vouch.NetAmount = Number(this.voucherForm.value["netamnt"]);
     vouch.Tax = this.voucherForm.value["tax"];
     vouch.TaxAmount = Number(this.voucherForm.controls.taxamnt.value);//Number(this.voucherForm.value["taxamnt"]);
     vouch.TotalAmount = Number(this.voucherForm.controls.totalamnt.value);
-
+    console.log(JSON.stringify(vouch));
     if (
       vouch.VoucherNumber == "" ||
       vouch.VoucherNumber == null ||

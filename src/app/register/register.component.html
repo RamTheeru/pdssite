@@ -38,7 +38,7 @@
 						<mat-error>This field is mandatory</mat-error>
 					</mat-form-field>
 					<mat-form-field>
-						<mat-select formControlName="gender" aria-placeholder="Gender">
+						<mat-select formControlName="gender" class="form-control" aria-placeholder="Gender">
 							<mat-option value="">Select Gender</mat-option>
 							<mat-option value="male">male</mat-option>
 							<mat-option value="female">female</mat-option>
@@ -55,8 +55,19 @@
 						<mat-error>This field is mandatory</mat-error>
 					</mat-form-field>
 					<mat-form-field>
-						<input type="text" formControlName="bg" class="form-control" matInput placeholder="Blood Group">
-						<mat-error>This field is mandatory</mat-error>
+						<mat-select formControlName="bg" class="form-control" aria-placeholder="Blood Group">
+							<mat-option value="">Select Blood Group</mat-option>
+							<mat-option value="A-Positive">A-Positive</mat-option>
+							<mat-option value="A-Negative">A-Negative</mat-option>
+							<mat-option value="B-Positive">B-Positive</mat-option>
+							<mat-option value="B-Negative">B-Negative</mat-option>
+							<mat-option value="AB-Positive">AB-Positive</mat-option>
+							<mat-option value="AB-Negative">AB-Negative</mat-option>
+							<mat-option value="O-Positive">O-Positive</mat-option>
+							<mat-option value="O-Negative">O-Negative</mat-option>
+						</mat-select>
+						<!-- <input type="text" formControlName="bg" class="form-control" matInput placeholder="Blood Group">
+						<mat-error>This field is mandatory</mat-error> -->
 					</mat-form-field>
 					<legend>Marital Status</legend>
 					<div class="add-bottom-padding" *ngFor="let c of maritals; let i = index;">
@@ -78,7 +89,7 @@
 					</mat-form-field>
 					<mat-form-field>
 						<mat-label>Alternate Contact:+91-</mat-label>
-						<input type="text" name="gphone" (focusout)="focusOutFunction('g',$event)" formControlName="gphone" matInput placeholder="Phone" class="form-control">
+						<input type="text" name="gphone" (focusout)="focusOutFunction('gph',$event)" formControlName="gphone" matInput placeholder="Phone" class="form-control">
       </mat-form-field>
 				</div>
 			</mat-grid-tile>
@@ -181,7 +192,7 @@
 		</mat-grid-list>
 		<section>
 			<div class="example-button-row">
-				<button type="submit" (click)="onCancel()" mat-raised-button color="warn">Cancel</button>
+				<button type="button" (click)="onCancel()" mat-raised-button color="warn">Cancel</button>
 				<button type="submit" [disabled]="!fvalid" mat-raised-button color="primary">Submit</button>
 			</div>
 		</section>

@@ -67,6 +67,8 @@ export class ResetpasswordComponent implements OnInit {
             let m: string = data.message;
             if (status) {
               this.sweet.showSuccessMessage("Success", m);
+              this.password = "";
+              this.cpassword = "";
             } else {
               this.sweet.showErrorMessage("Failed", m);
             }

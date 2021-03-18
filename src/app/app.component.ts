@@ -6,7 +6,7 @@ import { SweetService } from "./sweet.service";
 import { ViewService } from "./view.service";
 import { UserType } from "./models/usertype";
 import { APIResult } from "./models/apiresult";
-import { Subscription } from "rxjs";
+import { fromEvent,Observable,Subscription } from "rxjs";
 import {
   Router,
   Event as RouterEvent,
@@ -35,6 +35,11 @@ export class AppComponent {
   load = true;
   users: any;
   private subsc: Subscription;
+  public onlineEvent: Observable<Event>;
+  public offlineEvent: Observable<Event>;
+  public connectionStatusMessage: string;
+  public connectionStatus: boolean;
+  internetCheck:any;
   //subsc : r.Subscription;
   constructor(
     private router: Router,
@@ -49,6 +54,11 @@ export class AppComponent {
     });
   }
   ngOnInit() {
+    this.onlineEvent = fromEvent(window, 'online');
+    this.offlineEvent = fromEvent(window, 'offline');
+    this.internetCheck = setInterval(() => {
+      this.checkinternet();
+    }, 10000);
     this.url = this.route["_routerState"].snapshot.url;
     this.footerText = Environment.FooterText;
 
@@ -159,7 +169,21 @@ export class AppComponent {
   hideload(): void {
     this.load = false;
   }
- 
+ checkinternet(){
+  this.onlineEvent.subscribe(event => {
+    this.connectionStatusMessage = 'Connected to internet! You are online';
+    if(!this.connectionStatus)
+    {
+      this.swServ.showSuccessMessage('Success!!!',this.connectionStatusMessage);
+    }
+    this.connectionStatus = true;
+});
+  this.offlineEvent.subscribe(e => {
+    this.connectionStatusMessage = 'Connection lost! You are offline';
+    this.connectionStatus = false;
+    this.swServ.showErrorMessage('OOPS!!!',this.connectionStatusMessage);
+});
+ }
   ngOnDestroy() {
     //
     this.subsc.unsubscribe();

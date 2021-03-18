@@ -1,10 +1,12 @@
 <div class="container-fluid">
+	<button class="close" mat-button (click)="onClose()">X</button>
 	<h1 class="text-primary"><u>Approve Form</u></h1>
-	<div class="row" style="float:right;">
-		<button class="btn-dialog-close" style="float:right;background-color:white;" (click)="onClose()"  mat-stroked-button tabIndex="-1">
-    <mat-icon>X</mat-icon>
-  </button>
-	</div>
+	<!-- <div class="row" style="float:right;"> -->
+		<!-- <button class="btn-dialog-close" style="float:right;background-color:white;" (click)="onClose()"  mat-stroked-button tabIndex="-1"> -->
+			
+    <!-- <mat-icon>X</mat-icon> -->
+  <!-- </button> -->
+	<!-- </div> -->
 	<form>
 
 		<div class="row">
@@ -17,7 +19,7 @@
 						</mat-option>
 					</mat-select>
 				</mat-form-field> -->
-				<select [(ngModel)]="profid" name="prof" id="prof">
+				<select class="form-control" [(ngModel)]="profid" name="prof" id="prof">
 							<option value="0" selected>Select Profession Type</option>
               	<option *ngFor="let p of professions" [ngValue]="p.pid">
 								{{p.professionName}}
@@ -32,7 +34,7 @@
 			</div>
 			<div class="row">
 				<mat-dialog-actions align="end">
-					<button type="submit" mat-dialog-close (click)="onCancel()" mat-raised-button color="warn">Cancel</button>
+					<button type="button" mat-dialog-close (click)="onCancel()" mat-raised-button color="warn">Cancel</button>
 					<button type="submit" [disabled]="!fValid" mat-dialog-close (click)="onSubmit()" mat-raised-button color="primary">Submit</button>
 				</mat-dialog-actions>
 			</div>

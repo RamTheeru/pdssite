@@ -269,11 +269,20 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           this.pageCount = data.queryPages;
           this.totalCount = data.queryTotalCount;
           this.pages = this.api.transform(this.pageCount);
+
+          if(this.employees == undefined || this.employees == null)
+          {
+            this.swServ.showMessage("Warning!","No records found for this request.");
+        }else{
           if (this.employees.length > 0) {
             this.btnallow = true;
           } else {
             this.btnallow = false;
           }
+          if(this.employees.length == 0){
+            this.swServ.showMessage("Warning!","No records found for this request.");
+          }
+        }
           console.log(data);
         } else {
           this.swServ.showErrorMessage("Failure!!!", message);

@@ -363,7 +363,7 @@ export class CreateEmployeeComponent
         //   month: new FormControl(''),
         //    year: new FormControl(),
         age: new FormControl(),
-        bg: new FormControl(),
+        bg: new FormControl(""),
         // prof: new FormControl(""),
         gender: new FormControl(""),
         married: new FormControl(),
@@ -495,6 +495,13 @@ export class CreateEmployeeComponent
     console.log("on submit.....");
 
     if (
+      emp.EmpCode == "" ||
+      emp.EmpCode == null ||
+      emp.EmpCode == undefined
+    ) {
+      this.fvalid = false;
+      this.showrequiredMessage("CDA Employee Code", "", errorTitle);
+    }  else if (
       emp.LocationName == "" ||
       emp.LocationName == null ||
       emp.LocationName == undefined
@@ -792,42 +799,71 @@ export class CreateEmployeeComponent
     } else if (field == "bb") {
       var f = "Employee Bank  Branch Name";
       this.showrequiredMessage(f, txt, errorTitle);
+    }else if (field == "gph") {
+      var f = "Employee Guardian Phone Number";
+      this.showrequiredMessage(f, txt, errorTitle);
     } else if (field == "g") {
       var f = "Employee Location Name";
+     // this.fvalid = true;
+    }else if (field == "empc") {
+      var f = "CDA Employee Code";
+      this.showrequiredMessage(f, txt, errorTitle);
      // this.fvalid = true;
     }
   }
   checkValue(event: any, field) {
     // console.log(event.checked);
     // console.log(event.source.value);
-
+    console.log(event);
     const errorTitle: string = "INVALID INPUT!!!";
     if (field == "m") {
       let v = event.source.value;
       if (!event.checked) {
         var txt = "";
+        if (v == "married") {
         this.checkMarried = false;
+        }
+        if (v == "unmarried") {
         this.checkUnMarried = false;
+        }
         var f = "Employee Marital Status";
+        if(this.checkMarried == false && this.checkUnMarried == false)
+        {
+          this.fvalid = false;
         this.showrequiredMessage(f, "", errorTitle);
+        }
       } else {
         emp.Marital = v;
         if (v == "married") {
           this.checkMarried = true;
+         // this.checkUnMarried = true;
           emp.MaritalStatus = true;
         } else if (v == "unmarried") {
           this.checkUnMarried = true;
           emp.MaritalStatus = false;
+        }
+        if(this.checkMarried == true && this.checkUnMarried == true)
+        {
+          this.fvalid = false;
+        this.showrequiredMessage(f, "", errorTitle);
         }
       }
     } else if (field == "e") {
       let v = event.source.value;
       if (!event.checked) {
         var txt = "";
+        if (v == "permanent") {
         this.checkPermanent = false;
+        }
+        if (v == "contract") {
         this.checkContract = false;
+        }
         var f = "Employee Type Status";
+        if(this.checkPermanent == false && this.checkContract==false )
+        {
+          this.fvalid = false;
         this.showrequiredMessage(f, "", errorTitle);
+        }
       } else {
         emp.Employeetype = v;
         if (v == "permanent") {
@@ -837,23 +873,80 @@ export class CreateEmployeeComponent
           this.checkContract = true;
           emp.IsPermanent = false;
         }
+        if(this.checkPermanent == true && this.checkContract==true )
+        {
+          this.fvalid = false;
+        this.showrequiredMessage(f, "", errorTitle);
+        }
       }
     }
   }
   showrequiredMessage(field, txt, title) {
     var test = false;
-    if (txt == "" || txt == null) {
+    if ((txt == "" || txt == null || txt == undefined) && field !== "Employee Guardian Phone Number") {
       var msg = field + " " + " field required!!";
       this.fvalid = false;
       this.swServ.showErrorMessage(title, msg);
-    } else if (field == "Employee Contact Number" || field == "Employee AGE") {
+    }else if(field == "Employee State"){
+      var msg = field + " " + " contains only alphabets!!";
+      test = this.api.ValidateAlpha(txt);
+      if (!test) {
+        this.fvalid = false;
+        this.swServ.showErrorMessage(title, msg);
+      }else{
+        this.fvalid = true;
+      }
+    } else if (field == "Employee Contact Number" || field == "Employee AAdhar Code" || field=="Employee PostalCode" || field == "Employee AGE" || field == "Employee Guardian Phone Number") {
       var msg = field + " " + " contains Only Numbers!!";
+      if(field == "Employee Guardian Phone Number" && (txt == "" || txt == null || txt == undefined))
+      {
+          txt="000";         
+      }
       test = this.ValidateNumbers(txt);
       if (!test) {
         this.fvalid = false;
         this.swServ.showErrorMessage(title, msg);
       } else {
-        this.fvalid = true;
+        //this.fvalid = true;
+        var index = txt.indexOf("+");
+        var ind = txt.indexOf("-");
+        if(field == "Employee Contact Number" && txt.length == 10 && (index == -1 || ind == -1))
+        {
+          this.fvalid = true;
+        }
+        else if(field == "Employee AGE")
+        {
+          this.fvalid = true;
+        }
+        else if(field == "Employee PostalCode")
+        {
+          this.fvalid = true;
+        }
+        else if(field == "Employee AAdhar Code")
+        {
+          this.fvalid = true;
+        }
+        else if(field == "Employee Guardian Phone Number" && txt.length == 10 && (index == -1 || ind == -1))
+        {
+          this.fvalid = true;
+        }
+        else if(field == "Employee Guardian Phone Number" && txt == "000")
+        {
+          this.fvalid = true;
+        }
+        else {
+          if(index !== -1 || ind !== -1 )
+          {
+           var msg = field + " " + " field must contains only 10 digits, NO extension allowed!!";
+           this.fvalid = false;
+           this.swServ.showErrorMessage(title, msg);
+          }
+          else{
+          var msg = field + " " + " field must contains only 10 digits!!";
+          this.fvalid = false;
+          this.swServ.showErrorMessage(title, msg);
+          }
+        }
       }
     } else if (
       field == "Employee Type Status" ||
@@ -861,6 +954,24 @@ export class CreateEmployeeComponent
     ) {
       this.fvalid = false;
       this.swServ.showErrorMessage(title, txt);
+    }else if(field == "CDA Employee Code"){
+      this.api.checkCDACode(txt).subscribe(
+        (data: APIResult) => {
+          //
+          //     console.log(data)     ;
+          let status: Boolean = data.status;
+          let m: string = data.message;
+          if (status) {
+            this.fvalid = true;
+            this.swServ.showSuccessMessage("Success!!", m);
+          }
+          else{
+            this.fvalid = false;
+            this.swServ.showErrorMessage("Invalid Input!!", m);
+          }
+        }
+      );
+
     } else if (field == "Employee User Name") {
       this.api.checkUserName(txt).subscribe(
         (data: APIResult) => {

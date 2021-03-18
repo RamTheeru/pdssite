@@ -128,7 +128,7 @@ export class RegisterComponent implements OnInit {
       //   month: new FormControl(''),
       //    year: new FormControl(),
       age: new FormControl(),
-      bg: new FormControl(),
+      bg: new FormControl(""),
       usr: new FormControl(),
       gender: new FormControl(""),
       married: new FormControl(),
@@ -493,6 +493,9 @@ export class RegisterComponent implements OnInit {
     } else if (field == "loc") {
       var f = "Employee Location Name";
       this.showrequiredMessage(f, txt, errorTitle);
+    }else if (field == "gph") {
+      var f = "Employee Guardian Phone Number";
+      this.showrequiredMessage(f, txt, errorTitle);
     } else if (field == "g") {
       var f = "Employee Location Name";
       //this.fvalid = true;
@@ -500,12 +503,25 @@ export class RegisterComponent implements OnInit {
   }
   showrequiredMessage(field, txt, title) {
     var test = false;
-    if (txt == "" || txt == null) {
+    if ((txt == "" || txt == null || txt == undefined) && field !== "Employee Guardian Phone Number") {
       var msg = field + " " + " field required!!";
       this.fvalid = false;
       this._swServ.showErrorMessage(title, msg);
-    } else if (field == "Employee Contact Number" || field == "Employee AGE") {
+    }else if(field == "Employee State"){
+      var msg = field + " " + " contains only alphabets!!";
+      test = this.api.ValidateAlpha(txt);
+      if (!test) {
+        this.fvalid = false;
+        this._swServ.showErrorMessage(title, msg);
+      }else{
+        this.fvalid = true;
+      }
+    } else if (field == "Employee Contact Number" || field == "Employee AAdhar Code" || field=="Employee PostalCode" || field == "Employee AGE" || field == "Employee Guardian Phone Number") {
       var msg = field + " " + " contains Only Numbers!!";
+      if(field == "Employee Guardian Phone Number" && (txt == "" || txt == null || txt == undefined))
+      {
+          txt="000";         
+      }
       test = this.ValidateNumbers(txt);
       if (!test) {
         this.fvalid = false;
@@ -513,11 +529,27 @@ export class RegisterComponent implements OnInit {
       } else {
         var index = txt.indexOf("+");
         var ind = txt.indexOf("-");
-        if(field == "Employee Contact Number" && txt.length == 10)
+        if(field == "Employee Contact Number" && txt.length == 10 && (index == -1 || ind == -1))
         {
           this.fvalid = true;
         }
         else if(field == "Employee AGE")
+        {
+          this.fvalid = true;
+        }
+        else if(field == "Employee PostalCode")
+        {
+          this.fvalid = true;
+        }
+        else if(field == "Employee AAdhar Code")
+        {
+          this.fvalid = true;
+        }
+        else if(field == "Employee Guardian Phone Number" && txt.length == 10 && (index == -1 || ind == -1))
+        {
+          this.fvalid = true;
+        }
+        else if(field == "Employee Guardian Phone Number" && txt == "000")
         {
           this.fvalid = true;
         }
@@ -552,6 +584,12 @@ export class RegisterComponent implements OnInit {
       this.fvalid = false;
       this._swServ.showErrorMessage(title, txt);
     } else if (field == "Employee User Name") {
+      var msg = field + " " + " should not contain Only Numbers!!";
+      test = this.ValidateNumbers(txt);
+      if (test) {
+        this.fvalid = false;
+        this._swServ.showErrorMessage(title, msg);
+      } else {
       this.api.checkUserName(txt).subscribe(
         (data: APIResult) => {
           //   console.log(data);
@@ -570,6 +608,7 @@ export class RegisterComponent implements OnInit {
           this._swServ.showErrorMessage("Network Error!!!", err.message);
         }
       );
+      }
     } else {
        this.fvalid = true;
     }
@@ -616,6 +655,7 @@ export class RegisterComponent implements OnInit {
         var f = "Employee Marital Status";
         if(this.checkMarried == false && this.checkUnMarried == false)
         {
+          this.fvalid = false;
         this.showrequiredMessage(f, "", errorTitle);
         }
       } else {
@@ -627,6 +667,11 @@ export class RegisterComponent implements OnInit {
         } else if (v == "unmarried") {
           this.checkUnMarried = true;
           emp.MaritalStatus = false;
+        }
+        if(this.checkMarried == true && this.checkUnMarried == true)
+        {
+          this.fvalid = false;
+        this.showrequiredMessage(f, "", errorTitle);
         }
       }
     } else if (field == "e") {
@@ -642,6 +687,7 @@ export class RegisterComponent implements OnInit {
         var f = "Employee Type Status";
         if(this.checkPermanent == false && this.checkContract==false )
         {
+          this.fvalid = false;
         this.showrequiredMessage(f, "", errorTitle);
         }
       } else {
@@ -652,6 +698,11 @@ export class RegisterComponent implements OnInit {
         } else if (v == "contract") {
           this.checkContract = true;
           emp.IsPermanent = false;
+        }
+        if(this.checkPermanent == true && this.checkContract==true )
+        {
+          this.fvalid = false;
+        this.showrequiredMessage(f, "", errorTitle);
         }
       }
     }

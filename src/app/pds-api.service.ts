@@ -94,6 +94,12 @@ export class PdsApiService {
   //   //
   //   this.app.hideload();
   // }
+  ValidateAlpha(txt: string): boolean {
+    var val = false;
+    var regexp = new RegExp("^[A-Za-z ]+$");
+    val = regexp.test(txt);
+    return val;
+  }
   ValidateNumbers(txt: string): boolean {
     var val = false;
     var regexp = new RegExp("^[0-9]+$");

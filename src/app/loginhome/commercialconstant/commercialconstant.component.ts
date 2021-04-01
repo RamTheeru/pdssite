@@ -121,6 +121,7 @@ export class CommercialconstantComponent implements OnInit, OnDestroy {
     cc.deliveryRate = Number(delvr);
     cc.petrolAllowance = Number(petrl);
     cc.incentives = Number(incen);
+    console.log(cc);
     if (
       cc.incentives == NaN ||
       cc.incentives == undefined ||
@@ -158,6 +159,9 @@ export class CommercialconstantComponent implements OnInit, OnDestroy {
       this.handleUnauthorizedrequest();
     } else {
       //submit      to API
+     // console.log(cc.incentives);
+      cc.incentives = 0;
+     // console.log(cc);
       this.api.createconstant(cc, this.tkn).subscribe(
         (data: APIResult) => {
           let status: Boolean = data.status;

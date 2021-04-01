@@ -176,6 +176,10 @@ export class EmployeesComponent
           this.pageCount = data.queryPages;
           this.totalCount = data.queryTotalCount;
           var index = this.filename.indexOf("-");
+          // this.employees.forEach(element => {
+          //   element.DeliveryDetail 
+          // });
+ 
           if (index == -1) {
             this.filename = this.filename + "-" + data.employeeName;
           }
@@ -183,9 +187,11 @@ export class EmployeesComponent
           console.log(data);
           if(this.employees == undefined || this.employees == null)
           {
+            this.totalCount =0;
             this.swServ.showMessage("Warning!","No records found for this request.");
         }else{
           if(this.employees.length == 0){
+            this.totalCount =0;
             this.swServ.showMessage("Warning!","No records found for this request.");
           }
         }

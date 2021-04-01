@@ -10,6 +10,7 @@ import { ViewService } from "../../view.service";
 import * as r from "rxjs";
 import swal from "sweetalert2";
 import { saveAs } from "file-saver";
+import { copyStyles } from "@angular/animations/browser/src/util";
 @Component({
   selector: "app-downloadinvoice",
   templateUrl: "./downloadinvoice.component.html",
@@ -109,6 +110,9 @@ export class DownloadinvoiceComponent implements OnInit, OnDestroy {
     this.api
       .getCDADeliverylist(input, this.usrToken)
       .subscribe((data: APIResult) => {
+        console.log('cdaemployees');
+        console.log(this.usrToken);
+        console.log(data);
         this.load = false;
         let status = data.status;
         let message = data.message;
@@ -116,52 +120,66 @@ export class DownloadinvoiceComponent implements OnInit, OnDestroy {
           this.employees = data.employees;
           this.pageCount = data.queryPages;
           this.totalCount = data.queryTotalCount;
-          var index = this.filename.indexOf("-");
-          if (index == -1) {
-            this.filename = this.filename + "-" + data.employeeName;
-          }
-          //this.filename = this.filename + "-" + data.employeeName;
-          this.pages = this.api.transform(this.pageCount);
-          if (this.totalCount > 0) {
-            let pdf = new PDFInput();
-            this.selectedEmps.length = 0;
-            pdf.emps = this.selectedEmps;
-            pdf.forall = true;
-            pdf.stationId = this.stationId;
-            pdf.currentmonth = this.currentmonth;
-            this.load = true;
-            this.api
-              .downloadpdffilesforemployees(pdf, this.usrToken)
-              .subscribe(data => {
-                this.load = false;
-                console.log(data);
-                if (data instanceof APIResult) {
-                  let status = data.status;
-                  let message = data.message;
-                  if (status) {
+          if(this.employees == undefined || this.employees == null)
+          {
+            this.totalCount =0;
+            this.swServ.showMessage("Warning!","No records found for this request.");
+        }else{
+          if(this.employees.length == 0){
+            this.totalCount =0;
+            this.swServ.showMessage("Warning!","No records found for this request.");
+          }else{
+            var index = this.filename.indexOf("-");
+            if (index == -1) {
+              this.filename = this.filename + "-" + data.employeeName;
+            }
+            //this.filename = this.filename + "-" + data.employeeName;
+            this.pages = this.api.transform(this.pageCount);
+            if (this.totalCount > 0) {
+              let pdf = new PDFInput();
+              this.selectedEmps.length = 0;
+              pdf.emps = this.selectedEmps;
+              pdf.forall = true;
+              pdf.stationId = Number(this.stationId);
+              pdf.currentmonth = this.currentmonth;
+              this.load = true;
+              console.log(pdf);
+              this.api
+                .downloadpdffilesforemployees(pdf, this.usrToken)
+                .subscribe(data => {
+                  this.load = false;
+                  console.log(data);
+                  if (data instanceof APIResult) {
+                    let status = data.status;
+                    let message = data.message;
+                    if (status) {
+                    } else {
+                      this.swServ.showErrorMessage("Failure!!!", message);
+                    }
                   } else {
-                    this.swServ.showErrorMessage("Failure!!!", message);
+                    saveAs(data, this.filename);
+                    this.swServ.showSuccessMessage(
+                      "Success!!!",
+                      "Zip file containing " +
+                        this.totalCount.toString() +
+                        "file(s) Downloaded Successfully"
+                    );
+                    this.currentmonth = 0;
                   }
-                } else {
-                  saveAs(data, this.filename);
-                  this.swServ.showSuccessMessage(
-                    "Success!!!",
-                    "Zip file containing " +
-                      this.totalCount.toString() +
-                      "file(s) Downloaded Successfully"
-                  );
-                }
-              });
-          } else {
-            this.swServ.showMessage(
-              "Warning!!!",
-              "No employees found to download file"
-            );
+                });
+            } else {
+              this.swServ.showMessage(
+                "Warning!!!",
+                "No employees found to download file"
+              );
+            }
           }
+        }
+
         } else {
           this.swServ.showErrorMessage("Failure!!!", message);
         }
-        this.currentmonth = 0;
+        
       });
   }
   ngOnInit() {

@@ -50,6 +50,8 @@ export const CurrentUrls = {
   resetPassword: "ResetPassword",
   legders:"Ledgers",
   vouchers:"Vouchers",
+  approveVouchers:"ApproveVoucher",
+  rejectvouchers:"RejectVoucher",
   logout: "DeleteSession"
 };
 @Injectable()
@@ -106,6 +108,16 @@ export class PdsApiService {
     val = regexp.test(txt);
     return val;
   }
+  getmonthFromDate(str)
+  {
+    var mnth = "0";
+    if(str != null && str!= "" && str != undefined){
+    var date = new Date(str),
+    mnth = ("0" + (date.getMonth() + 1)).slice(-2);
+    console.log(mnth);
+    }
+    return mnth;
+  }
   convert(str) {
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
@@ -127,11 +139,26 @@ export class PdsApiService {
     );
   }
   //get admin details
-  getadmindetails(): R.Observable<any> {
+  getadmindetails(tkn:string): R.Observable<any> {
     console.log(this.baseurl + this.employeesUrl + CurrentUrls.adminDetails);
+    const phttpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        Authorization: "Bearer " + tkn
+      })
+    };
     return this.http.get(
       this.baseurl + this.employeesUrl + CurrentUrls.adminDetails,
-      this.httpOptions
+      phttpOptions
+    ).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let obj: never;
+        obj= this.handlehttpError(error) as never;
+        return new Observable(function(x) {
+          x.next(obj);
+        });
+      })
     );
   }
   //Employee login
@@ -986,6 +1013,68 @@ previousmonthCreditDetails(stationId:number,tkn):R.Observable<any>{
             })
           );
       }
+
+       //Update Voucher with approve request POST
+
+  approvevouchers(input, tkn): R.Observable<any> {
+    const phttpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        Authorization: "Bearer " + tkn
+      })
+    };
+    console.log(
+      this.baseurl + this.financeUrl + CurrentUrls.approveVouchers
+    );
+    console.log(JSON.stringify(input));
+    return this.http
+      .post<any>(
+        this.baseurl + this.financeUrl + CurrentUrls.approveVouchers,
+        JSON.stringify(input),
+        phttpOptions
+      )
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          let obj : never = this.handlehttpError(error) as never;
+          console.log(obj);
+          return new Observable(function(x) {
+            x.next(obj);
+          });
+        })
+      );
+  }
+
+    //Update Voucher with reject request POST
+
+   rejectVouchers(input, tkn): R.Observable<any> {
+    const phttpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        Authorization: "Bearer " + tkn
+      })
+    };
+    console.log(
+      this.baseurl + this.financeUrl + CurrentUrls.rejectvouchers
+    );
+    console.log(JSON.stringify(input));
+    return this.http
+      .post<any>(
+        this.baseurl + this.financeUrl + CurrentUrls.rejectvouchers,
+        JSON.stringify(input),
+        phttpOptions
+      )
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          let obj : never = this.handlehttpError(error) as never;
+          console.log(obj);
+          return new Observable(function(x) {
+            x.next(obj);
+          });
+        })
+      );
+  }
 
 }
 

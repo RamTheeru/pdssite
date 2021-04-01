@@ -337,14 +337,28 @@ export class RegisterComponent implements OnInit {
       this.fvalid = false;
       this.showrequiredMessage(
         "Employee Type Status",
-        "Please Select Proper option",
+        "Please Select Proper Employee Type option",
+        errorTitle
+      );
+    }else if (this.checkContract == false && this.checkPermanent == false) {
+      this.fvalid = false;
+      this.showrequiredMessage(
+        "Employee Type Status",
+        "Please Select Proper Employee Type option",
         errorTitle
       );
     } else if (this.checkMarried == true && this.checkUnMarried == true) {
       this.fvalid = false;
       this.showrequiredMessage(
         "Employee Marital Status",
-        "Please Select Proper option",
+        "Please Select Proper Employee Marital option",
+        errorTitle
+      );
+    }else if (this.checkMarried == false && this.checkUnMarried == false) {
+      this.fvalid = false;
+      this.showrequiredMessage(
+        "Employee Marital Status",
+        "Please Select Proper Employee Marital option",
         errorTitle
       );
     } else if (
@@ -416,7 +430,15 @@ export class RegisterComponent implements OnInit {
       this.fvalid = false;
       this.showrequiredMessage("Employee AGE", "", errorTitle);
     } else if (this.fvalid) {
-      this.submittoAPI(emp);
+    //  var isPaused = true;
+     // this.validateNonEmptyfilelds(emp.EmpCode,"empc");
+
+        this.validateallnonemptyfields();
+       if(this.fvalid)
+       {
+           this.submittoAPI(emp);
+       }
+     // this.submittoAPI(emp);
     } else {
       this._swServ.showErrorMessage(
         "Invalid Form!!",
@@ -433,6 +455,8 @@ export class RegisterComponent implements OnInit {
     this.initForm();
   }
   submittoAPI(regemploy): void {
+    if(this.fvalid)
+    {
     this.api.registeremployee(regemploy).subscribe(
       (data: APIResult) => {
         //console.log(data);
@@ -453,6 +477,89 @@ export class RegisterComponent implements OnInit {
         this._swServ.showErrorMessage("Network Error!!!", err.message);
       }
     );
+    }
+  }
+  validateallnonemptyfields() 
+  {
+    
+    this.validateNonEmptyfilelds(emp.FirstName,"fname") ;
+    this.validateNonEmptyfilelds(emp.Phone,"phone") ;
+    this.validateNonEmptyfilelds(emp.EmpAge,"age") ;
+    this.validateNonEmptyfilelds(emp.Address1,"ad1") ;
+    this.validateNonEmptyfilelds(emp.Place,"place") ;
+    this.validateNonEmptyfilelds(emp.State,"state") ;
+    this.validateNonEmptyfilelds(emp.PostalCode,"post") ;
+    this.validateNonEmptyfilelds(emp.AAdharNumber,"aad") ;
+    this.validateNonEmptyfilelds(emp.PANNumber,"pan") ;
+   // this.validateNonEmptyfilelds(emp.UserName,"usr") ;
+    this.validateNonEmptyfilelds(emp.LocationName,"loc") ;
+    this.validateNonEmptyfilelds(emp.Gaurd_PhoneNumber,"gph") ;
+    // let  prom :Promise<boolean>= new Promise((resolve,reject)=>{
+    //   if(this.fvalid){
+    //     resolve(true);
+    //   }else{
+    //     reject(false);
+    //   }
+    // });
+    // return prom;
+  }
+  validateNonEmptyfilelds(txt: any,field:string): void {
+    const errorTitle: string = "INVALID INPUT!!!";
+    
+   // let valid  = false;
+   // var txt = event.target.value;
+    if (field == "fname") {
+      var f = "First Name";
+      this.showrequiredMessage(f, txt, errorTitle);
+    } else if (field == "phone") {
+      var f = "Employee Contact Number";
+      this.showrequiredMessage(f, txt, errorTitle);
+    } else if (field == "age") {
+      var f = "Employee AGE";
+      this.showrequiredMessage(f, txt, errorTitle);
+    } else if (field == "ad1") {
+      var f = "Employee Address";
+      this.showrequiredMessage(f, txt, errorTitle);
+    } else if (field == "place") {
+      var f = "Employee Place";
+      this.showrequiredMessage(f, txt, errorTitle);
+    } else if (field == "state") {
+      var f = "Employee State";
+      this.showrequiredMessage(f, txt, errorTitle);
+    } else if (field == "post") {
+      var f = "Employee PostalCode";
+      this.showrequiredMessage(f, txt, errorTitle);
+    } else if (field == "aad") {
+      var f = "Employee AAdhar Code";
+      this.showrequiredMessage(f, txt, errorTitle);
+    } else if (field == "pan") {
+      var f = "Employee PAN Number";
+      this.showrequiredMessage(f, txt, errorTitle);
+    } else if (field == "usr") {
+      var f = "Employee User Name";
+      this.showrequiredMessage(f, txt, errorTitle);
+    } else if (field == "loc") {
+      var f = "Employee Location Name";
+      this.showrequiredMessage(f, txt, errorTitle);
+    } else if (field == "veh") {
+      var f = "Employee Vehicle Number";
+      this.showrequiredMessage(f, txt, errorTitle);
+    } else if (field == "dllr") {
+      var f = "Employee Drving or Learning Liscense";
+      this.showrequiredMessage(f, txt, errorTitle);
+    } else if (field == "gph") {
+      var f = "Employee Guardian Phone Number";
+      this.showrequiredMessage(f, txt, errorTitle);
+    } else if (field == "g") {
+      var f = "Employee Location Name";
+     // this.fvalid = true;
+    }else if (field == "empc") {
+      var f = "CDA Employee Code";
+    //  this.showrequiredMessage(f, txt, errorTitle);
+     // this.fvalid = true;
+    }
+
+
   }
   focusOutFunction(field, event: any): void {
     const errorTitle: string = "INVALID INPUT!!!";
@@ -643,6 +750,7 @@ export class RegisterComponent implements OnInit {
     console.log(event);
     const errorTitle: string = "INVALID INPUT!!!";
     if (field == "m") {
+      var f = "Employee Marital Status";
       let v = event.source.value;
       if (!event.checked) {
         var txt = "";
@@ -652,9 +760,10 @@ export class RegisterComponent implements OnInit {
         if (v == "unmarried") {
         this.checkUnMarried = false;
         }
-        var f = "Employee Marital Status";
+     
         if(this.checkMarried == false && this.checkUnMarried == false)
         {
+          emp.Marital ="";
           this.fvalid = false;
         this.showrequiredMessage(f, "", errorTitle);
         }
@@ -670,12 +779,14 @@ export class RegisterComponent implements OnInit {
         }
         if(this.checkMarried == true && this.checkUnMarried == true)
         {
+          emp.Marital ="";
           this.fvalid = false;
         this.showrequiredMessage(f, "", errorTitle);
         }
       }
     } else if (field == "e") {
       let v = event.source.value;
+      var f = "Employee Type Status";
       if (!event.checked) {
         var txt = "";
         if (v == "permanent") {
@@ -684,9 +795,10 @@ export class RegisterComponent implements OnInit {
         if (v == "contract") {
         this.checkContract = false;
         }
-        var f = "Employee Type Status";
+       
         if(this.checkPermanent == false && this.checkContract==false )
         {
+          emp.Employeetype = "";
           this.fvalid = false;
         this.showrequiredMessage(f, "", errorTitle);
         }
@@ -701,6 +813,7 @@ export class RegisterComponent implements OnInit {
         }
         if(this.checkPermanent == true && this.checkContract==true )
         {
+          emp.Employeetype = "";
           this.fvalid = false;
         this.showrequiredMessage(f, "", errorTitle);
         }

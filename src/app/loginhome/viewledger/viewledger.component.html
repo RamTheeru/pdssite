@@ -11,19 +11,25 @@
 					<input type="text" formControlName="lmcredit" class="form-control" matInput placeholder="Last Month's Credit*">
 					<mat-error>This field is mandatory</mat-error>
 				</mat-form-field> -->
-
-		<mat-form-field class="inpt">
+				<select     [(ngModel)]="location" name="location" id="stat" class="form-control">
+					<option value="" selected>Select Station</option>
+		  <option *ngFor="let s of stations" [ngValue]="s.stationId">
+						{{s.stationName}}
+					</option>
+</select>
+		<!-- <mat-form-field class="inpt">
 			<mat-select [(ngModel)]="location" name="location" aria-placeholder="Select Location" class="form-control">
 				<mat-option value="">Select Location</mat-option>
-				<mat-option *ngFor="let s of stations" [value]="s.stationId">
+				<mat-option *ngFor="let s of stations" [ngValue]="s.stationId">
 					{{s.stationName}}
 				</mat-option>
 			</mat-select>
-		</mat-form-field>
+		</mat-form-field> -->
 	</div>
 	<div  *ngIf="isLe">
 
 <div class="row" *ngIf="!isLeVoucher">
+	<label >Select Month:</label><br>
 			<select  class="form-control"   [(ngModel)]="currentmonth" name="month" id="stat">
 								<option value="0" selected>Select Month</option>
 					  <option *ngFor="let s of months" [ngValue]="s.id">
@@ -99,9 +105,71 @@
 
 	</div>
 	<div class="row" *ngIf="isHe">
-		<button class="btn btn-success" style="margin-left:315px;" (click)="getlist($event)"  type="submit">Search</button>
+		<button class="btn btn-success" style="margin-left:315px;" (click)="getledgersbyMonth($event)"  type="submit">Search</button>
 	</div>
 	</form>
+	<div class="row" *ngIf="isVerify">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>S.No</th>
+					<th>Date</th>
+					<div *ngIf="isHe">
+						<th>Action</th>
+					</div>
+					<th>Voucher Number</th>
+					<th>Party</th>
+					<th>Purpose</th>
+					<th>Net Amount</th>
+					<th>Tax Amount</th>
+					<th>Total Amount</th>
+					<div *ngIf="isLe">
+						<th>
+
+							<ng-container>Status</ng-container>
+
+						</th>
+					</div>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor=" let l of list;let i = index;">
+					<td id="id-{{i}}">{{l.voucherId}}</td>
+					<td>{{l.v_Date}}</td>
+					<div *ngIf="isHe">
+						<td><input  #tablist id="{{l.voucherId}}" (click)="toggleEditable($event)" type="checkbox" value=""/>
+				</div>
+						<td>
+							<div *ngIf="isLe; else fhe">
+								<ng-container>
+
+									<a [ngClass]="l.voucherStatus!='R'?'disabled':''"
+										routerLink="/loginhome/editvoucher/{{l.voucherId}}">{{l.voucherNumber}}</a>
+
+								</ng-container>
+							</div>
+							<ng-template #fhe>
+								{{l.voucherNumber}}
+							</ng-template>
+						</td>
+						<td>{{l.partyName}}</td>
+						<td>{{l.purposeOfPayment}}</td>
+						<td>{{l.netAmount}}</td>
+						<td>{{l.taxAmount}}</td>
+						<td>{{l.totalAmount}}</td>
+						<div *ngIf="isLe">
+							<td>
+
+								<ng-container>{{l.voucherStatus}}</ng-container>
+
+							</td>
+						</div>
+						<!-- <td> <button type="button" (click)="approveUser(l)" class="btn btn-primary" ><b class="text-light" >Edit</b></button>
+				</td> -->
+				</tr>
+			</tbody>
+		</table>
+	</div>
 	<div class="row" *ngIf="isLeVoucher;else reg">
 		<table class="table table-striped">
 			<thead>
@@ -162,16 +230,14 @@
 		</table>
 	</div>
 	<ng-template #reg>
-	<div class="row">
+	<div class="row" *ngIf="!isVerify">
 		<table class="table table-striped">
 			<thead>
 				<tr>
 					<th>S.No</th>
 					<th>Debit Date</th>
 					<th>Credit Date</th>
-					<div *ngIf="isHe">
-						<th>Action</th>
-					</div>
+
 					<th>Voucher Number</th>
 					<th>Particulars</th>
 					<th>Credit</th>
@@ -188,14 +254,12 @@
 			</thead>
 			<tbody>
 				<tr *ngFor=" let l of list;let i = index;">
-					<td id="id-{{i}}">{{l.id}}</td>
+					<td id="id-{{i}}">{{i+1}}</td>
 					<td>{{l.v_Date}}</td>
 					<td>{{l.cred_Date}}</td>
-					<div *ngIf="isHe">
-						<td><input  #tablist id="{{l.id}}" (click)="toggleEditable($event)" type="checkbox" value=""/>
-				</div>
-						<td>
-							<div *ngIf="isLe; else fhe">
+
+						<td>{{l.voucherNumber}}
+							<!-- <div *ngIf="isLe; else fhe">
 								<ng-container>
 
 									<a [ngClass]="l.VStatus?'disabled':''"
@@ -205,7 +269,7 @@
 							</div>
 							<ng-template #fhe>
 								{{l.voucherNumber}}
-							</ng-template>
+							</ng-template> -->
 						</td>
 						<td>{{l.particulars}}</td>
 						<td>{{l.credit}}</td>

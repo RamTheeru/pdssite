@@ -13,6 +13,7 @@ import { SweetService } from "../../sweet.service";
 import { ViewService } from "../../view.service";
 import { Station } from "../../models/station";
 import { Ledger } from "../../models/ledger";
+import swal from "sweetalert2";
 var ledge: Ledger = new Ledger();
 @Component({
   selector: "app-entercreditdetails",
@@ -23,6 +24,7 @@ export class EntercreditdetailsComponent implements OnInit {
   creditForm: FormGroup;
   stations : Station[]=[];
   private subsc: r.Subscription;
+  checkforUpdate : boolean = false;
   stationId : number = 0;
   tkn:string = "";
   //ledger:Ledger;
@@ -103,7 +105,31 @@ export class EntercreditdetailsComponent implements OnInit {
           let c = data.ledger.credit;
           let d = data.ledger.debit;
           let b = data.ledger.balance;
+          let currcred = data.ledger.currentCreditAmount;
+          let currdebt = data.ledger.currentDebitAmount;
+          let currbal = data.ledger.currentBalanceAmount;
          console.log(this.creditForm);
+          let nc = Number(currcred);
+          let nd = Number(currdebt);
+          let nb = Number(currbal);
+          if(nc == null || nc == undefined || nc == NaN )
+          {
+              nc = 0;
+          }
+          if(nb == null || nb == undefined || nb == NaN )
+          {
+              nb=0;
+          }
+          if(nd == null || nd == undefined || nd == NaN )
+          {
+               nd = 0;
+          }
+          if(nc > 0)
+          {
+            this.checkforUpdate = true;
+          }
+            m = m + " and amount already credited in this month for this station : ("+nc+"); Amount debited in this amount : ("+nd+"); Balance amount remaining for current month : ("+nb+");"; 
+          
           this.swServ.showMessage("Success!!", m);
          // this.voucherForm.controls.taxamnt.setValue(txamnt);
           // this.creditForm = this._fb.group({
@@ -120,6 +146,7 @@ export class EntercreditdetailsComponent implements OnInit {
           this.creditForm.controls.lmcredit.setValue(c);
           this.creditForm.controls.lmtdebit.setValue(d);
           this.creditForm.controls.balance.setValue(b);
+         // this.creditForm.controls.tmcredit.setValue(curr);
           }
           else{
             this.swServ.showErrorMessage("Error!!", m);
@@ -173,26 +200,51 @@ export class EntercreditdetailsComponent implements OnInit {
     }else{
       ledge.Debit = 0;
       ledge.Balance = 0;
-      this.api.insertCredit(ledge,this.tkn).subscribe((data:APIResult)=>{
-        //console.log(data);
-         let status: Boolean = data.status;
-         let m: string = data.message;
-         if (status) {
-           this.swServ.showSuccessMessage("Success!!!", m);
-           this.initForm();
-           ledge = new Ledger();
-         } else {
-           this.swServ.showErrorMessage("Error!!", m);
-         }
-       },
-       err => {
-         //console.log(err);
-         this.swServ.showErrorMessage("Network Error!!!", err.message);
-       }
-     );
+      if(this.checkforUpdate)
+      {
+        swal({
+          title: "Are you sure?",
+          text:  "the total credit amount you entered again for this station in current month will be added to existing amount you already entered this month and also update the debits in ledger table for this month, ARE YOU SURE?",
+          type: "warning",
+          showConfirmButton: true,
+          showCancelButton: true
+        }).then(willDelete => {
+          if (willDelete.value) {
+            this.submitoAPI(ledge);
+            // this.api.approveUser(e.RegisterId, status);
+          } else {
+            this.swServ.showErrorMessage("Canelled", "");
+          }
+        });
+      }
+      else{
+        this.submitoAPI(ledge);
+      }
+       
 
     }
   }
+
+  }
+  submitoAPI(ledge:Ledger)
+  {
+    this.api.insertCredit(ledge,this.tkn).subscribe((data:APIResult)=>{
+      //console.log(data);
+       let status: Boolean = data.status;
+       let m: string = data.message;
+       if (status) {
+         this.swServ.showSuccessMessage("Success!!!", m);
+         this.initForm();
+         ledge = new Ledger();
+       } else {
+         this.swServ.showErrorMessage("Error!!", m);
+       }
+     },
+     err => {
+       //console.log(err);
+       this.swServ.showErrorMessage("Network Error!!!", err.message);
+     }
+   );
 
   }
 }

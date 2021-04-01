@@ -12,4 +12,5 @@ export class Employee extends RegisterEmployee {
   BranchName: string = "";
   IFSCCode: string = "";
   DeliveryDetails: DeliveryDetails;
+  delivery: DeliveryDetails;
 }

@@ -704,24 +704,74 @@ export class CreateEmployeeComponent
       ) {
         this.handleUnauthorizedrequest();
       } else {
-        this.validateNonEmptyfilelds(emp.EmpCode,"empc");
-        this.validateNonEmptyfilelds(emp.FirstName,"fname") ;
+        //this.validateNonEmptyfilelds(emp.EmpCode,"empc");
+        if(this.fvalid)
+        {
+          this.validateNonEmptyfilelds(emp.FirstName,"fname") ;
+
+        }
+        if(this.fvalid)
+        {
+            
           this.validateNonEmptyfilelds(emp.Phone,"phone") ;
+        }
+        if(this.fvalid)
+        {
           this.validateNonEmptyfilelds(emp.EmpAge,"age") ;
+        }
+        if(this.fvalid)
+        {
           this.validateNonEmptyfilelds(emp.Address1,"ad1") ;
+        }
+        if(this.fvalid)
+        {
           this.validateNonEmptyfilelds(emp.Place,"place") ;
+        }
+        if(this.fvalid)
+        {
           this.validateNonEmptyfilelds(emp.State,"state") ;
+        }
+        if(this.fvalid)
+        {
           this.validateNonEmptyfilelds(emp.PostalCode,"post") ;
+        }
+        if(this.fvalid)
+        {
           this.validateNonEmptyfilelds(emp.AAdharNumber,"aad") ;
+        }
+        if(this.fvalid)
+        {
           this.validateNonEmptyfilelds(emp.PANNumber,"pan") ;
+        }
          // this.validateNonEmptyfilelds(emp.UserName,"usr") ;
+         if(this.fvalid)
+         {
           this.validateNonEmptyfilelds(emp.LocationName,"loc") ;
+         }
+         if(this.fvalid)
+         {
           this.validateNonEmptyfilelds(emp.VehicleNumber,"veh") ;
+         }
+         if(this.fvalid)
+         {
           this.validateNonEmptyfilelds(emp.DLLRNumber,"dllr") ;
+         }
+         if(this.fvalid)
+         {
           this.validateNonEmptyfilelds(emp.BankAccountNumber,"acc") ;
+         }
+         if(this.fvalid)
+         {
           this.validateNonEmptyfilelds(emp.BankName,"bank") ;
+         }
+         if(this.fvalid)
+         {
           this.validateNonEmptyfilelds(emp.IFSCCode,"ifsc") ;
+         }
+         if(this.fvalid)
+         {
           this.validateNonEmptyfilelds(emp.Gaurd_PhoneNumber,"gph") ;
+         }
          if(this.fvalid)
          {
              this.submittoAPI(emp, this.usrToken);
@@ -807,6 +857,11 @@ export class CreateEmployeeComponent
         this.swServ.showErrorMessage("Network Error!!!", err.message);
       }
     );
+    }else {
+      this.swServ.showErrorMessage(
+        "Invalid Form!!",
+        "Please Check Provided Details."
+      );
     }
   }
   handleUnauthorizedrequest() {
@@ -962,23 +1017,37 @@ export class CreateEmployeeComponent
     console.log(event);
     const errorTitle: string = "INVALID INPUT!!!";
     if (field == "m") {
-      let v = event.source.value;
       var f = "Employee Marital Status";
+      let v = event.source.value;
       if (!event.checked) {
         var txt = "";
+
+        if(emp.Marital != null && emp.Marital != "" && emp.Marital != undefined)
+        {
+              if(this.checkMarried)
+              {
+                emp.MaritalStatus = true;
+                emp.Marital = "married"
+              }
+              else if(this.checkUnMarried)
+              {
+                emp.MaritalStatus = false;
+                emp.Marital = "unmarried"
+              }
+        }
         if (v == "married") {
         this.checkMarried = false;
         }
         if (v == "unmarried") {
         this.checkUnMarried = false;
         }
-        
         if(this.checkMarried == false && this.checkUnMarried == false)
         {
           emp.Marital ="";
           this.fvalid = false;
         this.showrequiredMessage(f, "", errorTitle);
         }
+
       } else {
         emp.Marital = v;
         if (v == "married") {
@@ -991,7 +1060,7 @@ export class CreateEmployeeComponent
         }
         if(this.checkMarried == true && this.checkUnMarried == true)
         {
-          emp.Marital ="";
+          //emp.Marital ="";
           this.fvalid = false;
         this.showrequiredMessage(f, "", errorTitle);
         }
@@ -1001,19 +1070,33 @@ export class CreateEmployeeComponent
       var f = "Employee Type Status";
       if (!event.checked) {
         var txt = "";
+
+       if(emp.Employeetype != null && emp.Employeetype != "" && emp.Employeetype != undefined)
+        {
+              if(this.checkPermanent)
+              {
+                emp.IsPermanent = true;
+                emp.Employeetype = "permanent"
+              }
+              else if(this.checkContract)
+              {
+                emp.IsPermanent = false;
+                emp.Employeetype = "contract"
+              }
+        }
         if (v == "permanent") {
         this.checkPermanent = false;
         }
         if (v == "contract") {
         this.checkContract = false;
         }
-       
         if(this.checkPermanent == false && this.checkContract==false )
         {
           emp.Employeetype = "";
           this.fvalid = false;
         this.showrequiredMessage(f, "", errorTitle);
         }
+
       } else {
         emp.Employeetype = v;
         if (v == "permanent") {
@@ -1025,7 +1108,7 @@ export class CreateEmployeeComponent
         }
         if(this.checkPermanent == true && this.checkContract==true )
         {
-          emp.Employeetype = "";
+          //emp.Employeetype = "";
           this.fvalid = false;
         this.showrequiredMessage(f, "", errorTitle);
         }

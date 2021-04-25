@@ -18,6 +18,7 @@ import { ViewService } from "../../view.service";
 import { SweetService } from "../../sweet.service";
 import { UserType } from "../../models/usertype";
 import { Voucher } from "src/app/models/voucher";
+import { saveAs } from "file-saver";
 @Component({
   selector: "app-viewledger",
   templateUrl: "./viewledger.component.html",
@@ -495,20 +496,74 @@ export class ViewledgerComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   onDownload() {
-    const cbsChecked = this.tablist._results.filter(cb => {
-      return cb.nativeElement.checked;
-    });
-
-    for (var val2 of cbsChecked) {
-      this.ledgerIds.push(val2.nativeElement.id);
-    }
-    if (this.ledgerIds.length > 0) {
-    } else {
+    let sta =  Number(this.stationId);
+    if(sta == NaN  || sta == undefined || sta == 0)
+    {
       this.swServ.showErrorMessage(
-        "Invalid Input!!",
-        "Please Select atleast one of the CheckBoxes!!"
+        "Failure!!",
+        "Unable to get station details,Please try again!!"
       );
+
     }
+   else if(this.isHe == true && this.isLe == false && this.toDate!="" && this.toDate != undefined && this.toDate != null && this.fromDate!="" && this.fromDate != undefined && this.fromDate != null)
+    {
+      this.load = true;
+      this.apiInput.stationId =sta;
+      let  std = this.api.getmonthFromDate(this.fromDate);
+      let  etd = this.api.getmonthFromDate(this.toDate);
+      if(Number(std)==Number(etd))
+      {
+      this.apiInput.vEndDate = this.api.convert(this.toDate);
+      this.apiInput.vstartDate = this.api.convert(this.fromDate);
+      this.api.downloadpdffilesforledgerDetailsbyStation(this.apiInput, this.usrToken)
+                .subscribe(data => {
+                  this.load = false;
+                  console.log(data);
+                  if (data instanceof APIResult) {
+                    let status = data.status;
+                    let message = data.message;
+                    if (status) {
+                    } else {
+                      this.swServ.showErrorMessage("Failure!!!", message);
+                    }
+                  } else {
+                    saveAs(data, "LedgerBalanceDetails");
+                    this.swServ.showSuccessMessage(
+                      "Success!!!",
+                        "file Downloaded Successfully"
+                    );
+                  //  this.currentmonth = 0;
+                  }
+                });
+             
+      
+      }else{
+        this.swServ.showErrorMessage(
+          "Invalid Request!!!",
+          "Please select from and to Dates in same month!!!"
+        ); 
+      }
+    }
+    else{
+      this.swServ.showErrorMessage(
+        "Invalid Request!!!",
+        "Please select from and to Dates in same month!!!"
+      ); 
+    }
+    // const cbsChecked = this.tablist._results.filter(cb => {
+    //   return cb.nativeElement.checked;
+    // });
+
+    // for (var val2 of cbsChecked) {
+    //   this.ledgerIds.push(val2.nativeElement.id);
+    // }
+    // if (this.ledgerIds.length > 0) {
+    // } else {
+    //   this.swServ.showErrorMessage(
+    //     "Invalid Input!!",
+    //     "Please Select atleast one of the CheckBoxes!!"
+    //   );
+    // }
   }
   toggleEditable(event) {
     if (event.target.checked) {

@@ -100,7 +100,7 @@
 					<thead>
 						<tr>
 							<th>FirstName</th>
-							<th>LastName</th>
+							<!-- <th>LastName</th> -->
 							<th>CDA Code</th>
 							<div *ngIf="isHe">
 								<th>Action</th>
@@ -137,7 +137,7 @@
 						<tr *ngFor="let emp of employees;">
 							<td [hidden]="isHide">{{emp.employeeId}}</td>
 							<td>{{emp.firstName}}</td>
-							<td>{{emp.lastName}}</td>
+							<!-- <td>{{emp.lastName}}</td> -->
 							<td>{{emp.empCode}}</td>
 							<div *ngIf="isHe">
 								<td>

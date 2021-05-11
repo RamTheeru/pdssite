@@ -27,6 +27,7 @@ import { AbtusComponent } from "./abtus/abtus.component";
 import { NopageComponent } from "./nopage/nopage.component";
 import { LoginhomeComponent } from "./loginhome/loginhome.component";
 import { UserreadingsComponent } from "./loginhome/userreadings/userreadings.component";
+import { CreatemainemployeeComponent } from "./loginhome/createmainemployee/createmainemployee.component";
 import { CreateEmployeeComponent } from "./loginhome/create-employee/create-employee.component";
 import { IndividualviewComponent } from "./loginhome/individualview/individualview.component";
 import { EmployeelistComponent } from "./loginhome/employeelist/employeelist.component";
@@ -92,6 +93,7 @@ import { AuthGuard } from "./auth-guard.service";
     CommercialconstantComponent,
     DownloadinvoiceComponent,
     BackupComponent,
+    CreatemainemployeeComponent,
     NopageComponent
   ],
   entryComponents: [SalaryslipComponent, ApproveemployeeComponent],

@@ -19,6 +19,7 @@ import { DeliveryDetailsComponent } from "./loginhome/delivery-details/delivery-
 import { VoucherComponent } from "./loginhome/voucher/voucher.component";
 import { SubmitattendanceComponent } from "./loginhome/submitattendance/submitattendance.component";
 import { SalaryslipComponent } from "./loginhome/salaryslip/salaryslip.component";
+import { CreatemainemployeeComponent } from "./loginhome/createmainemployee/createmainemployee.component";
 import { SalarysliplistComponent } from "./loginhome/salarysliplist/salarysliplist.component";
 import { ViewledgerComponent } from "./loginhome/viewledger/viewledger.component";
 import { CommercialconstantComponent } from "./loginhome/commercialconstant/commercialconstant.component";
@@ -44,6 +45,7 @@ const appRoutes: Routes = [
       { path: "", component: LogindefaulthomeComponent },
       { path: "approvals", component: UserreadingsComponent },
       { path: "createemployee", component: CreateEmployeeComponent },
+      { path: "createpdsemployee", component: CreatemainemployeeComponent },
       { path: "enrolldeliveryassociate", component: CreateEmployeeComponent },
       { path: "updatedeliverydetails", component: DeliveryDetailsComponent },
       { path: "employeeedit/:id", component: CreateEmployeeComponent },

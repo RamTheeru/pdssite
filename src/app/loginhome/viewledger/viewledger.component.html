@@ -134,7 +134,7 @@
 			</thead>
 			<tbody>
 				<tr *ngFor=" let l of list;let i = index;">
-					<td id="id-{{i}}">{{l.voucherId}}</td>
+					<td id="id-{{i}}">{{i+1}}</td>
 					<td>{{l.v_Date}}</td>
 					<div *ngIf="isHe">
 						<td><input  #tablist id="{{l.voucherId}}" (click)="toggleEditable($event)" type="checkbox" value=""/>

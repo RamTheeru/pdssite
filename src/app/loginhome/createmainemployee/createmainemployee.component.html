@@ -1,6 +1,16 @@
 <div class="container-fluid">
   <form class="form-horizontal" [formGroup]="empForm2" (ngSubmit)="onSubmit()">
     <h2><b><u>Create Employee:</u></b></h2>
+    <div class="row" id="opts">
+      <div class="col">
+        <mat-checkbox (change)="checkPF($event)" name="PF" [formControlName]="pf">PFOption
+        </mat-checkbox>
+      </div>
+      <div class="col">
+        <mat-checkbox (change)="checkESIC($event)" name="esic" [formControlName]="esic">ESICOption
+        </mat-checkbox>
+      </div>
+    </div>
     <div id="accordion">
       <div class="card">
         <div class="card-header">
@@ -70,8 +80,6 @@
                     <mat-option value="O-Positive">O-Positive</mat-option>
                     <mat-option value="O-Negative">O-Negative</mat-option>
                   </mat-select>
-                  <!-- <input type="text" formControlName="bg" class="form-control" matInput placeholder="Blood Group">
-								<mat-error>This field is mandatory</mat-error> -->
                 </mat-form-field>
               </div>
               <div class="col">
@@ -288,24 +296,125 @@
 							</mat-form-field> -->
               </div>
 
+
+            </div>
+            <div class="row">
+              <div class="col">
+                <select class="form-control" formControlName="prof"  name="prof" id="prof">
+							<option value="0" selected>Select Profession Type</option>
+              	<option *ngFor="let p of professions" [value]="p.pid">
+								{{p.professionName}}
+							</option>
+    </select>
+              </div>
+              <div class="col">
+                <mat-form-field>
+                  <input type="text" name="reprtman" formControlName="reprtman" matInput placeholder="Reporting Manager" class="form-control">
+                  <mat-error>This field is mandatory</mat-error>
+                </mat-form-field>
+
+              </div>
+              <div class="col">
+                <mat-form-field>
+                  <input type="text" name="reprtmancode" formControlName="reprtmancode" matInput placeholder="Reporting Manager Code" class="form-control">
+                  <mat-error>This field is mandatory</mat-error>
+                </mat-form-field>
+
+              </div>
             </div>
 
           </div>
         </div>
       </div>
-      <div class="card">
+      <div class="card" *ngIf="isPF">
         <div class="card-header">
-          <a class="collapsed card-link" data-toggle="collapse" href="#collapseFour">
-            Collapsible Group Item #3
+          <a class="collapsed card-link" data-toggle="collapse" href="#collapseFive">
+            PF Information
           </a>
         </div>
-        <div id="collapseFour" class="collapse" data-parent="#accordion">
+        <div id="collapseFive" class="collapse" data-parent="#accordion">
           <div class="card-body">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore
-            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-            commodo
-            consequat.
+            <div class="row">
+              <div class="col">
+                <mat-form-field>
+                  <input type="text" name="pffname" formControlName="pffname" matInput placeholder="PF Fund Name" class="form-control">
+                  <mat-error>This field is mandatory</mat-error>
+                </mat-form-field>
+
+              </div>
+              <div class="col">
+                <mat-form-field>
+                  <input type="text" name="pfmemship" formControlName="pfmemship" matInput placeholder="PF Membership Number" class="form-control">
+                  <mat-error>This field is mandatory</mat-error>
+                </mat-form-field>
+
+              </div>
+              <div class="col">
+                <mat-form-field>
+                  <input  formControlName="pfdoj" matInput [matDatepicker]="picker3" class="form-control" placeholder="PF date of joining Fund">
+                  <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                  <mat-datepicker #picker3></mat-datepicker>
+                  <mat-error>This field is mandatory</mat-error>
+                </mat-form-field>
+
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <mat-form-field>
+                  <input type="text" name="uan" formControlName="uan" matInput placeholder="UAN Number" class="form-control">
+                  <mat-error>This field is mandatory</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card" *ngIf="isEsic">
+        <div class="card-header">
+          <a class="collapsed card-link" data-toggle="collapse" href="#collapseSix">
+            Esic Information
+          </a>
+        </div>
+        <div id="collapseSix" class="collapse" data-parent="#accordion">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <mat-form-field>
+                  <input type="text" name="esicfid" formControlName="esicfid" matInput placeholder="ESIC FundID" class="form-control">
+                  <mat-error>This field is mandatory</mat-error>
+                </mat-form-field>
+
+              </div>
+              <div class="col">
+                <mat-form-field>
+                  <input type="text" name="esicmemship" formControlName="esicmemship" matInput placeholder="ESIC Membership Number" class="form-control">
+                  <mat-error>This field is mandatory</mat-error>
+                </mat-form-field>
+
+              </div>
+              <div class="col">
+                <mat-form-field>
+                  <input  formControlName="esicdoj" matInput [matDatepicker]="picker4" class="form-control" placeholder="ESIC date of joining Fund">
+                  <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                  <mat-datepicker #picker4></mat-datepicker>
+                  <mat-error>This field is mandatory</mat-error>
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <a class="collapsed card-link" data-toggle="collapse" href="#collapseSeven">
+            EXTRA SECTION
+          </a>
+        </div>
+        <div id="collapseSeven" class="collapse" data-parent="#accordion">
+          <div class="card-body">
+            STILL UNDER DEVELOPMENT AND DESIGNING
           </div>
         </div>
       </div>

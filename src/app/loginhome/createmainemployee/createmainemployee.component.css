@@ -1,0 +1,19 @@
+.container-fluid {
+    margin-left: -25px;
+  }
+  .card-body {
+    background-color: lightblue;
+  }
+  .card-header {
+    background-color: teal;
+  }
+  #btnset {
+    margin-left: 352px;
+  }
+  .card-link {
+    color: white;
+  }
+  #opts {
+    margin-left: 100px;
+  }
+  

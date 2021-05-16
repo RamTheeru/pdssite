@@ -376,16 +376,26 @@ export class LoginhomeComponent implements OnInit, OnDestroy {
       //this.vServ.setVerify("hruahe");
       //this.router.onSameUrlNavigation = "reload";
       //this.router.navigate(["/loginhome/employees"]);
-    } else if (tab == "hrvhe") {
+    } else if (tab == 'hrvle') {
       this.shownotify = false;
       this.act1SubMenu = false;
       this.act2SubMenu = false;
-      this.vServ.removeValue("fheverify");
-      this.vServ.removeValue("evheverify");
-      this.vServ.removeValue("edleverify");
-      this.vServ.setVerify("hrvhe");
-      this.router.onSameUrlNavigation = "reload";
-      this.router.navigate(["/loginhome/viewemployees"]);
+      this.vServ.removeValue('fheverify');
+      this.vServ.removeValue('evheverify');
+      this.vServ.removeValue('edleverify');
+      this.vServ.setVerify('hrvle');
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate(['/loginhome/pdsemployees']);
+    } else if (tab == 'hrvhe') {
+      this.shownotify = false;
+      this.act1SubMenu = false;
+      this.act2SubMenu = false;
+      this.vServ.removeValue('fheverify');
+      this.vServ.removeValue('evheverify');
+      this.vServ.removeValue('edleverify');
+      this.vServ.setVerify('hrvhe');
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate(['/loginhome/pendingpdsemployees']);
     } else if (tab == "hrgshe") {
       this.shownotify = false;
       this.act1SubMenu = false;

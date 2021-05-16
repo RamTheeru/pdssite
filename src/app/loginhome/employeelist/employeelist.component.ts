@@ -44,6 +44,9 @@ export class EmployeelistComponent implements OnInit, OnDestroy {
   apiResult: APIResult;
   isHide = true;
   isHE: Boolean = false;
+  isLE: Boolean = false;
+  isHrHE  : Boolean = false;
+   isHrLE  : Boolean = false;
   empId: number = 0;
   e: Employee;
   //t
@@ -77,6 +80,14 @@ export class EmployeelistComponent implements OnInit, OnDestroy {
     }
     if (this.userType == "hrhe") {
       this.isHE = true;
+      this.isHrHE = true;
+      this.isLE = false;
+      this.isHrLE=false;
+    }else if(this.userType == "hrhe"){
+    this.isHE = false;
+      this.isHrHE = false;
+      this.isLE = true;
+      this.isHrLE=true;
     }
     this.api.getConstants().subscribe(
       (data: APIResult) => {

@@ -28,6 +28,9 @@ export const CurrentUrls = {
   registeremployees: "RegisteredUsers",
   createemployee: "CreateEmployee",
   createDAemployee: "CreateDAEmployee",
+  createPDSemployee: 'CreatePDSEmployee',
+  pdsunapprovedemployees: 'PDSUnApprovedEmployees',
+  pdsemployees: 'PDSEmployees',
   checkempCode:"CheckEmpCode",
   checkcdaCode :"CheckCDACode",
   login: "Login",
@@ -224,6 +227,68 @@ export class PdsApiService {
           })
         );
     }
+     //get list of UnApproved PDS Employees
+  getpdsunApprovedEmployees(input: any, tkn: string): R.Observable<any> {
+    var body = JSON.stringify(input);
+    const phttpOptions2 = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'PUT,GET,POST,DELETE',
+        Authorization: 'Bearer ' + tkn
+      })
+    };
+    console.log(tkn);
+    console.log(
+      this.baseurl + this.employeesUrl + CurrentUrls.pdsunapprovedemployees
+    );
+    return this.http
+      .post(
+        this.baseurl + this.employeesUrl + CurrentUrls.pdsunapprovedemployees,
+        body,
+        phttpOptions2
+      )
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.log(error);
+          let obj: never;
+          obj = this.handlehttpError(error) as never;
+          return new Observable(function(x) {
+            x.next(obj);
+          });
+        })
+      );
+  }
+  //get list of PDS Employees
+  getPDSEmployees(input: any, tkn: string): R.Observable<any> {
+    var body = JSON.stringify(input);
+    const phttpOptions2 = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'PUT,GET,POST,DELETE',
+        Authorization: 'Bearer ' + tkn
+      })
+    };
+    console.log(tkn);
+    console.log(this.baseurl + this.employeesUrl + CurrentUrls.pdsemployees);
+    return this.http
+      .post(
+        this.baseurl + this.employeesUrl + CurrentUrls.pdsemployees,
+        body,
+        phttpOptions2
+      )
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.log(error);
+          let obj: never;
+          obj = this.handlehttpError(error) as never;
+          return new Observable(function(x) {
+            x.next(obj);
+          });
+        })
+      );
+  }
   //get list of Delivery Associates
   getdeliveryassociates(input: any, tkn: string): R.Observable<any> {
     var body = JSON.stringify(input);
@@ -646,6 +711,35 @@ export class PdsApiService {
         })
       );
   }
+    //create PDS employee POST
+
+    createPDSemployee(input, tkn): R.Observable<any> {
+      const phttpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          Authorization: 'Bearer ' + tkn
+        })
+      };
+      console.log(
+        this.baseurl + this.employeesUrl + CurrentUrls.createPDSemployee
+      );
+      return this.http
+        .post<any>(
+          this.baseurl + this.employeesUrl + CurrentUrls.createPDSemployee,
+          JSON.stringify(input),
+          phttpOptions
+        )
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            let obj: never = this.handlehttpError(error) as never;
+            console.log(obj);
+            return new Observable(function(x) {
+              x.next(obj);
+            });
+          })
+        );
+    }
   //Get CDA employee list POST
 
   getCDADeliverylist(input, tkn): R.Observable<any> {

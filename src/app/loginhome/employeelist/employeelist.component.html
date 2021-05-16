@@ -1,6 +1,6 @@
 <div class="container-fluid">
 	<button type="submit" style="float:right;background-color:blue;" ><a routerLink="/loginhome"><b class="text-light" >Go to Home >></b></a></button>
-	<form class="form-inline">
+	<form class="form-inline" *ngIf="!isLE">
 		<!-- <input class="form-control mr-sm-2"     type="text"  placeholder="StationCode">  -->
 
 
@@ -45,9 +45,9 @@
 					<!-- <td><input #empCode  id="{{emp.registerId}}"  type="text" value=""/></td> -->
 				</div>
 				<td>
-					<div *ngIf="isHE; else reg">
-						<button type="button"
-            (click)="onSalCreate($event)" id="{{emp.EmployeeId}}" >Generate Salary</button>
+					<div *ngIf="!isHE; else reg">
+						<!-- <button type="button"
+            (click)="onSalCreate($event)" id="{{emp.EmployeeId}}" >Generate Salary</button> -->
 					</div>
 					<ng-template #reg>
 						<button type="button"   (click)="approveUser($event,'a')" class="btn btn-primary" ><b  id="{{emp.registerId}}"  class="text-light" >Approve</b>
@@ -59,7 +59,8 @@
 		</tbody>
 	</table>
 	<ng-template #logins>
-		<table class="table table-striped">
+		<ng-container *ngIf="isLogin; else elseif2">
+		<table class="table table-striped" >
 			<thead>
 				<tr>
 					<th>Employee Code</th>
@@ -89,6 +90,157 @@
 				</tr>
 			</tbody>
 		</table>
+	</ng-container>
+	</ng-template>
+	<ng-template #elseif2>
+		<ng-container *ngIf="isLE; else elseif3">
+			<div style="overflow-x:auto;">
+				<table id="t" class="table table-striped">
+					<thead>
+						<tr>
+							<th>FirstName</th>
+							<!-- <th>LastName</th> -->
+							<th>Employee Code</th>
+								<th>Action</th>
+							<th>Gaurdian Name</th>
+							<th>DOB</th>
+							<th>StateCode</th>
+							<th>LocationName</th>
+							<th>DOJ</th>
+							<th>AccountNumber</th>
+							<th>IFSC Code</th>
+							<th>Bank Name</th>
+							<th>Branch Name</th>
+							<th>Aadhar Number</th>
+							<!-- <th>PAN Status</th> -->
+							<th>PAN Number</th>
+							<th>DL/LR Status</th>
+							<th>DL/LLR Number</th>
+							<th>Vehicle Number</th>
+							<th>Address ( D.No )</th>
+							<th>Place</th>
+							<th>Employee Type</th>
+							<th>Mobile</th>
+							<th>Alternate number</th>
+							<th>Marital Status</th>
+							<th>Blood Group</th>
+							<th>Age</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let emp of employees;">
+							<td [hidden]="isHide">{{emp.employeeId}}</td>
+							<td>{{emp.firstName}}</td>
+							<!-- <td>{{emp.lastName}}</td> -->
+							<td>{{emp.empCode}}</td>
+								<td>
+									<input
+                #tablist
+                id="{{emp.employeeId}}"
+                (click)="toggleEditable($event)"
+                type="checkbox"
+                value=""
+              />
+            </td>
+							<td>{{emp.guard_FullName}}</td>
+							<td>{{emp.dob}}</td>
+							<td>{{emp.stationCode}}</td>
+							<td>{{emp.locationName}}</td>
+
+							<td>{{emp.doj}}</td>
+							<td>{{emp.bankAccountNumber}}</td>
+							<td>{{emp.ifscCode}}</td>
+							<td>{{emp.bankName}}</td>
+							<td>{{emp.branchName}}</td>
+							<td>{{emp.aadharNumber}}</td>
+							<!-- <td>{{emp.PAN==true?'Active':'Inactive'}}</td> -->
+							<td>{{emp.panNumber}}</td>
+							<td>{{emp.dllrStatus}}</td>
+							<td>{{emp.dllrNumber}}</td>
+							<td>{{emp.vehicleNumber}}</td>
+							<td>{{emp.address1}}</td>
+							<td>{{emp.place}}</td>
+							<td>{{emp.employeeType}}</td>
+							<td>{{emp.phone}}</td>
+							<td>{{emp.guard_Phone}}</td>
+							<td>{{emp.maritalStatus==true?'Married':'UnMarried'}}</td>
+							<td>{{emp.bloodGroup}}</td>
+							<td>{{emp.empAge}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</ng-container>
+	</ng-template>
+	<ng-template #elseif3>
+		<ng-container *ngIf="isLE">
+			<div style="overflow-x:auto;">
+				<table id="t" class="table table-striped">
+					<thead>
+						<tr>
+							<th>FirstName</th>
+							<!-- <th>LastName</th> -->
+							<th>Employee Code</th>
+							<th>Gaurdian Name</th>
+							<th>DOB</th>
+							<th>StateCode</th>
+							<th>LocationName</th>
+							<th>DOJ</th>
+							<th>AccountNumber</th>
+							<th>IFSC Code</th>
+							<th>Bank Name</th>
+							<th>Branch Name</th>
+							<th>Aadhar Number</th>
+							<!-- <th>PAN Status</th> -->
+							<th>PAN Number</th>
+							<th>DL/LR Status</th>
+							<th>DL/LLR Number</th>
+							<th>Vehicle Number</th>
+							<th>Address ( D.No )</th>
+							<th>Place</th>
+							<th>Employee Type</th>
+							<th>Mobile</th>
+							<th>Alternate number</th>
+							<th>Marital Status</th>
+							<th>Blood Group</th>
+							<th>Age</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let emp of employees;">
+							<td [hidden]="isHide">{{emp.employeeId}}</td>
+							<td>{{emp.firstName}}</td>
+							<!-- <td>{{emp.lastName}}</td> -->
+							<td>{{emp.empCode}}</td>
+							<td>{{emp.guard_FullName}}</td>
+							<td>{{emp.dob}}</td>
+							<td>{{emp.stationCode}}</td>
+							<td>{{emp.locationName}}</td>
+
+							<td>{{emp.doj}}</td>
+							<td>{{emp.bankAccountNumber}}</td>
+							<td>{{emp.ifscCode}}</td>
+							<td>{{emp.bankName}}</td>
+							<td>{{emp.branchName}}</td>
+							<td>{{emp.aadharNumber}}</td>
+							<!-- <td>{{emp.PAN==true?'Active':'Inactive'}}</td> -->
+							<td>{{emp.panNumber}}</td>
+							<td>{{emp.dllrStatus}}</td>
+							<td>{{emp.dllrNumber}}</td>
+							<td>{{emp.vehicleNumber}}</td>
+							<td>{{emp.address1}}</td>
+							<td>{{emp.place}}</td>
+							<td>{{emp.employeeType}}</td>
+							<td>{{emp.phone}}</td>
+							<td>{{emp.guard_Phone}}</td>
+							<td>{{emp.maritalStatus==true?'Married':'UnMarried'}}</td>
+							<td>{{emp.bloodGroup}}</td>
+							<td>{{emp.empAge}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</ng-container>
 	</ng-template>
 </div>
 <div class="container-fluid" *ngIf="pageCount>1">

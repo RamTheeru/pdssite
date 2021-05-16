@@ -838,7 +838,7 @@ export class CreatemainemployeeComponent
   }
   submittoAPI(employ, tkn: string): void {
     if (this.fvalid) {
-      this.api.createDAemployee(employ, tkn).subscribe(
+      this.api.createPDSemployee(employ, tkn).subscribe(
         (data: APIResult) => {
           //console.log(data);
           let status: Boolean = data.status;

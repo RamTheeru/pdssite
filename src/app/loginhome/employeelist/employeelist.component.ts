@@ -19,6 +19,7 @@ import { Station } from "../../models/station";
 import { ApiInput } from "../../models/apiinput";
 import * as r from "rxjs";
 import swal from "sweetalert2";
+import { UserType } from "src/app/models/usertype";
 @Component({
   selector: "app-employeelist",
   templateUrl: "./employeelist.component.html",
@@ -26,6 +27,7 @@ import swal from "sweetalert2";
 })
 export class EmployeelistComponent implements OnInit, OnDestroy {
   @ViewChildren("empCode") empCode;
+  isLogin : boolean = false;
   employees: RegisterEmployee[] = [];
   pageCount: number = 1;
   pages = [];
@@ -34,12 +36,15 @@ export class EmployeelistComponent implements OnInit, OnDestroy {
   totalCount: number = 0;
   stations: Station[];
   apiInput: ApiInput;
+  userInfo: UserType;
   selectedStation: string = "";
   userType: string = "";
   usrToken: string = "";
   emCode: string = "";
   private subsc: r.Subscription;
   private subsc2: r.Subscription;
+  private subsc3 : r.Subscription;
+  stationId : number = 0;
   stationCode: string = "";
   apiResult: APIResult;
   isHide = true;
@@ -65,8 +70,18 @@ export class EmployeelistComponent implements OnInit, OnDestroy {
     var index = this.url.indexOf("logins");
     if (index !== -1) {
       this.isreguser = false;
+      this.isLE = false;
+      this.isHrLE = false;
+      this.isHE = false;
+      this.isHrLE = false;
+      this.isLogin = true;
     } else {
       this.isreguser = true;
+      this.isLE = false;
+      this.isHrLE = false;
+      this.isHE = false;
+      this.isHrLE = false;
+      this.isLogin = false;
     }
     this.subsc = this.vServ.data.subscribe((val: string) => {
       this.userType = val;
@@ -78,16 +93,48 @@ export class EmployeelistComponent implements OnInit, OnDestroy {
     if (this.userType == "" || this.userType == undefined) {
       this.userType = this.vServ.getValue("storedProp");
     }
+    this.subsc3 = this.vServ.userInfo.subscribe((res: UserType) => {
+      this.userInfo = res;
+    });
+    if (this.userInfo == null || this.userInfo == undefined) {
+      var u = this.vServ.getValue("userProp");
+      this.userInfo = JSON.parse(u);
+    }
     if (this.userType == "hrhe") {
       this.isHE = true;
       this.isHrHE = true;
       this.isLE = false;
       this.isHrLE=false;
-    }else if(this.userType == "hrhe"){
+      this.isLogin = false;
+      this.isreguser=false;
+    }else if(this.userType == "hrle"){
     this.isHE = false;
       this.isHrHE = false;
       this.isLE = true;
       this.isHrLE=true;
+      this.isLogin = false;
+      this.isreguser=false;
+      this.stationId = this.userInfo.stationId;
+      if (this.usrToken == "" || this.usrToken == null || this.usrToken == undefined) {
+        this.usrToken = this.vServ.getToken();
+      }
+      if(this.stationId == 0)
+      {
+        this.swServ.showErrorMessage(
+          "Something Went Wrong!!",
+          "Unable to get Station, Please try again!!"
+        );
+      } else if (
+        this.usrToken == "" ||
+        this.usrToken == undefined ||
+        this.usrToken == null
+      ) {
+        this.handleUnauthorizedrequest();
+      }else{
+        this.apiInput = new ApiInput();
+        this.apiInput.stationId = this.stationId;
+        this.getPdsEmployees(this.apiInput);
+      }
     }
     this.api.getConstants().subscribe(
       (data: APIResult) => {
@@ -103,14 +150,16 @@ export class EmployeelistComponent implements OnInit, OnDestroy {
         this.swServ.showErrorMessage("Network Error!!!", err.message);
       }
     );
+
   }
   ngOnDestroy() {
     this.subsc.unsubscribe();
     this.subsc2.unsubscribe();
+    this.subsc3.unsubscribe();
   }
   getemployeesbyStation(event) {
     //console.log(this.selectedStation) ;
-    if (this.usrToken == "") {
+    if (this.usrToken == "" || this.usrToken == null || this.usrToken == undefined) {
       this.usrToken = this.vServ.getToken();
     }
     if (this.selectedStation == "") {
@@ -122,19 +171,106 @@ export class EmployeelistComponent implements OnInit, OnDestroy {
     ) {
       this.handleUnauthorizedrequest();
     } else {
+      if(this.isHE)
+      {
+        this.apiInput = new ApiInput();
+        this.apiInput.stationId = Number(this.selectedStation);
+        this.getPdsEmployees(this.apiInput);
+      }else{
       this.apiInput = new ApiInput();
       this.apiInput.stationId = Number(this.selectedStation);
       this.registeredUsers(this.apiInput);
+      }
     }
   }
   getdata(val: number) {
     console.log(val);
     this.apiInput = new ApiInput();
     this.apiInput.page = val;
-    this.apiInput.stationId = Number(this.selectedStation);
-    this.registeredUsers(this.apiInput);
+    if(this.isLE){
+      this.apiInput.stationId = this.stationId;
+      if(this.stationId > 0)
+      {
+        this.getPdsEmployees(this.apiInput);
+      }
+      else{
+        this.swServ.showErrorMessage(
+          "Something Went Wrong!!",
+          "Unable to get Station, Please try again!!"
+        );
+      }
+    }else{
+      this.apiInput.stationId = Number(this.selectedStation);
+    if(this.isHE)
+    {
+      this.getPdsEmployees(this.apiInput);
+    }else{
+      this.registeredUsers(this.apiInput);
+    }
+    }
   }
-
+  toggleEditable(event) {
+    if (event.target.checked) {
+      event.target.value = true;
+    } else {
+      event.target.value = false;
+    }
+  }
+  getPdsEmployees(input: ApiInput) {
+    if (this.isHE) {
+      this.api
+        .getpdsunApprovedEmployees(input, this.usrToken)
+        .subscribe((data: APIResult) => {
+          // console.log(data)     ;
+          let status = data.status;
+          let message = data.message;
+          if (status) {
+            this.employees = data.registerEmployees;
+            this.pageCount = data.queryPages;
+            this.totalCount = data.queryTotalCount;
+            this.pages = this.api.transform(this.pageCount);
+            console.log(data);
+            if(this.employees == undefined || this.employees == null)
+            {
+              this.swServ.showMessage("Warning!","No records found for this request.");
+          }else{
+            if(this.employees.length == 0){
+              this.swServ.showMessage("Warning!","No records found for this request.");
+            }
+          }
+          } else {
+            this.swServ.showErrorMessage("Failure!!!", message);
+          }
+        });
+    } else {
+      this.api
+        .getPDSEmployees(input, this.usrToken)
+        .subscribe((data: APIResult) => {
+          console.log(data);
+          let status = data.status;
+          let message = data.message;
+          if (status) {
+            this.employees = data.employees;
+            this.pageCount = data.queryPages;
+            this.totalCount = data.queryTotalCount;
+            this.pages = this.api.transform(this.pageCount);
+            console.log(data);
+            if(this.employees == undefined || this.employees == null)
+            {
+              this.totalCount =0;
+              this.swServ.showMessage("Warning!","No records found for this request.");
+          }else{
+            if(this.employees.length == 0){
+              this.totalCount =0;
+              this.swServ.showMessage("Warning!","No records found for this request.");
+            }
+          }
+          } else {
+            this.swServ.showErrorMessage("Failure!!!", message);
+          }
+        });
+    }
+  }
   registeredUsers(input: ApiInput) {
     if (this.isreguser) {
       this.api

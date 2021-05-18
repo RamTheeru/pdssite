@@ -56,6 +56,8 @@ export const CurrentUrls = {
   approveVouchers:"ApproveVoucher",
   rejectvouchers:"RejectVoucher",
   downloadLedger:"DownloadLedgerDetails",
+  uploadfile:"upload",
+  downloadattendance : "DownloadAttendance",
   logout: "DeleteSession"
 };
 @Injectable()
@@ -142,6 +144,68 @@ export class PdsApiService {
       this.httpOptions
     );
   }
+  //upload attendance file
+  uploadAttendanceFile(data: any): R.Observable<any> {
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    const httpOptions = {
+      headers: headers
+    };
+    return this.http
+      .post(
+        this.baseurl + this.employeesUrl + CurrentUrls.uploadfile,
+        data,
+        httpOptions
+      )
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.log(error);
+          let obj: never;
+          obj = this.handlehttpError(error) as never;
+          return new Observable(function(x) {
+            x.next(obj);
+          });
+        })
+      );
+  }
+// download attendance file for station
+downloadattedancefileforStation(input: any, tkn: string): R.Observable<any> {
+  var body = JSON.stringify(input);
+  const phttpOptions = {
+    responseType: "blob",
+    headers: new HttpHeaders({
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: "Bearer " + tkn
+    })
+    //   observe:"body",
+    //   reportProgress:false,
+    //  responseType: "blob"
+  };
+  // console.log(this.baseurl + this.employeesUrl + CurrentUrls.PDFFileDownload);
+  // console.log(body);
+  return this.http
+    .post(
+      this.baseurl + this.employeesUrl + CurrentUrls.downloadattendance,
+      body,
+      {
+        responseType: "blob",
+        headers: new HttpHeaders({
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + tkn
+        })
+      }
+    )
+    .pipe(
+      catchError((error: HttpErrorResponse) => {
+        let obj : never = this.handlehttpError(error) as never;
+        return new Observable(function(x) {
+          x.next(obj);
+        });
+      })
+    );
+}
   //get admin details
   getadmindetails(tkn:string): R.Observable<any> {
     console.log(this.baseurl + this.employeesUrl + CurrentUrls.adminDetails);

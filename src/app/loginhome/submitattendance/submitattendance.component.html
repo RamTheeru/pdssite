@@ -49,16 +49,23 @@
 						<h3 class="text-primary"><u><b>Download Previous Month's Attendence:</b></u></h3>
 					</div>
 					<div class="col-sm-8">
+						<label>Select Location:</label>
+
+				<select     [(ngModel)]="location" name="location" id="stat" class="form-control">
+					<option value="" selected>Select Station</option>
+		  <option *ngFor="let s of stations" [ngValue]="s.stationId">
+						{{s.stationName}}
+					</option>
+</select>
 						<label>Select Previous Month:</label>
-						<mat-form-field class="inpt">
-							<mat-select formControlName="gender" aria-placeholder="Select Previous Month">
-								<!-- <mat-option value="">Select Month</mat-option> -->
-								<mat-option value="feb">Febrauary</mat-option>
-								<mat-option value="mar">March</mat-option>
-							</mat-select>
-						</mat-form-field>
+						<select  class="form-control"   [(ngModel)]="selectedMonth" name="selectedMonth" id="mont">
+							<option value="" selected>Select Month</option>
+				  <option *ngFor="let m of months" [ngValue]="m.id">
+					{{m.name}}
+							</option>
+						</select>
 					</div>
-					<div class="col-sm-2"> <input type="button" class="btn btn-primary" value="Download"/></div>
+					<div class="col-sm-2"> <input type="button" (click)="onDownload()" class="btn btn-primary" value="Download"/></div>
 					</div>
 				</div>
 			</div>

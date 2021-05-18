@@ -6,7 +6,9 @@ import {
   ViewChild
 } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-
+import { PdsApiService } from "../../pds-api.service";
+import { SweetService } from "../../sweet.service";
+import { APIResult } from "../../models/apiresult";
 @Component({
   selector: "file-input",
   templateUrl: "file-input.component.html"
@@ -18,7 +20,7 @@ export class FileInputComponent {
   formImport: FormGroup;
   fileToUpload: File = null;
 
-  constructor() {
+  constructor(private api:PdsApiService,private swServ:SweetService) {
     this.formImport = new FormGroup({
       importFile: new FormControl("", Validators.required)
     });
@@ -33,5 +35,24 @@ export class FileInputComponent {
 
   import(): void {
     console.log("import " + this.fileToUpload.name);
+    var formData = new FormData();
+    formData.append('file', this.fileToUpload, this.fileToUpload.name);
+   this.api.uploadAttendanceFile(formData).subscribe(
+    (data: APIResult) => {
+      //console.log(data);
+      let status: Boolean = data.status;
+      let m: string = data.message;
+      if (status) {
+        //this.stations = data.stations;
+        this.swServ.showSuccessMessage("Success!!", m);
+      } else {
+        this.swServ.showErrorMessage("Error!!", m);
+      }
+    },
+    err => {
+      //console.log(err.message);
+      this.swServ.showErrorMessage("Network Error!!!", err.message);
+    }
+   )
   }
 }

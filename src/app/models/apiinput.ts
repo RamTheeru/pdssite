@@ -7,4 +7,5 @@ export class ApiInput {
   pagesize: number;
   status: string;
   currentmonth: number;
+  currentYear: number;
 }

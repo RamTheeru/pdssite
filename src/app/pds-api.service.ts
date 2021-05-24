@@ -199,7 +199,7 @@ downloadattedancefileforStation(input: any, tkn: string): R.Observable<any> {
     )
     .pipe(
       catchError((error: HttpErrorResponse) => {
-        let obj : never = this.handlehttpError(error) as never;
+        let obj : never = this.handlehttpError(error,"DA") as never;
         return new Observable(function(x) {
           x.next(obj);
         });
@@ -439,7 +439,7 @@ downloadattedancefileforStation(input: any, tkn: string): R.Observable<any> {
         })
       );
   }
-  private handlehttpError(err: HttpErrorResponse) {
+  private handlehttpError(err: HttpErrorResponse,url="") {
     let obj:any ;
     if (err.status === 401) {
       this.handleAuthError(err);
@@ -461,6 +461,13 @@ downloadattedancefileforStation(input: any, tkn: string): R.Observable<any> {
         //  console.log(err);
         obj = err.error;
 
+        if(this.isBlobError(err) && url.includes("DA"))
+        {
+          m = m + "Something went wrong!!! Unable to download file, file either corrupted or not exists!!!"
+          apierrResult.status = false;
+          apierrResult.message = m;
+        }
+        else{
         if ("title" in obj) {
           m = obj.title;
           apierrResult.status = false;
@@ -484,6 +491,7 @@ downloadattedancefileforStation(input: any, tkn: string): R.Observable<any> {
           apierrResult.message = m;
          
         }
+      }
         obj = apierrResult;
       }
 
@@ -494,6 +502,9 @@ downloadattedancefileforStation(input: any, tkn: string): R.Observable<any> {
       //return Observable.empty<T>();
     }
     return obj;
+  }
+  isBlobError(err: any) {
+    return err instanceof HttpErrorResponse && err.error instanceof Blob && err.error.type === 'application/json';
   }
   printObject(obj: any) {
     const keys = Object.keys(obj);
